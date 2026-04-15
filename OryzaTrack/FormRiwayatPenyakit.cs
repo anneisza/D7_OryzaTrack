@@ -121,5 +121,10 @@ namespace OryzaTrack
             dtpTanggalSerangan.Value = DateTime.Now;
             txtCari.Clear();
         }
+
+        private void dtpTanggalSerangan_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

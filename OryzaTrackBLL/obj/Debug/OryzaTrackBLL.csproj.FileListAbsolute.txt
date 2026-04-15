@@ -1,13 +1,13 @@
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.AssemblyReference.cache
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.Properties.Resources.resources
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.GenerateResource.cache
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.CoreCompileInputs.cache
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.exe.config
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.exe
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.pdb
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.exe
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.pdb
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.exe.config
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.AssemblyReference.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.Properties.Resources.resources
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.GenerateResource.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.CoreCompileInputs.cache
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTra.65470965.Up2Date
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.exe
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.pdb

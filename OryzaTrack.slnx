@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/QueryDatabase/" />
+  <Folder Name="/QueryDatabase/">
+    <File Path="OryzaTrack.sql" />
+  </Folder>
   <Project Path="OryzaTrack/OryzaTrack.csproj" Id="96e9cd16-20f6-4d93-9e38-2b54a5f8fa88" />
   <Project Path="OryzaTrackBLL/OryzaTrackBLL.csproj" Id="9418b977-e284-4923-ab8d-b40aa0238eeb" />
   <Project Path="OryzaTrackDAL/OryzaTrackDAL.csproj" Id="47005f30-0f55-49bd-8727-031b40179048" />

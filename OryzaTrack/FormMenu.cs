@@ -44,7 +44,7 @@ namespace OryzaTrack
         private void btnLogout_Click(object sender, EventArgs e)
         {
             this.Close();
-            new FormLogin().Show();
+            new FormLogin2().Show();
         }
     }
 }

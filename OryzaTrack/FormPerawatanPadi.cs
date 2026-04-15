@@ -139,6 +139,16 @@ namespace OryzaTrack
             dgvPerawatan.DataSource = bll.GetAll();
             lblJumlah.Text = "Jumlah Data: " + bll.CountData();
         }
+
+        private void lblJumlah_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblIDPerawatan_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
