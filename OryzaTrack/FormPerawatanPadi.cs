@@ -93,6 +93,20 @@ namespace OryzaTrack
 
         private void btnHapus_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (MessageBox.Show("Yakin ingin menghapus data ini?", "Konfirmasi",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    bll.Delete(_selectedId);
+                    MessageBox.Show("Data berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData(); BersihkanForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
