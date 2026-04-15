@@ -13,6 +13,9 @@ namespace OryzaTrack
 {
     public partial class FormPerawatanPadi : Form
     {
+        private PerawatanPadiBLL bll = new PerawatanPadiBLL();
+        private int _idAdmin;
+        private int _selectedId = 0;
         public FormPerawatanPadi(int idAdmin)
         {
             InitializeComponent();
