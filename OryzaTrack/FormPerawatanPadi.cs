@@ -24,7 +24,9 @@ namespace OryzaTrack
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
         {
-
+            cmbHasilPerawatan.Items.AddRange(new string[] { "Berhasil", "Sebagian Berhasil", "Gagal" });
+            cmbHasilPerawatan.SelectedIndex = 0;
+            LoadData();
         }
     }
 }
