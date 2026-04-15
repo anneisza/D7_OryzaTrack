@@ -108,5 +108,9 @@ namespace OryzaTrack
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnCari_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
