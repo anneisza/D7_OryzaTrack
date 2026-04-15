@@ -54,5 +54,9 @@ namespace OryzaTrack
                 }
             }
         }
+
+        private void btnTambah_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
