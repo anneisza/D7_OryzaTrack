@@ -28,5 +28,9 @@ namespace OryzaTrack
             cmbHasilPerawatan.SelectedIndex = 0;
             LoadData();
         }
+
+        private void dgvPerawatan_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
     }
 }
