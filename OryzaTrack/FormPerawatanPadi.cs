@@ -13,9 +13,10 @@ namespace OryzaTrack
 {
     public partial class FormPerawatanPadi : Form
     {
-        public FormPerawatanPadi()
+        public FormPerawatanPadi(int idAdmin)
         {
             InitializeComponent();
+            _idAdmin = idAdmin;
         }
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
