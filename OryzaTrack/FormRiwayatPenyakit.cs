@@ -47,5 +47,77 @@ namespace OryzaTrack
             txtLokasiLahan.Text = row.Cells["lokasiLahan"].Value?.ToString();
             dtpTanggalSerangan.Value = Convert.ToDateTime(row.Cells["tanggalSerangan"].Value);
         }
+
+        private void btnTambah_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bll.Insert(_idAdmin, txtGejalaPenyakit.Text, cmbTingkatKerusakan.Text,
+                           txtLokasiLahan.Text, dtpTanggalSerangan.Value);
+                MessageBox.Show("Data berhasil ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData(); BersihkanForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Yakin ingin mengupdate data ini?", "Konfirmasi",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    bll.Update(_selectedId, txtGejalaPenyakit.Text, cmbTingkatKerusakan.Text,
+                               txtLokasiLahan.Text, dtpTanggalSerangan.Value);
+                    MessageBox.Show("Data berhasil diupdate!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData(); BersihkanForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnHapus_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Yakin ingin menghapus data ini?", "Konfirmasi",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    bll.Delete(_selectedId);
+                    MessageBox.Show("Data berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData(); BersihkanForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCari_Click(object sender, EventArgs e)
+        {
+            string keyword = txtCari.Text.Trim();
+            dgvPenyakit.DataSource = string.IsNullOrEmpty(keyword) ? bll.GetAll() : bll.Search(keyword);
+        }
+
+        private void btnBersihkan_Click(object sender, EventArgs e)
+        {
+            BersihkanForm(); LoadData();
+        }
+
+        private void BersihkanForm()
+        {
+            _selectedId = 0;
+            txtIdPenyakit.Clear(); txtGejalaPenyakit.Clear(); txtLokasiLahan.Clear();
+            cmbTingkatKerusakan.SelectedIndex = 0;
+            dtpTanggalSerangan.Value = DateTime.Now;
+            txtCari.Clear();
+        }
     }
 }
