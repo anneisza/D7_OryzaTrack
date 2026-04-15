@@ -37,6 +37,22 @@ namespace OryzaTrack
             var rawDt = bll.GetAllRaw();
             DataGridViewRow row = dgvPerawatan.Rows[e.RowIndex];
             _selectedId = Convert.ToInt32(row.Cells["idPerawatan"].Value);
+
+            // Cari data raw berdasarkan idPerawatan
+            foreach (System.Data.DataRow rawRow in rawDt.Rows)
+            {
+                if (Convert.ToInt32(rawRow["idPerawatan"]) == _selectedId)
+                {
+                    txtIdPerawatan.Text = _selectedId.ToString();
+                    nudIdPenyakit.Value = Convert.ToInt32(rawRow["idPenyakit"]);
+                    nudIdHama.Value = Convert.ToInt32(rawRow["idHama"]);
+                    txtJenisPerawatan.Text = rawRow["jenisPerawatan"]?.ToString();
+                    txtJenisPestisida.Text = rawRow["jenisPestisida"]?.ToString();
+                    dtpTanggalPerawatan.Value = Convert.ToDateTime(rawRow["tanggalPerawatan"]);
+                    cmbHasilPerawatan.Text = rawRow["hasilPerawatan"]?.ToString();
+                    break;
+                }
+            }
         }
     }
 }
