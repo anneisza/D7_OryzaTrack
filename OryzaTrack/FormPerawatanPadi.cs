@@ -114,5 +114,20 @@ namespace OryzaTrack
             string keyword = txtCari.Text.Trim();
             dgvPerawatan.DataSource = string.IsNullOrEmpty(keyword) ? bll.GetAll() : bll.Search(keyword);
         }
+
+        private void btnBersihkan_Click(object sender, EventArgs e)
+        {
+            BersihkanForm(); LoadData();
+        }
+
+        private void BersihkanForm()
+        {
+            _selectedId = 0;
+            txtIdPerawatan.Clear(); txtJenisPerawatan.Clear(); txtJenisPestisida.Clear();
+            nudIdPenyakit.Value = 1; nudIdHama.Value = 1;
+            cmbHasilPerawatan.SelectedIndex = 0;
+            dtpTanggalPerawatan.Value = DateTime.Now;
+            txtCari.Clear();
+        }
     }
 }
