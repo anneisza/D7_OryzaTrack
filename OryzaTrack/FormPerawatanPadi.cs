@@ -31,6 +31,12 @@ namespace OryzaTrack
 
         private void dgvPerawatan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
+
+            // Ambil data raw (dengan idPenyakit dan idHama) untuk edit
+            var rawDt = bll.GetAllRaw();
+            DataGridViewRow row = dgvPerawatan.Rows[e.RowIndex];
+            _selectedId = Convert.ToInt32(row.Cells["idPerawatan"].Value);
         }
     }
 }
