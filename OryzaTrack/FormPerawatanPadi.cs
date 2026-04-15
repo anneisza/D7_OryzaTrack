@@ -90,5 +90,9 @@ namespace OryzaTrack
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnHapus_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
