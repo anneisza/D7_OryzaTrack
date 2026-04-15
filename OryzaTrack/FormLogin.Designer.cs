@@ -80,11 +80,10 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(219, 413);
+            this.lblStatus.Location = new System.Drawing.Point(247, 432);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(53, 16);
+            this.lblStatus.Size = new System.Drawing.Size(0, 16);
             this.lblStatus.TabIndex = 5;
-            this.lblStatus.Text = "Status : ";
             // 
             // FormLogin
             // 

@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="OryzaTrack/OryzaTrack.csproj" />
+  <Project Path="OryzaTrackBLL/OryzaTrackBLL.csproj" />
+  <Project Path="OryzaTrackDAL/OryzaTrackDAL.csproj" />
 </Solution>

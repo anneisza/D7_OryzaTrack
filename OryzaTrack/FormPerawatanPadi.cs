@@ -117,7 +117,8 @@ namespace OryzaTrack
 
         private void btnBersihkan_Click(object sender, EventArgs e)
         {
-            BersihkanForm(); LoadData();
+            BersihkanForm();
+            LoadData();
         }
 
         private void BersihkanForm()
@@ -129,5 +130,12 @@ namespace OryzaTrack
             dtpTanggalPerawatan.Value = DateTime.Now;
             txtCari.Clear();
         }
+
+        private void LoadData()
+        {
+            dgvPerawatan.DataSource = bll.GetAll();
+            lblJumlah.Text = "Jumlah Data: " + bll.CountData();
+        }
     }
 }
+

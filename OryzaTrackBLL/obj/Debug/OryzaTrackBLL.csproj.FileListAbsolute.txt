@@ -1,0 +1,4 @@
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.AssemblyReference.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.Properties.Resources.resources
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.GenerateResource.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.CoreCompileInputs.cache
