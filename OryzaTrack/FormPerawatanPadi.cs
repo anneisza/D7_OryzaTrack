@@ -57,6 +57,18 @@ namespace OryzaTrack
 
         private void btnTambah_Click(object sender, EventArgs e)
         {
+            try
+            {
+                bll.Insert(_idAdmin, (int)nudIdPenyakit.Value, (int)nudIdHama.Value,
+                           txtJenisPerawatan.Text, txtJenisPestisida.Text,
+                           dtpTanggalPerawatan.Value, cmbHasilPerawatan.Text);
+                MessageBox.Show("Data berhasil ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData(); BersihkanForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
