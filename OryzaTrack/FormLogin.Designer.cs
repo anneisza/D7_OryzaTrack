@@ -76,6 +76,7 @@
             this.btnLogin.TabIndex = 4;
             this.btnLogin.Text = "LOGIN";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // lblStatus
             // 
@@ -98,6 +99,7 @@
             this.Controls.Add(this.txtUsername);
             this.Name = "FormLogin";
             this.Text = "LOGIN";
+            this.Click += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

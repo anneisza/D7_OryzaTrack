@@ -108,6 +108,7 @@
             this.btnBersihkan.TabIndex = 32;
             this.btnBersihkan.Text = "Bersihkan";
             this.btnBersihkan.UseVisualStyleBackColor = true;
+            this.btnBersihkan.Click += new System.EventHandler(this.btnBersihkan_Click);
             // 
             // btnHapus
             // 
@@ -117,6 +118,7 @@
             this.btnHapus.TabIndex = 31;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
+            this.btnHapus.Click += new System.EventHandler(this.btnHapus_Click);
             // 
             // btnUpdate
             // 
@@ -126,6 +128,7 @@
             this.btnUpdate.TabIndex = 30;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnTambah
             // 
@@ -135,6 +138,7 @@
             this.btnTambah.TabIndex = 29;
             this.btnTambah.Text = "Tambah";
             this.btnTambah.UseVisualStyleBackColor = true;
+            this.btnTambah.Click += new System.EventHandler(this.btnTambah_Click);
             // 
             // btnCari
             // 
@@ -144,6 +148,7 @@
             this.btnCari.TabIndex = 28;
             this.btnCari.Text = "Cari";
             this.btnCari.UseVisualStyleBackColor = true;
+            this.btnCari.Click += new System.EventHandler(this.btnCari_Click);
             // 
             // txtCari
             // 
@@ -276,6 +281,7 @@
             this.Name = "FormPerawatanPadi";
             this.Text = "Perawatan Padi";
             this.Load += new System.EventHandler(this.FormPerawatanPadi_Load);
+            this.Click += new System.EventHandler(this.FormPerawatanPadi_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdPenyakit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdHama)).EndInit();

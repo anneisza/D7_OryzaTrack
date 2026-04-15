@@ -20,7 +20,9 @@ namespace OryzaTrack
         public FormHama(int idAdmin)
         {
             InitializeComponent();
-            _idAdmin = idAdmin; 
+            _idAdmin = idAdmin;
+
+            dgvHama.CellClick += new DataGridViewCellEventHandler(dgvHama_CellClick);
         }
 
         private void FormHama_Load(object sender, EventArgs e)

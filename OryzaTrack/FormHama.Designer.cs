@@ -127,6 +127,7 @@
             this.btnCari.TabIndex = 8;
             this.btnCari.Text = "Cari";
             this.btnCari.UseVisualStyleBackColor = true;
+            this.btnCari.Click += new System.EventHandler(this.btnCari_Click);
             // 
             // btnTambah
             // 
@@ -136,6 +137,7 @@
             this.btnTambah.TabIndex = 9;
             this.btnTambah.Text = "Tambah";
             this.btnTambah.UseVisualStyleBackColor = true;
+            this.btnTambah.Click += new System.EventHandler(this.btnTambah_Click);
             // 
             // btnUpdate
             // 
@@ -145,6 +147,7 @@
             this.btnUpdate.TabIndex = 10;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnHapus
             // 
@@ -154,6 +157,7 @@
             this.btnHapus.TabIndex = 11;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
+            this.btnHapus.Click += new System.EventHandler(this.btnHapus_Click);
             // 
             // btnBersihkan
             // 
@@ -163,6 +167,7 @@
             this.btnBersihkan.TabIndex = 12;
             this.btnBersihkan.Text = "Bersihkan";
             this.btnBersihkan.UseVisualStyleBackColor = true;
+            this.btnBersihkan.Click += new System.EventHandler(this.btnBersihkan_Click);
             // 
             // lblJumlah
             // 
@@ -254,6 +259,7 @@
             this.Controls.Add(this.dgvHama);
             this.Name = "FormHama";
             this.Text = "FormHama";
+            this.Click += new System.EventHandler(this.FormHama_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHama)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

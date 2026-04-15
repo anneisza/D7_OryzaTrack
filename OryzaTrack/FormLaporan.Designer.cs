@@ -62,6 +62,7 @@
             this.btnRefresh.TabIndex = 51;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // dgvLaporan
             // 
@@ -85,7 +86,7 @@
             this.lblTotalPerawatan.TabIndex = 57;
             this.lblTotalPerawatan.Text = "Total Perawatan : ";
             // 
-            // Form1Laporancs
+            // FormLaporan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -95,8 +96,9 @@
             this.Controls.Add(this.lblTotalHama);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.dgvLaporan);
-            this.Name = "Form1Laporancs";
+            this.Name = "FormLaporan";
             this.Text = "Form Laporan";
+            this.Click += new System.EventHandler(this.FormLaporan_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLaporan)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

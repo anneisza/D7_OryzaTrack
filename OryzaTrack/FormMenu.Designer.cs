@@ -44,6 +44,7 @@
             this.btnHama.TabIndex = 0;
             this.btnHama.Text = "Kelola Hama";
             this.btnHama.UseVisualStyleBackColor = true;
+            this.btnHama.Click += new System.EventHandler(this.btnHama_Click);
             // 
             // btnPenyakit
             // 
@@ -53,6 +54,7 @@
             this.btnPenyakit.TabIndex = 1;
             this.btnPenyakit.Text = "Kelola Riwayat Penyakit";
             this.btnPenyakit.UseVisualStyleBackColor = true;
+            this.btnPenyakit.Click += new System.EventHandler(this.btnPenyakit_Click);
             // 
             // btnPerawatan
             // 
@@ -62,6 +64,7 @@
             this.btnPerawatan.TabIndex = 2;
             this.btnPerawatan.Text = "Kelola Perawatan Padi";
             this.btnPerawatan.UseVisualStyleBackColor = true;
+            this.btnPerawatan.Click += new System.EventHandler(this.btnPerawatan_Click);
             // 
             // btnLaporan
             // 
@@ -71,6 +74,7 @@
             this.btnLaporan.TabIndex = 3;
             this.btnLaporan.Text = "Laporan Keseluruhan";
             this.btnLaporan.UseVisualStyleBackColor = true;
+            this.btnLaporan.Click += new System.EventHandler(this.btnLaporan_Click);
             // 
             // btnLogout
             // 
@@ -80,6 +84,7 @@
             this.btnLogout.TabIndex = 4;
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // lblWelcome
             // 

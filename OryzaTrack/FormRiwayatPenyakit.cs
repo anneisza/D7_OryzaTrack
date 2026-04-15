@@ -21,6 +21,8 @@ namespace OryzaTrack
         {
             InitializeComponent();
             _idAdmin = idAdmin;
+
+            dgvPenyakit.CellClick += new DataGridViewCellEventHandler(dgvPenyakit_CellClick);
         }
 
         private void FormRiwayatPenyakit_Load(object sender, EventArgs e)

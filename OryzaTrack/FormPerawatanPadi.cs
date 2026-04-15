@@ -20,6 +20,8 @@ namespace OryzaTrack
         {
             InitializeComponent();
             _idAdmin = idAdmin;
+
+            dgvPerawatan.CellClick += new DataGridViewCellEventHandler(dgvPerawatan_CellClick);
         }
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
@@ -69,6 +71,7 @@ namespace OryzaTrack
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
