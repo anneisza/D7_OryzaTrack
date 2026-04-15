@@ -111,6 +111,8 @@ namespace OryzaTrack
 
         private void btnCari_Click(object sender, EventArgs e)
         {
+            string keyword = txtCari.Text.Trim();
+            dgvPerawatan.DataSource = string.IsNullOrEmpty(keyword) ? bll.GetAll() : bll.Search(keyword);
         }
     }
 }
