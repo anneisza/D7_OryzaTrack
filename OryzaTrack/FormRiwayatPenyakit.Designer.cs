@@ -33,7 +33,6 @@
             this.lblLokasiLahan = new System.Windows.Forms.Label();
             this.lblTingkatKerusakan = new System.Windows.Forms.Label();
             this.lblNamaHama = new System.Windows.Forms.Label();
-            this.lblID = new System.Windows.Forms.Label();
             this.lblJumlah = new System.Windows.Forms.Label();
             this.btnBersihkan = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
@@ -44,12 +43,13 @@
             this.dtpTanggalSerangan = new System.Windows.Forms.DateTimePicker();
             this.txtLokasiLahan = new System.Windows.Forms.TextBox();
             this.txtGejalaPenyakit = new System.Windows.Forms.TextBox();
-            this.txtIdPenyakit = new System.Windows.Forms.TextBox();
             this.dgvPenyakit = new System.Windows.Forms.DataGridView();
             this.cmbTingkatKerusakan = new System.Windows.Forms.ComboBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblID = new System.Windows.Forms.Label();
+            this.txtIdPenyakit = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPenyakit)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -99,21 +99,9 @@
             this.lblNamaHama.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblNamaHama.Location = new System.Drawing.Point(65, 130);
             this.lblNamaHama.Name = "lblNamaHama";
-            this.lblNamaHama.Size = new System.Drawing.Size(126, 20);
+            this.lblNamaHama.Size = new System.Drawing.Size(130, 20);
             this.lblNamaHama.TabIndex = 35;
-            this.lblNamaHama.Text = "Nama Penyakit:";
-            // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.BackColor = System.Drawing.Color.CadetBlue;
-            this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblID.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblID.Location = new System.Drawing.Point(65, 90);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(158, 20);
-            this.lblID.TabIndex = 34;
-            this.lblID.Text = "ID Riwayat Penyakit";
+            this.lblNamaHama.Text = "Gejala Penyakit:";
             // 
             // lblJumlah
             // 
@@ -208,14 +196,6 @@
             this.txtGejalaPenyakit.Size = new System.Drawing.Size(601, 22);
             this.txtGejalaPenyakit.TabIndex = 22;
             // 
-            // txtIdPenyakit
-            // 
-            this.txtIdPenyakit.Location = new System.Drawing.Point(248, 87);
-            this.txtIdPenyakit.Multiline = true;
-            this.txtIdPenyakit.Name = "txtIdPenyakit";
-            this.txtIdPenyakit.Size = new System.Drawing.Size(601, 22);
-            this.txtIdPenyakit.TabIndex = 21;
-            // 
             // dgvPenyakit
             // 
             this.dgvPenyakit.AllowUserToAddRows = false;
@@ -278,6 +258,26 @@
             this.pictureBox1.TabIndex = 43;
             this.pictureBox1.TabStop = false;
             // 
+            // lblID
+            // 
+            this.lblID.AutoSize = true;
+            this.lblID.BackColor = System.Drawing.Color.CadetBlue;
+            this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblID.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblID.Location = new System.Drawing.Point(65, 90);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(158, 20);
+            this.lblID.TabIndex = 34;
+            this.lblID.Text = "ID Riwayat Penyakit";
+            // 
+            // txtIdPenyakit
+            // 
+            this.txtIdPenyakit.Location = new System.Drawing.Point(248, 87);
+            this.txtIdPenyakit.Multiline = true;
+            this.txtIdPenyakit.Name = "txtIdPenyakit";
+            this.txtIdPenyakit.Size = new System.Drawing.Size(601, 22);
+            this.txtIdPenyakit.TabIndex = 21;
+            // 
             // FormRiwayatPenyakit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -320,7 +320,6 @@
         private System.Windows.Forms.Label lblLokasiLahan;
         private System.Windows.Forms.Label lblTingkatKerusakan;
         private System.Windows.Forms.Label lblNamaHama;
-        private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblJumlah;
         private System.Windows.Forms.Button btnBersihkan;
         private System.Windows.Forms.Button btnHapus;
@@ -331,11 +330,12 @@
         private System.Windows.Forms.DateTimePicker dtpTanggalSerangan;
         private System.Windows.Forms.TextBox txtLokasiLahan;
         private System.Windows.Forms.TextBox txtGejalaPenyakit;
-        private System.Windows.Forms.TextBox txtIdPenyakit;
         private System.Windows.Forms.DataGridView dgvPenyakit;
         private System.Windows.Forms.ComboBox cmbTingkatKerusakan;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblID;
+        private System.Windows.Forms.TextBox txtIdPenyakit;
     }
 }

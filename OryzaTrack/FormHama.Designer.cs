@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHama));
             this.dgvHama = new System.Windows.Forms.DataGridView();
-            this.txtIdHama = new System.Windows.Forms.TextBox();
             this.txtNamaHama = new System.Windows.Forms.TextBox();
             this.txtJenisHama = new System.Windows.Forms.TextBox();
             this.txtGejalaHama = new System.Windows.Forms.TextBox();
@@ -43,7 +42,6 @@
             this.btnHapus = new System.Windows.Forms.Button();
             this.btnBersihkan = new System.Windows.Forms.Button();
             this.lblJumlah = new System.Windows.Forms.Label();
-            this.lblID = new System.Windows.Forms.Label();
             this.lblNamaHama = new System.Windows.Forms.Label();
             this.lblJenisHama = new System.Windows.Forms.Label();
             this.lblGejala = new System.Windows.Forms.Label();
@@ -52,6 +50,8 @@
             this.lblSearch = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblID = new System.Windows.Forms.Label();
+            this.txtIdHama = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHama)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -72,14 +72,6 @@
             this.dgvHama.RowTemplate.Height = 24;
             this.dgvHama.Size = new System.Drawing.Size(983, 233);
             this.dgvHama.TabIndex = 0;
-            // 
-            // txtIdHama
-            // 
-            this.txtIdHama.Location = new System.Drawing.Point(237, 75);
-            this.txtIdHama.Multiline = true;
-            this.txtIdHama.Name = "txtIdHama";
-            this.txtIdHama.Size = new System.Drawing.Size(494, 22);
-            this.txtIdHama.TabIndex = 1;
             // 
             // txtNamaHama
             // 
@@ -190,17 +182,6 @@
             this.lblJumlah.TabIndex = 13;
             this.lblJumlah.Text = "Jumlah :";
             // 
-            // lblID
-            // 
-            this.lblID.AutoSize = true;
-            this.lblID.BackColor = System.Drawing.Color.CadetBlue;
-            this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblID.Location = new System.Drawing.Point(61, 78);
-            this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(86, 20);
-            this.lblID.TabIndex = 14;
-            this.lblID.Text = "ID Hama :";
-            // 
             // lblNamaHama
             // 
             this.lblNamaHama.AutoSize = true;
@@ -291,6 +272,25 @@
             this.pictureBox1.TabIndex = 22;
             this.pictureBox1.TabStop = false;
             // 
+            // lblID
+            // 
+            this.lblID.AutoSize = true;
+            this.lblID.BackColor = System.Drawing.Color.CadetBlue;
+            this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblID.Location = new System.Drawing.Point(61, 78);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(86, 20);
+            this.lblID.TabIndex = 14;
+            this.lblID.Text = "ID Hama :";
+            // 
+            // txtIdHama
+            // 
+            this.txtIdHama.Location = new System.Drawing.Point(237, 75);
+            this.txtIdHama.Multiline = true;
+            this.txtIdHama.Name = "txtIdHama";
+            this.txtIdHama.Size = new System.Drawing.Size(494, 22);
+            this.txtIdHama.TabIndex = 1;
+            // 
             // FormHama
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -333,7 +333,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvHama;
-        private System.Windows.Forms.TextBox txtIdHama;
         private System.Windows.Forms.TextBox txtNamaHama;
         private System.Windows.Forms.TextBox txtJenisHama;
         private System.Windows.Forms.TextBox txtGejalaHama;
@@ -346,7 +345,6 @@
         private System.Windows.Forms.Button btnHapus;
         private System.Windows.Forms.Button btnBersihkan;
         private System.Windows.Forms.Label lblJumlah;
-        private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.Label lblNamaHama;
         private System.Windows.Forms.Label lblJenisHama;
         private System.Windows.Forms.Label lblGejala;
@@ -355,5 +353,7 @@
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblID;
+        private System.Windows.Forms.TextBox txtIdHama;
     }
 }
