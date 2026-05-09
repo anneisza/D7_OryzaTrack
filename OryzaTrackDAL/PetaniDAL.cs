@@ -26,7 +26,7 @@ namespace OryzaTrackDAL
                 conn.Open();
                 string query = "SELECT * FROM Petani";
 
-                using (SqlCommand cmd = new SqlCommand (query, conn))
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
 
                     //eksekusinya pakai SqlDataReader
@@ -49,7 +49,31 @@ namespace OryzaTrackDAL
             }
         }
 
-
+        /*=======================
+                Search Petani 
+         ========================*/
+        public DataTable Search(string keyword)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = @"SELECT * FROM petani 
+                                WHERE namaPetani LIKE @keyword 
+                                OR nik LIKE @keyword 
+                                OR alamat LIKE @keyword 
+                                OR noTelepon LIKE @keyword";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
+        }
 
 
         /*=======================
@@ -58,7 +82,7 @@ namespace OryzaTrackDAL
         public bool Insert(string namaPetani, string nik, string alamat, string noTelepon)
         {
             using (SqlConnection conn = db.GetConnection())
-            { 
+            {
                 conn.Open();
                 string query = @"INSERT INTO petani 
                                 (namaPetani, nik, alamat, noTelepon) 
@@ -117,6 +141,23 @@ namespace OryzaTrackDAL
                 cmd.Parameters.AddWithValue("@idPetani", idPetani);
 
                 return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /*=======================
+                Count Petani 
+         ========================*/
+        //ExcecuteScalar buat ngejalanin query yang hasilnya cuma satu nilai (misalnya COUNT, SUM, dll)
+        public int Count()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM petani";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    return (int)cmd.ExecuteScalar();
+                }
             }
         }
     }
