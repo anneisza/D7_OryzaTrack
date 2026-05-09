@@ -50,6 +50,8 @@ namespace OryzaTrackDAL
         }
 
 
+
+
         /*=======================
                 Insert Petani 
          ========================*/
@@ -101,5 +103,21 @@ namespace OryzaTrackDAL
             }
         }
 
+        /*=======================
+            Delete Petani 
+        ========================*/
+        public bool Delete(int idPetani)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = @"DELETE FROM petani WHERE idPetani = @idPetani";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }
