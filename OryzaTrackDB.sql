@@ -220,6 +220,68 @@ VALUES (1, 1, 'Penyemprotan Berjadwal', 'Insektisida Furadan', '2026-02-17', 'Se
 (2, 2, 'Penyemprotan Fungisida', 'Fungisida Dithane', '2026-03-25', 'Berhasil'),
 (3, 3, 'Pengendalian Hama Terpadu', 'Insektisida Furadan', '2026-04-05', 'Gagal');
 
+/** HAPUS DB sebelum execute yang di atas**/
 --Drop database OryzaTrack soalnya banyak perubahan tabel
 DROP DATABASE OryzaTrack;
 
+
+/**
+==============================
+Mau perbaikan Constraint nya
+==============================
+**/
+-- Hapus constraint jenisBibit
+ALTER TABLE Padi DROP CONSTRAINT CK_Padi_JenisBibit;
+
+-- Hapus constraint lokasiLahan
+ALTER TABLE Padi DROP CONSTRAINT CK_Padi_LokasiLahan;
+
+-- Hapus constraint tanggalTanam
+ALTER TABLE Padi DROP CONSTRAINT CK_Padi_TanggalTanam;
+
+-- Hapus constraint tanggalSerangan
+ALTER TABLE Penyakit DROP CONSTRAINT CK_Penyakit_TanggalSerangan;
+
+-- Hapus constraint jenisPestisida
+ALTER TABLE perawatanPadi DROP CONSTRAINT CK_Perawatan_JenisPestisida;
+
+-- Hapus constraint tanggalPerawatan
+ALTER TABLE perawatanPadi DROP CONSTRAINT CK_Perawatan_TanggalPerawatan;
+
+-- Hapus constraint tanggalTerdeteksi
+ALTER TABLE riwayatPenyakit DROP CONSTRAINT CK_Riwayat_TanggalTerdeteksi;
+
+-- Hapus constraint tanggalSelesai
+ALTER TABLE riwayatPenyakit DROP CONSTRAINT CK_Riwayat_TanggalSelesai;
+
+/**
+==============================
+Mau perbaikan Constraint nya, 
+Tapi ini constraint barunya
+==============================
+**/
+
+-- lokasiLahan: minimal 5 karakter saja
+ALTER TABLE Padi ADD CONSTRAINT CK_Padi_LokasiLahan
+    CHECK (LEN(lokasiLahan) >= 5);
+
+-- tanggalTanam: dari tahun 2000 sampai hari ini
+ALTER TABLE Padi ADD CONSTRAINT CK_Padi_TanggalTanam
+    CHECK (tanggalTanam >= '2000-01-01' AND tanggalTanam <= GETDATE());
+
+-- tanggalSerangan penyakit
+ALTER TABLE Penyakit ADD CONSTRAINT CK_Penyakit_TanggalSerangan
+    CHECK (tanggalSerangan >= '2000-01-01' AND tanggalSerangan <= GETDATE());
+
+-- tanggalPerawatan
+ALTER TABLE perawatanPadi ADD CONSTRAINT CK_Perawatan_TanggalPerawatan
+    CHECK (tanggalPerawatan >= '2000-01-01' AND tanggalPerawatan <= GETDATE());
+
+-- tanggalTerdeteksi
+ALTER TABLE riwayatPenyakit ADD CONSTRAINT CK_Riwayat_TanggalTerdeteksi
+    CHECK (tanggalTerdeteksi >= '2000-01-01' AND tanggalTerdeteksi <= GETDATE());
+
+-- tanggalSelesai
+ALTER TABLE riwayatPenyakit ADD CONSTRAINT CK_Riwayat_TanggalSelesai
+    CHECK (tanggalSelesai IS NULL OR 
+          (tanggalSelesai >= '2000-01-01' AND tanggalSelesai <= DATEADD(YEAR, 1, GETDATE())));
