@@ -50,6 +50,33 @@ namespace OryzaTrackDAL
         }
 
         /*=======================
+                GetById 
+         ========================*/
+        public DataRow GetById(int idPetani)
+        { 
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM petani WHERE idPetani = @idPetani";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+
+                        //cek ada data nggak, kalau ada return baris pertama (karena idPetani unik, pasti cuma ada 1 baris), kalau nggak ada return null
+                        if (dt.Rows.Count > 0)
+                            return dt.Rows[0];
+                        else
+                            return null;
+                    }
+                }
+            }
+        }
+
+        /*=======================
                 Search Petani 
          ========================*/
         public DataTable Search(string keyword)
