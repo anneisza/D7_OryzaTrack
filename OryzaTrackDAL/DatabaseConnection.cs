@@ -9,28 +9,17 @@ namespace OryzaTrackDAL
 {
     public class DatabaseConnection
     {
-        // Ganti connection string sesuai environment kamu
+        // ConnectionString nya
         private static readonly string connectionString =
-            "Server=RIZA\\RIZAFI;Database=OryzaTrack;Integrated Security=True;";
+            "Data Source=RIZA\\RIZAFI;Initial Catalog=OryzaTrack;Integrated Security=True;";
 
         private static SqlConnection _connection;
 
-        // Koneksi dibuka sekali saat aplikasi start (sesuai requirement)
-        public static SqlConnection GetConnection()
+        // get connection
+        public SqlConnection GetConnection()
         {
-            if (_connection == null)
-                _connection = new SqlConnection(connectionString);
-
-            if (_connection.State == System.Data.ConnectionState.Closed)
-                _connection.Open();
-
-            return _connection;
+            return new SqlConnection(connectionString);
         }
 
-        public static void CloseConnection()
-        {
-            if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
-                _connection.Close();
-        }
     }
 }
