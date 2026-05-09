@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,9 @@ namespace OryzaTrackDAL
     {
         DatabaseConnection db = new DatabaseConnection();
 
-        //View Petani
+        /*=======================
+          View Petani | GetAll()
+        ========================*/
         public DataTable GetAll()
         {
             //pakai using biar connectionnya langsung close setelah selesai running blok kodenya
@@ -45,5 +48,58 @@ namespace OryzaTrackDAL
                 }
             }
         }
+
+
+        /*=======================
+                Insert Petani 
+         ========================*/
+        public bool Insert(string namaPetani, string nik, string alamat, string noTelepon)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            { 
+                conn.Open();
+                string query = @"INSERT INTO petani 
+                                (namaPetani, nik, alamat, noTelepon) 
+                                VALUES 
+                                (@namaPetani, @nik, @alamat, @noTelepon)";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                cmd.Parameters.AddWithValue("@nik", nik);
+                cmd.Parameters.AddWithValue("@alamat", alamat);
+                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /*=======================
+               Update Petani 
+        ========================*/
+        public bool Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = @"UPDATE petani 
+                                SET namaPetani = @namaPetani, 
+                                    nik = @nik, 
+                                    alamat = @alamat, 
+                                    noTelepon = @noTelepon
+                                WHERE idPetani = @idPetani";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                cmd.Parameters.AddWithValue("@nik", nik);
+                cmd.Parameters.AddWithValue("@alamat", alamat);
+                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
     }
 }
