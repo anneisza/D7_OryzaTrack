@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OryzaTrackDAL
 {
-    public class PetaniDAL
+    public class PadiDAL
     {
         DatabaseConnection db = new DatabaseConnection();
 
         /*=======================
-          View Petani | GetAll()
+          View Padi | GetAll()
         ========================*/
         public DataTable GetAll()
         {
@@ -24,7 +23,7 @@ namespace OryzaTrackDAL
             {
                 //buka koneksi sama command buat ngejalanin query
                 conn.Open();
-                string query = "SELECT * FROM petani";
+                string query = "SELECT * FROM padi";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -52,15 +51,15 @@ namespace OryzaTrackDAL
         /*=======================
                 GetById 
          ========================*/
-        public DataRow GetById(int idPetani)
-        { 
+        public DataRow GetById(int idPadi)
+        {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM petani WHERE idPetani = @idPetani";
+                string query = "SELECT * FROM padi WHERE idPadi = @idPadi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         DataTable dt = new DataTable();
@@ -77,18 +76,16 @@ namespace OryzaTrackDAL
         }
 
         /*=======================
-                Search Petani 
+                Search Padi 
          ========================*/
         public DataTable Search(string keyword)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT * FROM petani 
-                                WHERE namaPetani LIKE @keyword 
-                                OR nik LIKE @keyword 
-                                OR alamat LIKE @keyword 
-                                OR noTelepon LIKE @keyword";
+                string query = @"SELECT * FROM padi 
+                                WHERE jenisPadi LIKE @keyword 
+                                OR lokasiLahan LIKE @keyword";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
@@ -104,75 +101,70 @@ namespace OryzaTrackDAL
 
 
         /*=======================
-                Insert Petani 
+                Insert Padi
          ========================*/
-        public bool Insert(string namaPetani, string nik, string alamat, string noTelepon)
+        public bool Insert(string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO petani 
-                                (namaPetani, nik, alamat, noTelepon) 
+                string query = @"INSERT INTO padi 
+                                (jenisPadi, lokasiLahan, tanggalTanam) 
                                 VALUES 
-                                (@namaPetani, @nik, @alamat, @noTelepon)";
+                                (@jenisPadi, @lokasiLahan, @tanggalTanam)";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
-                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                cmd.Parameters.AddWithValue("@nik", nik);
-                cmd.Parameters.AddWithValue("@alamat", alamat);
-                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                cmd.Parameters.AddWithValue("@jenisPadi", jenisPadi);
+                cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
+                cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
 
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         /*=======================
-               Update Petani 
+               Update Padi
         ========================*/
-        public bool Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon)
+        public bool Update(int idPadi, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE petani 
-                                SET namaPetani = @namaPetani, 
-                                    nik = @nik, 
-                                    alamat = @alamat, 
-                                    noTelepon = @noTelepon
-                                WHERE idPetani = @idPetani";
-
+                string query = @"UPDATE padi         
+                                SET jenisPadi = @jenisPadi, 
+                                    lokasiLahan = @lokasiLahan, 
+                                    tanggalTanam = @tanggalTanam
+                                WHERE idPadi = @idPadi";    
                 SqlCommand cmd = new SqlCommand(query, conn);
 
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
-                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                cmd.Parameters.AddWithValue("@nik", nik);
-                cmd.Parameters.AddWithValue("@alamat", alamat);
-                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
-
+                cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                cmd.Parameters.AddWithValue("@jenisPadi", jenisPadi);
+                cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
+                cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         /*=======================
-            Delete Petani 
+            Delete Padi
         ========================*/
-        public bool Delete(int idPetani)
+        public bool Delete(int idPadi)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"DELETE FROM petani WHERE idPetani = @idPetani";
+                string query = @"DELETE FROM padi WHERE idPadi = @idPadi";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                cmd.Parameters.AddWithValue("@idPadi", idPadi);
 
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
 
         /*=======================
-                Count Petani 
+                Count Padi 
          ========================*/
         //ExcecuteScalar buat ngejalanin query yang hasilnya cuma satu nilai (misalnya COUNT, SUM, dll)
         public int Count()
@@ -180,7 +172,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT COUNT(*) FROM petani";
+                string query = "SELECT COUNT(*) FROM padi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     return (int)cmd.ExecuteScalar();
