@@ -7,3 +7,6 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.Properties.Resources.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrackUI.csproj.GenerateResource.cache
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrackUI.csproj.CoreCompileInputs.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormPadi.resources
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormPenyakit.resources
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormPetani.resources

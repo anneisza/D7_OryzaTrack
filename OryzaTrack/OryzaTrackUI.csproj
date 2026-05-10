@@ -64,17 +64,35 @@
     <Compile Include="FormMenu.Designer.cs">
       <DependentUpon>FormMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPadi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPadi.Designer.cs">
+      <DependentUpon>FormPadi.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPerawatanPadi.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormPerawatanPadi.Designer.cs">
       <DependentUpon>FormPerawatanPadi.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPetani.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPetani.Designer.cs">
+      <DependentUpon>FormPetani.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormRiwayatPenyakit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormRiwayatPenyakit.Designer.cs">
       <DependentUpon>FormRiwayatPenyakit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPenyakit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPenyakit.Designer.cs">
+      <DependentUpon>FormPenyakit.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,8 +105,17 @@
     <EmbeddedResource Include="FormMenu.resx">
       <DependentUpon>FormMenu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPadi.resx">
+      <DependentUpon>FormPadi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPenyakit.resx">
+      <DependentUpon>FormPenyakit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPerawatanPadi.resx">
       <DependentUpon>FormPerawatanPadi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPetani.resx">
+      <DependentUpon>FormPetani.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRiwayatPenyakit.resx">
       <DependentUpon>FormRiwayatPenyakit.cs</DependentUpon>

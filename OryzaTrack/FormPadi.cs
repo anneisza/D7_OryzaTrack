@@ -19,5 +19,10 @@ namespace OryzaTrack
             InitializeComponent();
             IDAdmin = idAdmin;
         }
+
+        private void FormPadi_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
