@@ -52,12 +52,6 @@
     <Compile Include="FormLaporan.Designer.cs">
       <DependentUpon>FormLaporan.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormHama.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormHama.Designer.cs">
-      <DependentUpon>FormHama.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormLogin2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,9 +78,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormHama.resx">
-      <DependentUpon>FormHama.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormLaporan.resx">
       <DependentUpon>FormLaporan.cs</DependentUpon>
     </EmbeddedResource>
