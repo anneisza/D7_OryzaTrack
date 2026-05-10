@@ -1,5 +1,4 @@
 ﻿using OryzaTrackBLL;
-using OryzaTrackDAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,8 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OryzaTrackDAL;
-using OryzaTrackBLL;
+
 
 
 namespace OryzaTrack
@@ -26,43 +24,73 @@ namespace OryzaTrack
 
         private void FormLogin_Load(object sender, EventArgs e)
         {
-            // Buka koneksi saat aplikasi start (sesuai requirement)
-            try
-            {
-                DatabaseConnection.GetConnection();
-                lblStatus.Text = "Koneksi database berhasil.";
-                lblStatus.ForeColor = System.Drawing.Color.Green;
-            }
-            catch (Exception ex)
-            {
-                lblStatus.Text = "Koneksi gagal: " + ex.Message;
-                lblStatus.ForeColor = System.Drawing.Color.Red;
-            }
+            this.AcceptButton = btnLogin;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            // Validasi input kosong
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                MessageBox.Show("Username tidak boleh kosong!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtUsername.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                MessageBox.Show("Password tidak boleh kosong!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Focus();
+                return;
+            }
+
             try
             {
-                int idAdmin = bll.Login(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+                int idAdmin = bll.Login(
+                    txtUsername.Text.Trim(),
+                    txtPassword.Text.Trim()
+                );
 
                 if (idAdmin > 0)
                 {
+                    MessageBox.Show(
+                        "Login berhasil! Selamat datang, " + txtUsername.Text + "!",
+                        "Login Sukses",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
                     FormMenu menu = new FormMenu(idAdmin);
                     menu.Show();
                     this.Hide();
                 }
                 else
                 {
-                    MessageBox.Show("Username atau password salah!", "Login Gagal",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        "Username atau password salah!",
+                        "Login Gagal",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    // Kosongkan password dan fokus ke username
+                    txtPassword.Clear();
+                    txtUsername.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Terjadi kesalahan: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
+        private void FormLogin2_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

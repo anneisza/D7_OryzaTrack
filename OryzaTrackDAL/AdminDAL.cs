@@ -14,7 +14,8 @@ namespace OryzaTrackDAL
         // Login menggunakan ExecuteScalar (sesuai requirement)
         public int Login(string username, string password)
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
+            DatabaseConnection db = new DatabaseConnection();
+            SqlConnection conn = db.GetConnection();    
             string query = "SELECT idAdmin FROM admin WHERE username=@u AND passwordAdmin=@p";
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {

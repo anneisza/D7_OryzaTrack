@@ -12,18 +12,16 @@ namespace OryzaTrack
 {
     public partial class FormMenu : Form
     {
-        private int _idAdmin;
 
-        public FormMenu(int idAdmin)
+        public FormMenu(string username)
         {
             InitializeComponent();
-            _idAdmin = idAdmin;
-            lblWelcome.Text = $"Selamat datang! ID Admin: {idAdmin}";
+            lblWelcome.Text = $"Selamat datang {username} !";
         }
 
-        private void btnHama_Click(object sender, EventArgs e)
+        private void btnPetani_Click(object sender, EventArgs e)
         {
-            new FormHama(_idAdmin).ShowDialog();
+            new FormHama(username).ShowDialog();
         }
 
         private void btnPenyakit_Click(object sender, EventArgs e)
@@ -45,6 +43,11 @@ namespace OryzaTrack
         {
             this.Close();
             new FormLogin2().Show();
+        }
+
+        private void FormMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -10,10 +10,9 @@ namespace OryzaTrackDAL
     public class DatabaseConnection
     {
         // ConnectionString nya
-        private static readonly string connectionString =
+        public string connectionString =
             "Data Source=RIZA\\RIZAFI;Initial Catalog=OryzaTrack;Integrated Security=True;";
 
-        private static SqlConnection _connection;
 
         // get connection
         public SqlConnection GetConnection()
