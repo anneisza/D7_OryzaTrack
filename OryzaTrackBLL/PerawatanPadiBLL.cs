@@ -10,42 +10,103 @@ namespace OryzaTrackBLL
 {
     public class PerawatanPadiBLL
     {
-        private PerawatanPadiDAL dal = new PerawatanPadiDAL();
+        PerawatanPadiDAL dal = new PerawatanPadiDAL();
 
-        public DataTable GetAll() => dal.GetAll();
-        public DataTable GetAllRaw() => dal.GetAllRaw();
-        public DataTable Search(string keyword) => dal.Search(keyword);
-        public int CountData() => dal.CountData();
-
-        public void Insert(int idAdmin, int idPenyakit, int idHama, string jenisPerawatan,
-                           string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        /*=============================
+          View Perawatan | GetAll()
+        ==============================*/
+        public DataTable GetAll()
         {
-            ValidateInput(idPenyakit, idHama, jenisPerawatan, jenisPestisida, hasilPerawatan);
-            dal.Insert(idAdmin, idPenyakit, idHama, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            return dal.GetAll();
         }
 
-        public void Update(int idPerawatan, int idPenyakit, int idHama, string jenisPerawatan,
-                           string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        /*=============================
+                GetById 
+        ==============================*/
+        public DataRow GetById(int idPerawatan)
         {
-            if (idPerawatan <= 0) throw new Exception("Pilih data yang akan diupdate!");
-            ValidateInput(idPenyakit, idHama, jenisPerawatan, jenisPestisida, hasilPerawatan);
-            dal.Update(idPerawatan, idPenyakit, idHama, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            return dal.GetById(idPerawatan);
         }
 
-        public void Delete(int idPerawatan)
+        /*=============================
+                Cari 
+        ==============================*/
+        public DataTable Cari(string keyword)
         {
-            if (idPerawatan <= 0) throw new Exception("Pilih data yang akan dihapus!");
-            dal.Delete(idPerawatan);
+            return dal.Search(keyword);
         }
 
-        private void ValidateInput(int idPenyakit, int idHama, string jenisPerawatan,
-                                   string jenisPestisida, string hasilPerawatan)
+        /*=============================
+                Tambah 
+        ==============================*/
+        public bool Tambah(int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
-            if (idPenyakit <= 0) throw new Exception("Pilih ID Penyakit!");
-            if (idHama <= 0) throw new Exception("Pilih ID Hama!");
-            if (string.IsNullOrWhiteSpace(jenisPerawatan)) throw new Exception("Jenis perawatan tidak boleh kosong!");
-            if (string.IsNullOrWhiteSpace(jenisPestisida)) throw new Exception("Jenis pestisida tidak boleh kosong!");
-            if (string.IsNullOrWhiteSpace(hasilPerawatan)) throw new Exception("Hasil perawatan tidak boleh kosong!");
+            // 1. Validasi Jenis Pestisida (Sesuai constraint CK_Perawatan_JenisPestisida)
+            string[] pestisidaValid = { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" };
+            if (!pestisidaValid.Contains(jenisPestisida))
+            {
+                throw new Exception("Jenis pestisida tidak valid! Pilih: Insektisida Furadan, Fungisida Dithane, atau Herbisida Glyphosate.");
+            }
+
+            // 2. Validasi Hasil Perawatan (Sesuai constraint CK_Perawatan_HasilPerawatan)
+            string[] hasilValid = { "Berhasil", "Sebagian Berhasil", "Gagal" };
+            if (!hasilValid.Contains(hasilPerawatan))
+            {
+                throw new Exception("Hasil perawatan harus: Berhasil, Sebagian Berhasil, atau Gagal.");
+            }
+
+            // 3. Validasi Tanggal (Batas tahun 2000 sampai hari ini sesuai constraint baru)
+            if (tanggalPerawatan.Year < 2000 || tanggalPerawatan > DateTime.Now)
+            {
+                throw new Exception("Tanggal perawatan tidak valid! Pastikan antara tahun 2000 hingga hari ini.");
+            }
+
+            // 4. Validasi Deskripsi Jenis Perawatan
+            if (string.IsNullOrWhiteSpace(jenisPerawatan))
+            {
+                throw new Exception("Jenis perawatan wajib diisi!");
+            }
+
+            if (jenisPerawatan.Trim().Length < 5)
+            {
+                throw new Exception("Jenis perawatan terlalu singkat, minimal harus 5 karakter!");
+            }
+
+            return dal.Insert(idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+        }
+
+        /*=============================
+                Ubah 
+        ==============================*/
+        public bool Ubah(int idPerawatan, int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        {
+            // Re-validasi logika bisnis agar tetap sinkron dengan database
+            if (!new[] { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" }.Contains(jenisPestisida))
+                throw new Exception("Jenis pestisida tidak valid.");
+
+            if (!new[] { "Berhasil", "Sebagian Berhasil", "Gagal" }.Contains(hasilPerawatan))
+                throw new Exception("Hasil perawatan tidak valid.");
+
+            if (tanggalPerawatan > DateTime.Now)
+                throw new Exception("Tanggal perawatan tidak boleh di masa depan.");
+
+            return dal.Update(idPerawatan, idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+        }
+
+        /*=============================
+                Hapus 
+        ==============================*/
+        public bool Hapus(int idPerawatan)
+        {
+            return dal.Delete(idPerawatan);
+        }
+
+        /*=============================
+                Total 
+        ==============================*/
+        public int Total()
+        {
+            return dal.Count();
         }
     }
 }
