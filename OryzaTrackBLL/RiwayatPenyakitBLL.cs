@@ -10,38 +10,99 @@ namespace OryzaTrackBLL
 {
     public class RiwayatPenyakitBLL
     {
-        private RiwayatPenyakitDAL dal = new RiwayatPenyakitDAL();
+        RiwayatPenyakitDAL dal = new RiwayatPenyakitDAL();
 
-        public DataTable GetAll() => dal.GetAll();
-        public DataTable Search(string keyword) => dal.Search(keyword);
-        public int CountData() => dal.CountData();
-
-        public void Insert(int idAdmin, string gejalaPenyakit, string tingkatKerusakan,
-                           string lokasiLahan, DateTime tanggalSerangan)
+        /*=============================
+          View Riwayat | GetAll()
+        ==============================*/
+        public DataTable GetAll()
         {
-            ValidateInput(gejalaPenyakit, tingkatKerusakan, lokasiLahan);
-            dal.Insert(idAdmin, gejalaPenyakit, tingkatKerusakan, lokasiLahan, tanggalSerangan);
+            return dal.GetAll();
         }
 
-        public void Update(int idPenyakit, string gejalaPenyakit, string tingkatKerusakan,
-                           string lokasiLahan, DateTime tanggalSerangan)
+        /*=============================
+                GetById 
+        ==============================*/
+        public DataRow GetById(int idRiwayat)
         {
-            if (idPenyakit <= 0) throw new Exception("Pilih data yang akan diupdate!");
-            ValidateInput(gejalaPenyakit, tingkatKerusakan, lokasiLahan);
-            dal.Update(idPenyakit, gejalaPenyakit, tingkatKerusakan, lokasiLahan, tanggalSerangan);
+            return dal.GetById(idRiwayat);
         }
 
-        public void Delete(int idPenyakit)
+        /*=============================
+                Cari 
+        ==============================*/
+        public DataTable Cari(string keyword)
         {
-            if (idPenyakit <= 0) throw new Exception("Pilih data yang akan dihapus!");
-            dal.Delete(idPenyakit);
+            return dal.Search(keyword);
         }
 
-        private void ValidateInput(string gejalaPenyakit, string tingkatKerusakan, string lokasiLahan)
+        /*=============================
+                Tambah 
+        ==============================*/
+        public bool Tambah(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, string keterangan)
         {
-            if (string.IsNullOrWhiteSpace(gejalaPenyakit)) throw new Exception("Gejala penyakit tidak boleh kosong!");
-            if (string.IsNullOrWhiteSpace(tingkatKerusakan)) throw new Exception("Tingkat kerusakan tidak boleh kosong!");
-            if (string.IsNullOrWhiteSpace(lokasiLahan)) throw new Exception("Lokasi lahan tidak boleh kosong!");
+            // 1. Validasi Tanggal Terdeteksi (Tidak boleh masa depan & minimal tahun 2000)
+            if (tanggalTerdeteksi > DateTime.Now || tanggalTerdeteksi.Year < 2000)
+            {
+                throw new Exception("Tanggal terdeteksi tidak valid! Pastikan antara tahun 2000 hingga hari ini.");
+            }
+
+            // 2. Validasi Keterangan (Jangan sampai kosong)
+            if (string.IsNullOrEmpty(keterangan) || keterangan.Length < 5)
+            {
+                throw new Exception("Keterangan riwayat minimal harus 5 karakter!");
+            }
+
+            return dal.Insert(idPadi, idPenyakit, tanggalTerdeteksi, keterangan);
+        }
+
+        /*=============================
+                Ubah 
+        ==============================*/
+        public bool Ubah(int idRiwayat, int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
+        {
+            // 1. Validasi Dasar
+            if (tanggalTerdeteksi > DateTime.Now)
+            {
+                throw new Exception("Tanggal terdeteksi tidak boleh di masa depan.");
+            }
+
+            // 2. Validasi Urutan Tanggal (Sesuai CONSTRAINT CK_Riwayat_UrutanTanggal)
+            if (tanggalSelesai.HasValue)
+            {
+                if (tanggalSelesai.Value < tanggalTerdeteksi)
+                {
+                    throw new Exception("Tanggal selesai tidak boleh lebih awal dari tanggal terdeteksi!");
+                }
+
+                if (tanggalSelesai.Value > DateTime.Now.AddYears(1))
+                {
+                    throw new Exception("Tanggal selesai tidak valid (terlalu jauh di masa depan).");
+                }
+            }
+
+            if (string.IsNullOrEmpty(keterangan))
+            {
+                throw new Exception("Keterangan tidak boleh kosong.");
+            }
+
+            return dal.Update(idRiwayat, idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan);
+        }
+
+        /*=============================
+                Hapus 
+        ==============================*/
+        public bool Hapus(int idRiwayat)
+        {
+            return dal.Delete(idRiwayat);
+        }
+
+        /*=============================
+                Total 
+        ==============================*/
+        public int Total()
+        {
+            return dal.Count();
         }
     }
 }
