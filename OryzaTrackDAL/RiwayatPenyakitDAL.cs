@@ -10,82 +10,176 @@ namespace OryzaTrackDAL
 {
     public class RiwayatPenyakitDAL
     {
+        DatabaseConnection db = new DatabaseConnection();
+
+        /*=============================
+          View Riwayat | GetAll()
+        ==============================*/
         public DataTable GetAll()
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = "SELECT * FROM riwayatPenyakit ORDER BY idPenyakit DESC";
-            SqlDataAdapter da = new SqlDataAdapter(query, conn);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            return dt;
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                // Menggunakan JOIN agar tampilan di tabel lebih informatif
+                string query = @"SELECT r.idRiwayat, p.jenisBibit, py.Kategori, 
+                                r.tanggalTerdeteksi, r.tanggalSelesai, r.keterangan 
+                                FROM riwayatPenyakit r
+                                JOIN Padi p ON r.idPadi = p.idPadi
+                                JOIN Penyakit py ON r.idPenyakit = py.idPenyakit";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
         }
 
+        /*=============================
+                GetById 
+        ==============================*/
+        public DataRow GetById(int idRiwayat)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+
+                        if (dt.Rows.Count > 0)
+                            return dt.Rows[0];
+                        else
+                            return null;
+                    }
+                }
+            }
+        }
+
+        /*=============================
+                Search Riwayat 
+        ==============================*/
         public DataTable Search(string keyword)
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = @"SELECT * FROM riwayatPenyakit 
-                             WHERE gejalaPenyakit LIKE @k OR tingkatKerusakan LIKE @k OR lokasiLahan LIKE @k
-                             ORDER BY idPenyakit DESC";
-            SqlDataAdapter da = new SqlDataAdapter(query, conn);
-            da.SelectCommand.Parameters.AddWithValue("@k", "%" + keyword + "%");
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            return dt;
-        }
-
-        public void Insert(int idAdmin, string gejalaPenyakit, string tingkatKerusakan,
-                           string lokasiLahan, DateTime tanggalSerangan)
-        {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = @"INSERT INTO riwayatPenyakit (idAdmin, gejalaPenyakit, tingkatKerusakan, lokasiLahan, tanggalSerangan)
-                             VALUES (@idAdmin, @gejala, @tingkat, @lokasi, @tanggal)";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlConnection conn = db.GetConnection())
             {
-                cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                cmd.Parameters.AddWithValue("@gejala", gejalaPenyakit);
-                cmd.Parameters.AddWithValue("@tingkat", tingkatKerusakan);
-                cmd.Parameters.AddWithValue("@lokasi", lokasiLahan);
-                cmd.Parameters.AddWithValue("@tanggal", tanggalSerangan);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                string query = @"SELECT r.idRiwayat, p.jenisBibit, py.Kategori, r.tanggalTerdeteksi, r.keterangan 
+                                FROM riwayatPenyakit r
+                                JOIN Padi p ON r.idPadi = p.idPadi
+                                JOIN Penyakit py ON r.idPenyakit = py.idPenyakit
+                                WHERE p.jenisBibit LIKE @keyword 
+                                OR r.keterangan LIKE @keyword";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
             }
         }
 
-        public void Update(int idPenyakit, string gejalaPenyakit, string tingkatKerusakan,
-                           string lokasiLahan, DateTime tanggalSerangan)
+        /*=============================
+                Insert Riwayat 
+        ==============================*/
+        public bool Insert(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, string keterangan)
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = @"UPDATE riwayatPenyakit SET gejalaPenyakit=@gejala, tingkatKerusakan=@tingkat,
-                             lokasiLahan=@lokasi, tanggalSerangan=@tanggal
-                             WHERE idPenyakit=@idPenyakit";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlConnection conn = db.GetConnection())
             {
-                cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
-                cmd.Parameters.AddWithValue("@gejala", gejalaPenyakit);
-                cmd.Parameters.AddWithValue("@tingkat", tingkatKerusakan);
-                cmd.Parameters.AddWithValue("@lokasi", lokasiLahan);
-                cmd.Parameters.AddWithValue("@tanggal", tanggalSerangan);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                string query = @"INSERT INTO riwayatPenyakit 
+                                (idPadi, idPenyakit, tanggalTerdeteksi, keterangan) 
+                                VALUES 
+                                (@idPadi, @idPenyakit, @tanggalTerdeteksi, @keterangan)";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                    cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
+                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
+                    cmd.Parameters.AddWithValue("@keterangan", keterangan);
+
+                    return cmd.ExecuteNonQuery() > 0;
+                }
             }
         }
 
-        public void Delete(int idPenyakit)
+        /*=============================
+               Update Riwayat 
+        ==============================*/
+        public bool Update(int idRiwayat, int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = "DELETE FROM riwayatPenyakit WHERE idPenyakit=@idPenyakit";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlConnection conn = db.GetConnection())
             {
-                cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                string query = @"UPDATE riwayatPenyakit 
+                                SET idPadi = @idPadi, 
+                                    idPenyakit = @idPenyakit, 
+                                    tanggalTerdeteksi = @tanggalTerdeteksi, 
+                                    tanggalSelesai = @tanggalSelesai,
+                                    keterangan = @keterangan
+                                WHERE idRiwayat = @idRiwayat";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
+                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                    cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
+                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
+                    // Handle null untuk tanggalSelesai
+                    cmd.Parameters.AddWithValue("@tanggalSelesai", (object)tanggalSelesai ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@keterangan", keterangan);
+
+                    return cmd.ExecuteNonQuery() > 0;
+                }
             }
         }
 
-        public int CountData()
+        /*=============================
+            Delete Riwayat 
+        ==============================*/
+        public bool Delete(int idRiwayat)
         {
-            SqlConnection conn = DatabaseConnection.GetConnection();
-            string query = "SELECT COUNT(*) FROM riwayatPenyakit";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlConnection conn = db.GetConnection())
             {
-                return Convert.ToInt32(cmd.ExecuteScalar());
+                conn.Open();
+                string query = @"DELETE FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        /*=============================
+                Count Riwayat 
+        ==============================*/
+        public int Count()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM riwayatPenyakit";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    return (int)cmd.ExecuteScalar();
+                }
             }
         }
     }
