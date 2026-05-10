@@ -1,6 +1,6 @@
 ﻿namespace OryzaTrack
 {
-    partial class FormPadi
+    partial class FormPenyakit
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPadi));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPenyakit));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.nudIdHama = new System.Windows.Forms.NumericUpDown();
@@ -64,11 +64,11 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(930, 58);
+            this.pictureBox1.Location = new System.Drawing.Point(955, 53);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(208, 202);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 64;
+            this.pictureBox1.TabIndex = 80;
             this.pictureBox1.TabStop = false;
             // 
             // lblSearch
@@ -77,113 +77,113 @@
             this.lblSearch.BackColor = System.Drawing.Color.CadetBlue;
             this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSearch.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSearch.Location = new System.Drawing.Point(74, 8);
+            this.lblSearch.Location = new System.Drawing.Point(99, 3);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(115, 36);
-            this.lblSearch.TabIndex = 63;
+            this.lblSearch.TabIndex = 79;
             this.lblSearch.Text = "Search";
             // 
             // nudIdHama
             // 
-            this.nudIdHama.Location = new System.Drawing.Point(265, 159);
+            this.nudIdHama.Location = new System.Drawing.Point(290, 154);
             this.nudIdHama.Name = "nudIdHama";
             this.nudIdHama.Size = new System.Drawing.Size(617, 22);
-            this.nudIdHama.TabIndex = 61;
+            this.nudIdHama.TabIndex = 77;
             // 
             // nudIdPenyakit
             // 
-            this.nudIdPenyakit.Location = new System.Drawing.Point(265, 116);
+            this.nudIdPenyakit.Location = new System.Drawing.Point(290, 111);
             this.nudIdPenyakit.Name = "nudIdPenyakit";
             this.nudIdPenyakit.Size = new System.Drawing.Size(617, 22);
-            this.nudIdPenyakit.TabIndex = 60;
+            this.nudIdPenyakit.TabIndex = 76;
             // 
             // lblJumlah
             // 
             this.lblJumlah.AutoSize = true;
             this.lblJumlah.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblJumlah.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblJumlah.Location = new System.Drawing.Point(925, 279);
+            this.lblJumlah.Location = new System.Drawing.Point(950, 274);
             this.lblJumlah.Name = "lblJumlah";
             this.lblJumlah.Size = new System.Drawing.Size(87, 25);
-            this.lblJumlah.TabIndex = 59;
+            this.lblJumlah.TabIndex = 75;
             this.lblJumlah.Text = "Jumlah :";
             // 
             // btnBersihkan
             // 
-            this.btnBersihkan.Location = new System.Drawing.Point(805, 375);
+            this.btnBersihkan.Location = new System.Drawing.Point(830, 370);
             this.btnBersihkan.Name = "btnBersihkan";
             this.btnBersihkan.Size = new System.Drawing.Size(94, 33);
-            this.btnBersihkan.TabIndex = 58;
+            this.btnBersihkan.TabIndex = 74;
             this.btnBersihkan.Text = "Refresh";
             this.btnBersihkan.UseVisualStyleBackColor = true;
             // 
             // btnHapus
             // 
-            this.btnHapus.Location = new System.Drawing.Point(703, 375);
+            this.btnHapus.Location = new System.Drawing.Point(728, 370);
             this.btnHapus.Name = "btnHapus";
             this.btnHapus.Size = new System.Drawing.Size(75, 33);
-            this.btnHapus.TabIndex = 57;
+            this.btnHapus.TabIndex = 73;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(598, 375);
+            this.btnUpdate.Location = new System.Drawing.Point(623, 370);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 33);
-            this.btnUpdate.TabIndex = 56;
+            this.btnUpdate.TabIndex = 72;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             // 
             // btnTambah
             // 
-            this.btnTambah.Location = new System.Drawing.Point(501, 375);
+            this.btnTambah.Location = new System.Drawing.Point(526, 370);
             this.btnTambah.Name = "btnTambah";
             this.btnTambah.Size = new System.Drawing.Size(75, 33);
-            this.btnTambah.TabIndex = 55;
+            this.btnTambah.TabIndex = 71;
             this.btnTambah.Text = "Tambah";
             this.btnTambah.UseVisualStyleBackColor = true;
             // 
             // btnCari
             // 
-            this.btnCari.Location = new System.Drawing.Point(898, 11);
+            this.btnCari.Location = new System.Drawing.Point(923, 6);
             this.btnCari.Name = "btnCari";
             this.btnCari.Size = new System.Drawing.Size(105, 33);
-            this.btnCari.TabIndex = 54;
+            this.btnCari.TabIndex = 70;
             this.btnCari.Text = "Cari";
             this.btnCari.UseVisualStyleBackColor = true;
             // 
             // txtCari
             // 
-            this.txtCari.Location = new System.Drawing.Point(215, 11);
+            this.txtCari.Location = new System.Drawing.Point(240, 6);
             this.txtCari.Multiline = true;
             this.txtCari.Name = "txtCari";
             this.txtCari.Size = new System.Drawing.Size(667, 33);
-            this.txtCari.TabIndex = 53;
+            this.txtCari.TabIndex = 69;
             // 
             // txtJenisPestisida
             // 
-            this.txtJenisPestisida.Location = new System.Drawing.Point(265, 238);
+            this.txtJenisPestisida.Location = new System.Drawing.Point(290, 233);
             this.txtJenisPestisida.Multiline = true;
             this.txtJenisPestisida.Name = "txtJenisPestisida";
             this.txtJenisPestisida.Size = new System.Drawing.Size(617, 22);
-            this.txtJenisPestisida.TabIndex = 52;
+            this.txtJenisPestisida.TabIndex = 68;
             // 
             // txtJenisPerawatan
             // 
-            this.txtJenisPerawatan.Location = new System.Drawing.Point(265, 199);
+            this.txtJenisPerawatan.Location = new System.Drawing.Point(290, 194);
             this.txtJenisPerawatan.Multiline = true;
             this.txtJenisPerawatan.Name = "txtJenisPerawatan";
             this.txtJenisPerawatan.Size = new System.Drawing.Size(617, 22);
-            this.txtJenisPerawatan.TabIndex = 51;
+            this.txtJenisPerawatan.TabIndex = 67;
             // 
             // txtIdPerawatan
             // 
-            this.txtIdPerawatan.Location = new System.Drawing.Point(265, 74);
+            this.txtIdPerawatan.Location = new System.Drawing.Point(290, 69);
             this.txtIdPerawatan.Multiline = true;
             this.txtIdPerawatan.Name = "txtIdPerawatan";
             this.txtIdPerawatan.Size = new System.Drawing.Size(617, 22);
-            this.txtIdPerawatan.TabIndex = 50;
+            this.txtIdPerawatan.TabIndex = 66;
             // 
             // dgvPerawatan
             // 
@@ -193,13 +193,13 @@
             this.dgvPerawatan.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPerawatan.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPerawatan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPerawatan.Location = new System.Drawing.Point(52, 427);
+            this.dgvPerawatan.Location = new System.Drawing.Point(77, 422);
             this.dgvPerawatan.Name = "dgvPerawatan";
             this.dgvPerawatan.ReadOnly = true;
             this.dgvPerawatan.RowHeadersWidth = 51;
             this.dgvPerawatan.RowTemplate.Height = 24;
             this.dgvPerawatan.Size = new System.Drawing.Size(1086, 162);
-            this.dgvPerawatan.TabIndex = 49;
+            this.dgvPerawatan.TabIndex = 65;
             // 
             // groupBox1
             // 
@@ -213,10 +213,10 @@
             this.groupBox1.Controls.Add(this.lblTanggalPerawatan);
             this.groupBox1.Controls.Add(this.lblIDPerawatan);
             this.groupBox1.Controls.Add(this.dtpTanggalPerawatan);
-            this.groupBox1.Location = new System.Drawing.Point(52, 58);
+            this.groupBox1.Location = new System.Drawing.Point(77, 53);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(847, 311);
-            this.groupBox1.TabIndex = 62;
+            this.groupBox1.TabIndex = 78;
             this.groupBox1.TabStop = false;
             // 
             // lblHasilPerawatan
@@ -304,11 +304,11 @@
             this.dtpTanggalPerawatan.Size = new System.Drawing.Size(220, 22);
             this.dtpTanggalPerawatan.TabIndex = 26;
             // 
-            // FormPadi
+            // FormPenyakit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1192, 627);
+            this.ClientSize = new System.Drawing.Size(1240, 602);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.nudIdHama);
@@ -325,8 +325,9 @@
             this.Controls.Add(this.txtIdPerawatan);
             this.Controls.Add(this.dgvPerawatan);
             this.Controls.Add(this.groupBox1);
-            this.Name = "FormPadi";
-            this.Text = "FormPadi";
+            this.Name = "FormPenyakit";
+            this.Text = "Penyakit";
+            this.Load += new System.EventHandler(this.FormPenyakit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdHama)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdPenyakit)).EndInit();

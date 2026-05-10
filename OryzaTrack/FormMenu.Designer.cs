@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnPetani = new System.Windows.Forms.Button();
-            this.btnPenyakit = new System.Windows.Forms.Button();
             this.btnPerawatan = new System.Windows.Forms.Button();
             this.btnLaporan = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -37,29 +35,9 @@
             this.lblMenu = new System.Windows.Forms.Label();
             this.btnPadi = new System.Windows.Forms.Button();
             this.btnRiwayat = new System.Windows.Forms.Button();
+            this.btnPetani = new System.Windows.Forms.Button();
+            this.btnPenyakit = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnPetani
-            // 
-            this.btnPetani.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPetani.Location = new System.Drawing.Point(510, 186);
-            this.btnPetani.Name = "btnPetani";
-            this.btnPetani.Size = new System.Drawing.Size(241, 42);
-            this.btnPetani.TabIndex = 0;
-            this.btnPetani.Text = "Kelola Petani";
-            this.btnPetani.UseVisualStyleBackColor = true;
-            this.btnPetani.Click += new System.EventHandler(this.btnHama_Click);
-            // 
-            // btnPenyakit
-            // 
-            this.btnPenyakit.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPenyakit.Location = new System.Drawing.Point(510, 257);
-            this.btnPenyakit.Name = "btnPenyakit";
-            this.btnPenyakit.Size = new System.Drawing.Size(241, 42);
-            this.btnPenyakit.TabIndex = 1;
-            this.btnPenyakit.Text = "Kelola Penyakit";
-            this.btnPenyakit.UseVisualStyleBackColor = true;
-            this.btnPenyakit.Click += new System.EventHandler(this.btnPenyakit_Click);
             // 
             // btnPerawatan
             // 
@@ -123,6 +101,7 @@
             this.btnPadi.TabIndex = 7;
             this.btnPadi.Text = "Kelola Padi";
             this.btnPadi.UseVisualStyleBackColor = true;
+            this.btnPadi.Click += new System.EventHandler(this.btnPadi_Click);
             // 
             // btnRiwayat
             // 
@@ -133,6 +112,29 @@
             this.btnRiwayat.TabIndex = 8;
             this.btnRiwayat.Text = "Kelola Riwayat Penyakit";
             this.btnRiwayat.UseVisualStyleBackColor = true;
+            this.btnRiwayat.Click += new System.EventHandler(this.btnRiwayat_Click);
+            // 
+            // btnPetani
+            // 
+            this.btnPetani.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPetani.Location = new System.Drawing.Point(510, 186);
+            this.btnPetani.Name = "btnPetani";
+            this.btnPetani.Size = new System.Drawing.Size(241, 42);
+            this.btnPetani.TabIndex = 9;
+            this.btnPetani.Text = "Kelola Petani";
+            this.btnPetani.UseVisualStyleBackColor = true;
+            this.btnPetani.Click += new System.EventHandler(this.btnPetani_Click);
+            // 
+            // btnPenyakit
+            // 
+            this.btnPenyakit.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPenyakit.Location = new System.Drawing.Point(510, 257);
+            this.btnPenyakit.Name = "btnPenyakit";
+            this.btnPenyakit.Size = new System.Drawing.Size(241, 42);
+            this.btnPenyakit.TabIndex = 10;
+            this.btnPenyakit.Text = "Kelola Penyakit";
+            this.btnPenyakit.UseVisualStyleBackColor = true;
+            this.btnPenyakit.Click += new System.EventHandler(this.btnPenyakit_Click);
             // 
             // FormMenu
             // 
@@ -140,6 +142,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.CadetBlue;
             this.ClientSize = new System.Drawing.Size(1573, 579);
+            this.Controls.Add(this.btnPenyakit);
+            this.Controls.Add(this.btnPetani);
             this.Controls.Add(this.btnRiwayat);
             this.Controls.Add(this.btnPadi);
             this.Controls.Add(this.lblMenu);
@@ -147,8 +151,6 @@
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnLaporan);
             this.Controls.Add(this.btnPerawatan);
-            this.Controls.Add(this.btnPenyakit);
-            this.Controls.Add(this.btnPetani);
             this.Name = "FormMenu";
             this.Text = "FormMenu";
             this.Load += new System.EventHandler(this.FormMenu_Load);
@@ -158,9 +160,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnPetani;
-        private System.Windows.Forms.Button btnPenyakit;
         private System.Windows.Forms.Button btnPerawatan;
         private System.Windows.Forms.Button btnLaporan;
         private System.Windows.Forms.Button btnLogout;
@@ -168,5 +167,7 @@
         private System.Windows.Forms.Label lblMenu;
         private System.Windows.Forms.Button btnPadi;
         private System.Windows.Forms.Button btnRiwayat;
+        private System.Windows.Forms.Button btnPetani;
+        private System.Windows.Forms.Button btnPenyakit;
     }
 }

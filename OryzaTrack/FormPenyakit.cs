@@ -7,17 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OryzaTrackBLL;
 
 namespace OryzaTrack
 {
-    public partial class FormPadi : Form
+    public partial class FormPenyakit : Form
     {
         private int IDAdmin;
-        public FormPadi(int idAdmin)
+        public FormPenyakit(int idAdmin)
         {
             InitializeComponent();
             IDAdmin = idAdmin;
+        }
+
+        private void FormPenyakit_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

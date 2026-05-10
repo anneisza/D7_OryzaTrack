@@ -13,9 +13,12 @@ namespace OryzaTrack
 {
     public partial class FormPetani : Form
     {
-        public FormPetani()
+        private int IDAdmin;
+
+        public FormPetani(int idAdmin)
         {
             InitializeComponent();
+            IDAdmin = idAdmin;
         }
 
         private void FormPetani_Load(object sender, EventArgs e)
