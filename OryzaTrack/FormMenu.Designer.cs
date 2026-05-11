@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMenu));
             this.btnPerawatan = new System.Windows.Forms.Button();
             this.btnLaporan = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -41,7 +42,7 @@
             // btnPerawatan
             // 
             this.btnPerawatan.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPerawatan.Location = new System.Drawing.Point(510, 331);
+            this.btnPerawatan.Location = new System.Drawing.Point(341, 361);
             this.btnPerawatan.Name = "btnPerawatan";
             this.btnPerawatan.Size = new System.Drawing.Size(241, 42);
             this.btnPerawatan.TabIndex = 2;
@@ -52,7 +53,7 @@
             // btnLaporan
             // 
             this.btnLaporan.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLaporan.Location = new System.Drawing.Point(782, 331);
+            this.btnLaporan.Location = new System.Drawing.Point(613, 361);
             this.btnLaporan.Name = "btnLaporan";
             this.btnLaporan.Size = new System.Drawing.Size(241, 42);
             this.btnLaporan.TabIndex = 3;
@@ -64,7 +65,7 @@
             // 
             this.btnLogout.BackColor = System.Drawing.Color.Teal;
             this.btnLogout.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogout.Location = new System.Drawing.Point(645, 445);
+            this.btnLogout.Location = new System.Drawing.Point(476, 475);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(241, 42);
             this.btnLogout.TabIndex = 4;
@@ -76,7 +77,7 @@
             // 
             this.lblMenu.AutoSize = true;
             this.lblMenu.Font = new System.Drawing.Font("Lucida Calligraphy", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMenu.Location = new System.Drawing.Point(698, 59);
+            this.lblMenu.Location = new System.Drawing.Point(529, 89);
             this.lblMenu.Name = "lblMenu";
             this.lblMenu.Size = new System.Drawing.Size(138, 39);
             this.lblMenu.TabIndex = 6;
@@ -85,7 +86,7 @@
             // btnPadi
             // 
             this.btnPadi.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPadi.Location = new System.Drawing.Point(782, 186);
+            this.btnPadi.Location = new System.Drawing.Point(613, 216);
             this.btnPadi.Name = "btnPadi";
             this.btnPadi.Size = new System.Drawing.Size(241, 42);
             this.btnPadi.TabIndex = 7;
@@ -96,7 +97,7 @@
             // btnRiwayat
             // 
             this.btnRiwayat.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRiwayat.Location = new System.Drawing.Point(782, 257);
+            this.btnRiwayat.Location = new System.Drawing.Point(613, 287);
             this.btnRiwayat.Name = "btnRiwayat";
             this.btnRiwayat.Size = new System.Drawing.Size(241, 42);
             this.btnRiwayat.TabIndex = 8;
@@ -107,7 +108,7 @@
             // btnPetani
             // 
             this.btnPetani.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPetani.Location = new System.Drawing.Point(510, 186);
+            this.btnPetani.Location = new System.Drawing.Point(341, 216);
             this.btnPetani.Name = "btnPetani";
             this.btnPetani.Size = new System.Drawing.Size(241, 42);
             this.btnPetani.TabIndex = 9;
@@ -118,7 +119,7 @@
             // btnPenyakit
             // 
             this.btnPenyakit.Font = new System.Drawing.Font("Monotype Corsiva", 13.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPenyakit.Location = new System.Drawing.Point(510, 257);
+            this.btnPenyakit.Location = new System.Drawing.Point(341, 287);
             this.btnPenyakit.Name = "btnPenyakit";
             this.btnPenyakit.Size = new System.Drawing.Size(241, 42);
             this.btnPenyakit.TabIndex = 10;
@@ -130,8 +131,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.CadetBlue;
-            this.ClientSize = new System.Drawing.Size(1573, 579);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.ClientSize = new System.Drawing.Size(1204, 620);
             this.Controls.Add(this.btnPenyakit);
             this.Controls.Add(this.btnPetani);
             this.Controls.Add(this.btnRiwayat);

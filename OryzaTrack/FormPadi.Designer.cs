@@ -210,9 +210,9 @@
             this.lblIdPetani.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdPetani.Location = new System.Drawing.Point(77, 44);
             this.lblIdPetani.Name = "lblIdPetani";
-            this.lblIdPetani.Size = new System.Drawing.Size(84, 20);
+            this.lblIdPetani.Size = new System.Drawing.Size(115, 20);
             this.lblIdPetani.TabIndex = 35;
-            this.lblIdPetani.Text = "Id Petani :";
+            this.lblIdPetani.Text = "Nama Petani :";
             // 
             // lblTanggalTanam
             // 

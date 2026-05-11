@@ -42,16 +42,18 @@
             this.btnCariData = new System.Windows.Forms.Button();
             this.txtCari = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbIdPadi = new System.Windows.Forms.ComboBox();
             this.lblJenisPsetisida = new System.Windows.Forms.Label();
-            this.dtpTanggalSerangan = new System.Windows.Forms.DateTimePicker();
-            this.cmbKategori = new System.Windows.Forms.ComboBox();
-            this.cmbTingkatKerusakan = new System.Windows.Forms.ComboBox();
+            this.dtpTanggalPerawatan = new System.Windows.Forms.DateTimePicker();
+            this.cmbIdPenyakit = new System.Windows.Forms.ComboBox();
+            this.cmbJenisPestisida = new System.Windows.Forms.ComboBox();
             this.lblTanggalPerawatan = new System.Windows.Forms.Label();
             this.lblIdPenyakit = new System.Windows.Forms.Label();
-            this.lblIdPadi = new System.Windows.Forms.Label();
-            this.lblJanisPerawatan = new System.Windows.Forms.Label();
-            this.txtGejalaPenyakit = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.liblIdPadi = new System.Windows.Forms.Label();
+            this.lblJenisPerawatan = new System.Windows.Forms.Label();
+            this.txtJenisPerawatan = new System.Windows.Forms.TextBox();
+            this.lblHasilPerawatan = new System.Windows.Forms.Label();
+            this.txtHasilPerawatan = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatanPadi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -72,6 +74,7 @@
             this.dgvPerawatanPadi.RowTemplate.Height = 24;
             this.dgvPerawatanPadi.Size = new System.Drawing.Size(1086, 281);
             this.dgvPerawatanPadi.TabIndex = 106;
+            this.dgvPerawatanPadi.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPerawatanPadi_CellClick);
             // 
             // btnLoadData
             // 
@@ -81,6 +84,7 @@
             this.btnLoadData.TabIndex = 105;
             this.btnLoadData.Text = "Load";
             this.btnLoadData.UseVisualStyleBackColor = true;
+            this.btnLoadData.Click += new System.EventHandler(this.btnLoadData_Click);
             // 
             // btnKoneksi
             // 
@@ -90,6 +94,7 @@
             this.btnKoneksi.TabIndex = 104;
             this.btnKoneksi.Text = "Connect";
             this.btnKoneksi.UseVisualStyleBackColor = true;
+            this.btnKoneksi.Click += new System.EventHandler(this.btnKoneksi_Click);
             // 
             // pictureBox1
             // 
@@ -132,6 +137,7 @@
             this.btnBersihkan.TabIndex = 99;
             this.btnBersihkan.Text = "Bersihkan";
             this.btnBersihkan.UseVisualStyleBackColor = true;
+            this.btnBersihkan.Click += new System.EventHandler(this.btnBersihkan_Click);
             // 
             // btnHapusData
             // 
@@ -141,6 +147,7 @@
             this.btnHapusData.TabIndex = 98;
             this.btnHapusData.Text = "Hapus";
             this.btnHapusData.UseVisualStyleBackColor = true;
+            this.btnHapusData.Click += new System.EventHandler(this.btnHapusData_Click);
             // 
             // btnUbahData
             // 
@@ -150,6 +157,7 @@
             this.btnUbahData.TabIndex = 97;
             this.btnUbahData.Text = "Update";
             this.btnUbahData.UseVisualStyleBackColor = true;
+            this.btnUbahData.Click += new System.EventHandler(this.btnUbahData_Click);
             // 
             // btnTambahData
             // 
@@ -159,6 +167,7 @@
             this.btnTambahData.TabIndex = 96;
             this.btnTambahData.Text = "Tambah";
             this.btnTambahData.UseVisualStyleBackColor = true;
+            this.btnTambahData.Click += new System.EventHandler(this.btnTambahData_Click);
             // 
             // btnCariData
             // 
@@ -168,6 +177,7 @@
             this.btnCariData.TabIndex = 95;
             this.btnCariData.Text = "Cari";
             this.btnCariData.UseVisualStyleBackColor = true;
+            this.btnCariData.Click += new System.EventHandler(this.btnCariData_Click);
             // 
             // txtCari
             // 
@@ -176,25 +186,36 @@
             this.txtCari.Name = "txtCari";
             this.txtCari.Size = new System.Drawing.Size(667, 33);
             this.txtCari.TabIndex = 94;
+            this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Teal;
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.txtHasilPerawatan);
+            this.groupBox1.Controls.Add(this.lblHasilPerawatan);
+            this.groupBox1.Controls.Add(this.cmbIdPadi);
             this.groupBox1.Controls.Add(this.lblJenisPsetisida);
-            this.groupBox1.Controls.Add(this.dtpTanggalSerangan);
-            this.groupBox1.Controls.Add(this.cmbKategori);
-            this.groupBox1.Controls.Add(this.cmbTingkatKerusakan);
+            this.groupBox1.Controls.Add(this.dtpTanggalPerawatan);
+            this.groupBox1.Controls.Add(this.cmbIdPenyakit);
+            this.groupBox1.Controls.Add(this.cmbJenisPestisida);
             this.groupBox1.Controls.Add(this.lblTanggalPerawatan);
             this.groupBox1.Controls.Add(this.lblIdPenyakit);
-            this.groupBox1.Controls.Add(this.lblIdPadi);
-            this.groupBox1.Controls.Add(this.lblJanisPerawatan);
-            this.groupBox1.Controls.Add(this.txtGejalaPenyakit);
+            this.groupBox1.Controls.Add(this.liblIdPadi);
+            this.groupBox1.Controls.Add(this.lblJenisPerawatan);
+            this.groupBox1.Controls.Add(this.txtJenisPerawatan);
             this.groupBox1.Location = new System.Drawing.Point(51, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(847, 286);
             this.groupBox1.TabIndex = 101;
             this.groupBox1.TabStop = false;
+            // 
+            // cmbIdPadi
+            // 
+            this.cmbIdPadi.FormattingEnabled = true;
+            this.cmbIdPadi.Location = new System.Drawing.Point(256, 18);
+            this.cmbIdPadi.Name = "cmbIdPadi";
+            this.cmbIdPadi.Size = new System.Drawing.Size(236, 24);
+            this.cmbIdPadi.TabIndex = 73;
             // 
             // lblJenisPsetisida
             // 
@@ -206,28 +227,28 @@
             this.lblJenisPsetisida.TabIndex = 72;
             this.lblJenisPsetisida.Text = "Jenis Pestisida :";
             // 
-            // dtpTanggalSerangan
+            // dtpTanggalPerawatan
             // 
-            this.dtpTanggalSerangan.Location = new System.Drawing.Point(256, 179);
-            this.dtpTanggalSerangan.Name = "dtpTanggalSerangan";
-            this.dtpTanggalSerangan.Size = new System.Drawing.Size(236, 22);
-            this.dtpTanggalSerangan.TabIndex = 71;
+            this.dtpTanggalPerawatan.Location = new System.Drawing.Point(256, 179);
+            this.dtpTanggalPerawatan.Name = "dtpTanggalPerawatan";
+            this.dtpTanggalPerawatan.Size = new System.Drawing.Size(236, 22);
+            this.dtpTanggalPerawatan.TabIndex = 71;
             // 
-            // cmbKategori
+            // cmbIdPenyakit
             // 
-            this.cmbKategori.FormattingEnabled = true;
-            this.cmbKategori.Location = new System.Drawing.Point(256, 55);
-            this.cmbKategori.Name = "cmbKategori";
-            this.cmbKategori.Size = new System.Drawing.Size(236, 24);
-            this.cmbKategori.TabIndex = 70;
+            this.cmbIdPenyakit.FormattingEnabled = true;
+            this.cmbIdPenyakit.Location = new System.Drawing.Point(256, 55);
+            this.cmbIdPenyakit.Name = "cmbIdPenyakit";
+            this.cmbIdPenyakit.Size = new System.Drawing.Size(236, 24);
+            this.cmbIdPenyakit.TabIndex = 70;
             // 
-            // cmbTingkatKerusakan
+            // cmbJenisPestisida
             // 
-            this.cmbTingkatKerusakan.FormattingEnabled = true;
-            this.cmbTingkatKerusakan.Location = new System.Drawing.Point(256, 131);
-            this.cmbTingkatKerusakan.Name = "cmbTingkatKerusakan";
-            this.cmbTingkatKerusakan.Size = new System.Drawing.Size(236, 24);
-            this.cmbTingkatKerusakan.TabIndex = 69;
+            this.cmbJenisPestisida.FormattingEnabled = true;
+            this.cmbJenisPestisida.Location = new System.Drawing.Point(256, 131);
+            this.cmbJenisPestisida.Name = "cmbJenisPestisida";
+            this.cmbJenisPestisida.Size = new System.Drawing.Size(236, 24);
+            this.cmbJenisPestisida.TabIndex = 69;
             // 
             // lblTanggalPerawatan
             // 
@@ -249,41 +270,51 @@
             this.lblIdPenyakit.TabIndex = 35;
             this.lblIdPenyakit.Text = "Id Penyakit  :";
             // 
-            // lblIdPadi
+            // liblIdPadi
             // 
-            this.lblIdPadi.AutoSize = true;
-            this.lblIdPadi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIdPadi.Location = new System.Drawing.Point(77, 18);
-            this.lblIdPadi.Name = "lblIdPadi";
-            this.lblIdPadi.Size = new System.Drawing.Size(70, 20);
-            this.lblIdPadi.TabIndex = 36;
-            this.lblIdPadi.Text = "Id Padi :";
+            this.liblIdPadi.AutoSize = true;
+            this.liblIdPadi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.liblIdPadi.Location = new System.Drawing.Point(77, 18);
+            this.liblIdPadi.Name = "liblIdPadi";
+            this.liblIdPadi.Size = new System.Drawing.Size(70, 20);
+            this.liblIdPadi.TabIndex = 36;
+            this.liblIdPadi.Text = "Id Padi :";
             // 
-            // lblJanisPerawatan
+            // lblJenisPerawatan
             // 
-            this.lblJanisPerawatan.AutoSize = true;
-            this.lblJanisPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblJanisPerawatan.Location = new System.Drawing.Point(77, 97);
-            this.lblJanisPerawatan.Name = "lblJanisPerawatan";
-            this.lblJanisPerawatan.Size = new System.Drawing.Size(143, 20);
-            this.lblJanisPerawatan.TabIndex = 39;
-            this.lblJanisPerawatan.Text = "Jenis Perawatan :";
+            this.lblJenisPerawatan.AutoSize = true;
+            this.lblJenisPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblJenisPerawatan.Location = new System.Drawing.Point(77, 97);
+            this.lblJenisPerawatan.Name = "lblJenisPerawatan";
+            this.lblJenisPerawatan.Size = new System.Drawing.Size(143, 20);
+            this.lblJenisPerawatan.TabIndex = 39;
+            this.lblJenisPerawatan.Text = "Jenis Perawatan :";
             // 
-            // txtGejalaPenyakit
+            // txtJenisPerawatan
             // 
-            this.txtGejalaPenyakit.Location = new System.Drawing.Point(256, 95);
-            this.txtGejalaPenyakit.Multiline = true;
-            this.txtGejalaPenyakit.Name = "txtGejalaPenyakit";
-            this.txtGejalaPenyakit.Size = new System.Drawing.Size(236, 22);
-            this.txtGejalaPenyakit.TabIndex = 51;
+            this.txtJenisPerawatan.Location = new System.Drawing.Point(256, 95);
+            this.txtJenisPerawatan.Multiline = true;
+            this.txtJenisPerawatan.Name = "txtJenisPerawatan";
+            this.txtJenisPerawatan.Size = new System.Drawing.Size(236, 22);
+            this.txtJenisPerawatan.TabIndex = 51;
             // 
-            // comboBox1
+            // lblHasilPerawatan
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(256, 18);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(236, 24);
-            this.comboBox1.TabIndex = 73;
+            this.lblHasilPerawatan.AutoSize = true;
+            this.lblHasilPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHasilPerawatan.Location = new System.Drawing.Point(77, 221);
+            this.lblHasilPerawatan.Name = "lblHasilPerawatan";
+            this.lblHasilPerawatan.Size = new System.Drawing.Size(142, 20);
+            this.lblHasilPerawatan.TabIndex = 74;
+            this.lblHasilPerawatan.Text = "Hasil Perawatan: ";
+            // 
+            // txtHasilPerawatan
+            // 
+            this.txtHasilPerawatan.Location = new System.Drawing.Point(256, 219);
+            this.txtHasilPerawatan.Multiline = true;
+            this.txtHasilPerawatan.Name = "txtHasilPerawatan";
+            this.txtHasilPerawatan.Size = new System.Drawing.Size(236, 22);
+            this.txtHasilPerawatan.TabIndex = 75;
             // 
             // FormPerawatanPadi
             // 
@@ -305,6 +336,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "FormPerawatanPadi";
             this.Text = "FormPerawatanPadi";
+            this.Load += new System.EventHandler(this.FormPerawatanPadi_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatanPadi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -329,15 +361,17 @@
         private System.Windows.Forms.Button btnCariData;
         private System.Windows.Forms.TextBox txtCari;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DateTimePicker dtpTanggalSerangan;
-        private System.Windows.Forms.ComboBox cmbKategori;
-        private System.Windows.Forms.ComboBox cmbTingkatKerusakan;
+        private System.Windows.Forms.DateTimePicker dtpTanggalPerawatan;
+        private System.Windows.Forms.ComboBox cmbIdPenyakit;
+        private System.Windows.Forms.ComboBox cmbJenisPestisida;
         private System.Windows.Forms.Label lblTanggalPerawatan;
         private System.Windows.Forms.Label lblIdPenyakit;
-        private System.Windows.Forms.Label lblIdPadi;
-        private System.Windows.Forms.Label lblJanisPerawatan;
-        private System.Windows.Forms.TextBox txtGejalaPenyakit;
+        private System.Windows.Forms.Label liblIdPadi;
+        private System.Windows.Forms.Label lblJenisPerawatan;
+        private System.Windows.Forms.TextBox txtJenisPerawatan;
         private System.Windows.Forms.Label lblJenisPsetisida;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbIdPadi;
+        private System.Windows.Forms.TextBox txtHasilPerawatan;
+        private System.Windows.Forms.Label lblHasilPerawatan;
     }
 }
