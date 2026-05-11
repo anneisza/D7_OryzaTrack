@@ -23,7 +23,6 @@ namespace OryzaTrack
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            lblWelcome.Text = $"Selamat datang admin!";
         }
 
         private void btnPetani_Click(object sender, EventArgs e)
@@ -31,6 +30,7 @@ namespace OryzaTrack
             FormPetani form = new FormPetani(IDAdmin);
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
         }
 
         private void btnPadi_Click(object sender, EventArgs e)
@@ -38,6 +38,7 @@ namespace OryzaTrack
             FormPadi form = new FormPadi(IDAdmin);
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
         }
 
         private void btnPenyakit_Click(object sender, EventArgs e)
@@ -45,6 +46,7 @@ namespace OryzaTrack
             FormPenyakit form = new FormPenyakit(IDAdmin);
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
         }
 
         private void btnRiwayat_Click(object sender, EventArgs e)
@@ -52,6 +54,7 @@ namespace OryzaTrack
             FormRiwayatPenyakit form = new FormRiwayatPenyakit(IDAdmin);
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
         }
 
         private void btnPerawatan_Click(object sender, EventArgs e)
@@ -59,6 +62,8 @@ namespace OryzaTrack
             FormPerawatanPadi form = new FormPerawatanPadi(IDAdmin);
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
+
         }
 
         private void btnLaporan_Click(object sender, EventArgs e)
@@ -66,6 +71,7 @@ namespace OryzaTrack
             FormLaporan form = new FormLaporan();
             form.Show();
             this.Hide();
+            form.FormClosed += (s, args) => this.Show();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -80,7 +86,7 @@ namespace OryzaTrack
             {
                 FormLogin2 login = new FormLogin2();
                 login.Show();
-                this.Close();
+                this.Hide();
             }
         }
     }

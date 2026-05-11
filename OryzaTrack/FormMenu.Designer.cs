@@ -31,7 +31,6 @@
             this.btnPerawatan = new System.Windows.Forms.Button();
             this.btnLaporan = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
-            this.lblWelcome = new System.Windows.Forms.Label();
             this.lblMenu = new System.Windows.Forms.Label();
             this.btnPadi = new System.Windows.Forms.Button();
             this.btnRiwayat = new System.Windows.Forms.Button();
@@ -72,15 +71,6 @@
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = false;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
-            // 
-            // lblWelcome
-            // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcome.Location = new System.Drawing.Point(566, 151);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(0, 20);
-            this.lblWelcome.TabIndex = 5;
             // 
             // lblMenu
             // 
@@ -147,7 +137,6 @@
             this.Controls.Add(this.btnRiwayat);
             this.Controls.Add(this.btnPadi);
             this.Controls.Add(this.lblMenu);
-            this.Controls.Add(this.lblWelcome);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnLaporan);
             this.Controls.Add(this.btnPerawatan);
@@ -163,7 +152,6 @@
         private System.Windows.Forms.Button btnPerawatan;
         private System.Windows.Forms.Button btnLaporan;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Label lblMenu;
         private System.Windows.Forms.Button btnPadi;
         private System.Windows.Forms.Button btnRiwayat;

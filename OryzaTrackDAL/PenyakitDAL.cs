@@ -69,9 +69,19 @@ namespace OryzaTrackDAL
             {
                 conn.Open();
                 // Mencari berdasarkan kategori, gejala
-                string query = @"SELECT * FROM penyakit 
-                                WHERE kategori LIKE @keyword 
-                                OR gejalaPenyakit LIKE @keyword";
+                string query = @"SELECT 
+                            idPenyakit, 
+                            Kategori, 
+                            gejalaPenyakit, 
+                            tingkatKerusakan, 
+                            tanggalSerangan 
+                        FROM Penyakit 
+                        WHERE 
+                            CAST(idPenyakit AS VARCHAR) LIKE @keyword 
+                            OR Kategori LIKE @keyword 
+                            OR gejalaPenyakit LIKE @keyword 
+                            OR tingkatKerusakan LIKE @keyword 
+                            OR CAST(tanggalSerangan AS VARCHAR) LIKE @keyword";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

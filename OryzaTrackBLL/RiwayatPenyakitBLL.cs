@@ -39,21 +39,28 @@ namespace OryzaTrackBLL
         /*=============================
                 Tambah 
         ==============================*/
-        public bool Tambah(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, string keterangan)
+        public bool Tambah(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
-            // 1. Validasi Tanggal Terdeteksi (Tidak boleh masa depan & minimal tahun 2000)
+            // 1. Validasi Tanggal Terdeteksi
             if (tanggalTerdeteksi > DateTime.Now || tanggalTerdeteksi.Year < 2000)
             {
-                throw new Exception("Tanggal terdeteksi tidak valid! Pastikan antara tahun 2000 hingga hari ini.");
+                throw new Exception("Tanggal terdeteksi tidak valid!");
             }
 
-            // 2. Validasi Keterangan (Jangan sampai kosong)
-            if (string.IsNullOrEmpty(keterangan) || keterangan.Length < 5)
+            // 2. Validasi Urutan Tanggal (Jika tanggal selesai diisi)
+            if (tanggalSelesai.HasValue && tanggalSelesai.Value < tanggalTerdeteksi)
+            {
+                throw new Exception("Tanggal selesai tidak boleh lebih mendahului tanggal terdeteksi!");
+            }
+
+            // 3. Validasi Keterangan
+            if (string.IsNullOrWhiteSpace(keterangan) || keterangan.Length < 5)
             {
                 throw new Exception("Keterangan riwayat minimal harus 5 karakter!");
             }
 
-            return dal.Insert(idPadi, idPenyakit, tanggalTerdeteksi, keterangan);
+            // return hasil dari DAL Insert, yang sudah pasti true kalau berhasil, dan false kalau gagal (misalnya karena koneksi DB error)
+            return dal.Insert(idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan);
         }
 
         /*=============================

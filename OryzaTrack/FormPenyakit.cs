@@ -13,13 +13,11 @@ namespace OryzaTrack
 {
     public partial class FormPenyakit : Form
     {
-        private int IDAdmin;
         private int selectedIdPenyakit = 0;
         private PenyakitBLL bll = new PenyakitBLL();
         public FormPenyakit(int idAdmin)
         {
             InitializeComponent();
-            IDAdmin = idAdmin;
         }
 
         private void FormPenyakit_Load(object sender, EventArgs e)
@@ -32,7 +30,7 @@ namespace OryzaTrack
             dgvPenyakit.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // Daftarkan event CellClick
-            dgvPenyakit.CellClick += dgvPenyakit_CellContentClick;
+            dgvPenyakit.CellClick += dgvPenyakit_CellClick;
 
         }
 
@@ -46,6 +44,7 @@ namespace OryzaTrack
             {
                 // Mengambil data dari PenyakitBLL
                 dgvPenyakit.DataSource = bll.GetAll();
+                TampilkanTotal();
             }
             catch (Exception ex)
             {
@@ -73,6 +72,22 @@ namespace OryzaTrack
 
         private bool ValidasiInput()
         {
+            //Kategori jgn kosong
+            if (cmbKategori.SelectedIndex == -1)
+            {
+                MessageBox.Show("Kategori harus dipilih!");
+                cmbKategori.Focus();
+                return false;
+            }
+
+            //tingkat kerusakan jgn kosong
+            if (cmbTingkatKerusakan.SelectedIndex == -1)
+            {
+                MessageBox.Show("Tingkat kerusakan harus dipilih!");
+                cmbTingkatKerusakan.Focus();
+                return false;
+            }
+
             // Validasi Gejala Penyakit
             if (string.IsNullOrWhiteSpace(txtGejalaPenyakit.Text))
             {
@@ -108,6 +123,20 @@ namespace OryzaTrack
             {
                 MessageBox.Show("Koneksi gagal: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        //cari
+        private void txtCari_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtCari.Text))
+            {
+                LoadData();
+            }
+            else
+            {
+                dgvPenyakit.DataSource = bll.Cari(txtCari.Text.Trim());
             }
 
         }
@@ -264,17 +293,19 @@ namespace OryzaTrack
 
         }
 
-        private void dgvPenyakit_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvPenyakit_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvPenyakit.Rows[e.RowIndex];
-                selectedIdPenyakit = int.Parse(row.Cells["idPenyakit"].Value.ToString());
-                cmbKategori.Text = row.Cells["Kategori"].Value.ToString();
-                txtGejalaPenyakit.Text = row.Cells["GejalaPenyakit"].Value.ToString();
-                dtpTanggalSerangan.Value = DateTime.Parse(row.Cells["TanggalSerangan"].Value.ToString());
+                selectedIdPenyakit = Convert.ToInt32(row.Cells["idPenyakit"].Value);
+                cmbKategori.Text = row.Cells["kategori"].Value.ToString();
+                txtGejalaPenyakit.Text = row.Cells["gejalaPenyakit"].Value.ToString();
+                cmbTingkatKerusakan.Text = row.Cells["tingkatKerusakan"].Value.ToString();
+                dtpTanggalSerangan.Value = DateTime.Parse(row.Cells["tanggalSerangan"].Value.ToString());
             }
 
         }
+
     }
 }

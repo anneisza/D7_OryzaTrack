@@ -23,7 +23,7 @@ namespace OryzaTrackDAL
             {
                 //buka koneksi sama command buat ngejalanin query
                 conn.Open();
-                string query = "SELECT * FROM padi";
+                string query = "SELECT p.idPadi, p.idPetani, pt.namaPetani,  p.jenisBibit,  p.lokasiLahan, p.tanggalTanam FROM padi p JOIN petani pt  ON p.idPetani = pt.idPetani";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -47,6 +47,8 @@ namespace OryzaTrackDAL
                 }
             }
         }
+
+
 
         /*=======================
                 GetById 
@@ -83,9 +85,24 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT * FROM padi 
-                                WHERE jenisPadi LIKE @keyword 
-                                OR lokasiLahan LIKE @keyword";
+                string query = @"
+                SELECT 
+                    p.idPadi,
+                    p.idPetani,
+                    pt.namaPetani,
+                    p.jenisBibit,
+                    p.lokasiLahan,
+                    p.tanggalTanam
+                FROM padi p
+                JOIN petani pt
+                    ON p.idPetani = pt.idPetani
+                WHERE 
+                    CAST(p.idPadi AS VARCHAR) LIKE @keyword
+                    OR CAST(p.idPetani AS VARCHAR) LIKE @keyword
+                    OR pt.namaPetani LIKE @keyword
+                    OR p.jenisBibit LIKE @keyword
+                    OR p.lokasiLahan LIKE @keyword
+                    OR CONVERT(VARCHAR, p.tanggalTanam, 120) LIKE @keyword";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");

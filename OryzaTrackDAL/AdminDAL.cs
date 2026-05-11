@@ -15,14 +15,19 @@ namespace OryzaTrackDAL
         public int Login(string username, string password)
         {
             DatabaseConnection db = new DatabaseConnection();
-            SqlConnection conn = db.GetConnection();    
-            string query = "SELECT idAdmin FROM admin WHERE username=@u AND passwordAdmin=@p";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+
+            using (SqlConnection conn = db.GetConnection())
             {
-                cmd.Parameters.AddWithValue("@u", username);
-                cmd.Parameters.AddWithValue("@p", password);
-                object result = cmd.ExecuteScalar();
-                return result != null ? Convert.ToInt32(result) : 0;
+
+                conn.Open();
+                string query = "SELECT idAdmin FROM admin WHERE username=@u AND passwordAdmin=@p";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@u", username);
+                    cmd.Parameters.AddWithValue("@p", password);
+                    object result = cmd.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
             }
         }
     }

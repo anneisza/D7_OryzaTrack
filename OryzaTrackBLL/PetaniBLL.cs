@@ -20,6 +20,14 @@ namespace OryzaTrackBLL
             return dal.GetAll();
         }
 
+        //=======================
+        //filter petani aktif
+        //=======================   
+        public DataTable GetAktif()
+        {
+            return dal.GetAktif();
+        }
+
         /*=======================
                 GetById 
         ========================*/
@@ -40,7 +48,7 @@ namespace OryzaTrackBLL
         /*=======================
                 Tambah 
         ========================*/
-        public bool Tambah(string namaPetani, string nik, string alamat, string noTelepon)
+        public bool Tambah(string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
             //nama gak boleh kurang dari 2 karakter
             if (namaPetani.Length < 2)
@@ -67,9 +75,9 @@ namespace OryzaTrackBLL
                 Ubah 
         ========================*/
 
-        public bool Ubah(int idPetani, string namaPetani, string nik, string alamat, string noTelepon)
+        public bool Ubah(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
-            return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon);
+            return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
         }
 
         /*=======================

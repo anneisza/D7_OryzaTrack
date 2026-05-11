@@ -16,15 +16,37 @@ namespace OryzaTrack
     public partial class FormLogin2 : Form
     {
         private AdminBLL bll = new AdminBLL();
-
+        bool isPasswordVisible = false;
         public FormLogin2()
         {
             InitializeComponent();
         }
 
-        private void FormLogin_Load(object sender, EventArgs e)
+
+        private void FormLogin2_Load(object sender, EventArgs e)
         {
+
+            txtPassword.PasswordChar = '●';
             this.AcceptButton = btnLogin;
+            pbEyeHide.Image = Properties.Resources.EyeClose;
+
+        }
+
+        //Eye
+        private void pbEyeHide_Click(object sender, EventArgs e)
+        {
+            isPasswordVisible = !isPasswordVisible;
+
+            if (isPasswordVisible)
+            {
+                txtPassword.PasswordChar = '\0'; // Tampilkan password
+                pbEyeHide.Image = Properties.Resources.EyeOpen; // ikon mata terbuka
+            }
+            else
+            {
+                txtPassword.PasswordChar = '●'; // Sembunyikan password
+                pbEyeHide.Image = Properties.Resources.EyeClose; // ikon mata tertutup
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -64,6 +86,7 @@ namespace OryzaTrack
                     FormMenu menu = new FormMenu(idAdmin);
                     menu.Show();
                     this.Hide();
+                    menu.FormClosed += (s, args) => this.Show();
                 }
                 else
                 {
@@ -88,9 +111,6 @@ namespace OryzaTrack
             }
         }
 
-        private void FormLogin2_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }

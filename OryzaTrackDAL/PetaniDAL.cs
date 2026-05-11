@@ -49,6 +49,27 @@ namespace OryzaTrackDAL
             }
         }
 
+        //=======================
+        //filter petani aktif
+        //=======================
+        public DataTable GetAktif()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT idPetani, namaPetani FROM petani WHERE statusAktif = 1";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+                        return dt;
+                    }
+                }
+            }
+        }
+
         /*=======================
                 GetById 
          ========================*/
@@ -84,11 +105,13 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT * FROM petani 
-                                WHERE namaPetani LIKE @keyword 
-                                OR nik LIKE @keyword 
-                                OR alamat LIKE @keyword 
-                                OR noTelepon LIKE @keyword";
+                string query = @"SELECT idPetani, namaPetani, NIK, alamat, noTelepon, statusAktif 
+                        FROM petani
+                        WHERE CAST(idPetani AS VARCHAR) LIKE @keyword
+                        OR namaPetani LIKE @keyword
+                        OR NIK LIKE @keyword
+                        OR alamat LIKE @keyword
+                        OR noTelepon LIKE @keyword";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
@@ -130,7 +153,7 @@ namespace OryzaTrackDAL
         /*=======================
                Update Petani 
         ========================*/
-        public bool Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon)
+        public bool Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -139,12 +162,14 @@ namespace OryzaTrackDAL
                                 SET namaPetani = @namaPetani, 
                                     nik = @nik, 
                                     alamat = @alamat, 
-                                    noTelepon = @noTelepon
+                                    noTelepon = @noTelepon,
+                                    statusAktif = @statusAktif
                                 WHERE idPetani = @idPetani";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                cmd.Parameters.AddWithValue("@statusAktif", statusAktif);
                 cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
                 cmd.Parameters.AddWithValue("@nik", nik);
                 cmd.Parameters.AddWithValue("@alamat", alamat);

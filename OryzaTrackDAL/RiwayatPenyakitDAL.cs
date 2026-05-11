@@ -73,12 +73,21 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT r.idRiwayat, p.jenisBibit, py.Kategori, r.tanggalTerdeteksi, r.keterangan 
+                string query = @"SELECT 
+                                    r.idRiwayat, 
+                                    p.jenisBibit, 
+                                    py.Kategori, 
+                                    r.tanggalTerdeteksi, 
+                                    r.keterangan 
                                 FROM riwayatPenyakit r
                                 JOIN Padi p ON r.idPadi = p.idPadi
                                 JOIN Penyakit py ON r.idPenyakit = py.idPenyakit
-                                WHERE p.jenisBibit LIKE @keyword 
-                                OR r.keterangan LIKE @keyword";
+                                WHERE 
+                                    p.jenisBibit LIKE @keyword 
+                                    OR py.Kategori LIKE @keyword 
+                                    OR r.keterangan LIKE @keyword
+                                    OR CAST(r.idRiwayat AS VARCHAR) LIKE @keyword
+                                    OR CAST(r.tanggalTerdeteksi AS VARCHAR) LIKE @keyword";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -96,21 +105,22 @@ namespace OryzaTrackDAL
         /*=============================
                 Insert Riwayat 
         ==============================*/
-        public bool Insert(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, string keterangan)
+        public bool Insert(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
                 string query = @"INSERT INTO riwayatPenyakit 
-                                (idPadi, idPenyakit, tanggalTerdeteksi, keterangan) 
+                                (idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan) 
                                 VALUES 
-                                (@idPadi, @idPenyakit, @tanggalTerdeteksi, @keterangan)";
+                                (@idPadi, @idPenyakit, @tanggalTerdeteksi, @tanggalSelesai, @keterangan)";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
                     cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
+                    cmd.Parameters.AddWithValue("@tanggalSelesai", (object)tanggalSelesai ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@keterangan", keterangan);
 
                     return cmd.ExecuteNonQuery() > 0;

@@ -13,18 +13,22 @@ namespace OryzaTrack
 {
     public partial class FormPetani : Form
     {
-        private int IDAdmin;
         private int selectedIdPetani = 0;
         private PetaniBLL bll = new PetaniBLL();
 
         public FormPetani(int idAdmin)
         {
             InitializeComponent();
-            IDAdmin = idAdmin;
         }
 
         private void FormPetani_Load(object sender, EventArgs e)
         {
+            // isi combobox status
+            cmbStatusAktif.Items.Clear();
+            cmbStatusAktif.Items.Add("Aktif");
+            cmbStatusAktif.Items.Add("Tidak Aktif");
+
+            cmbStatusAktif.SelectedIndex = 0;
             // Setting DataGridView saat form dibuka
             dgvPetani.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPetani.MultiSelect = false;
@@ -33,7 +37,7 @@ namespace OryzaTrack
             dgvPetani.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;    
             
             // Daftarkan event CellClick
-            dgvPetani.CellClick += dgvPetani_CellContentClick;
+            dgvPetani.CellClick += dgvPetani_CellClick;
 
         }
 
@@ -46,6 +50,7 @@ namespace OryzaTrack
             try
             {
                 dgvPetani.DataSource = bll.GetAll();
+                TampilkanTotal();
             }
             catch (Exception ex)
             {
@@ -61,6 +66,7 @@ namespace OryzaTrack
 
         private void BersihkanForm()
         {
+            selectedIdPetani = 0;
             txtNamaPetani.Clear();
             txtNIK.Clear();
             txtAlamat.Clear();
@@ -144,6 +150,8 @@ namespace OryzaTrack
 
         private void btnTambahData_Click(object sender, EventArgs e)
         {
+            bool statusAktif = cmbStatusAktif.SelectedIndex == 0;
+
             if (!ValidasiInput()) return;
 
             try
@@ -152,7 +160,8 @@ namespace OryzaTrack
                     txtNamaPetani.Text.Trim(),
                     txtNIK.Text.Trim(),
                     txtAlamat.Text.Trim(),
-                    txtNoTelepon.Text.Trim()
+                    txtNoTelepon.Text.Trim(),
+                    statusAktif
                 );
 
                 if (hasil)
@@ -198,12 +207,14 @@ namespace OryzaTrack
             {
                 try
                 {
+                    bool statusAktif = cmbStatusAktif.SelectedIndex == 0;
                     bool hasil = bll.Ubah(
                         selectedIdPetani,
                         txtNamaPetani.Text.Trim(),
                         txtNIK.Text.Trim(),
                         txtAlamat.Text.Trim(),
-                        txtNoTelepon.Text.Trim()
+                        txtNoTelepon.Text.Trim(),
+                        statusAktif
                     );
 
                     if (hasil)
@@ -278,6 +289,19 @@ namespace OryzaTrack
 
         }
 
+        private void txtCari_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtCari.Text))
+            {
+                LoadData();
+            }
+            else
+            {
+                dgvPetani.DataSource = bll.Cari(txtCari.Text.Trim());
+            }
+
+        }
+
         private void btnCariData_Click(object sender, EventArgs e)
         {
             try
@@ -317,22 +341,26 @@ namespace OryzaTrack
         // =====================
         // EVENT DATAGRIDVIEW
         // =====================
-        private void dgvPetani_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvPetani_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvPetani.Rows[e.RowIndex];
-                selectedIdPetani = int.Parse(row.Cells["idPetani"].Value.ToString());
+                selectedIdPetani = Convert.ToInt32(row.Cells["idPetani"].Value);
                 txtNamaPetani.Text = row.Cells["namaPetani"].Value.ToString();
                 txtNIK.Text = row.Cells["NIK"].Value.ToString();
                 txtAlamat.Text = row.Cells["alamat"].Value.ToString();
                 txtNoTelepon.Text = row.Cells["noTelepon"].Value.ToString();
-                cmbStatusAktif.SelectedIndex = Convert.ToBoolean(
-                    row.Cells["statusAktif"].Value) ? 0 : 1;
+                //cek status
+                bool status = false;
+                if (row.Cells["statusAktif"].Value != null)
+                {
+                    status = Convert.ToBoolean(row.Cells["statusAktif"].Value);
+                }
+                cmbStatusAktif.SelectedIndex = status ? 0 : 1;
             }
 
         }
-
 
     }
 }

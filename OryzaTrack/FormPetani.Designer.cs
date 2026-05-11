@@ -147,6 +147,7 @@
             this.txtCari.Name = "txtCari";
             this.txtCari.Size = new System.Drawing.Size(667, 33);
             this.txtCari.TabIndex = 53;
+            this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
             // 
             // txtNIK
             // 
@@ -180,7 +181,7 @@
             this.dgvPetani.RowTemplate.Height = 24;
             this.dgvPetani.Size = new System.Drawing.Size(1086, 281);
             this.dgvPetani.TabIndex = 49;
-            this.dgvPetani.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPetani_CellContentClick);
+            this.dgvPetani.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPetani_CellClick);
             // 
             // groupBox1
             // 

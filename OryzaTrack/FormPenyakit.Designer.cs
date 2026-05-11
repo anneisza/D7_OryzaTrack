@@ -107,6 +107,7 @@
             this.lblTotal.Size = new System.Drawing.Size(87, 25);
             this.lblTotal.TabIndex = 87;
             this.lblTotal.Text = "Jumlah :";
+            this.lblTotal.Click += new System.EventHandler(this.btnLoadData_Click);
             // 
             // btnBersihkan
             // 
@@ -165,6 +166,7 @@
             this.txtCari.Name = "txtCari";
             this.txtCari.Size = new System.Drawing.Size(667, 33);
             this.txtCari.TabIndex = 81;
+            this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
             // 
             // groupBox1
             // 
@@ -193,6 +195,9 @@
             // cmbKategori
             // 
             this.cmbKategori.FormattingEnabled = true;
+            this.cmbKategori.Items.AddRange(new object[] {
+            "Penyakit",
+            "Hama"});
             this.cmbKategori.Location = new System.Drawing.Point(256, 44);
             this.cmbKategori.Name = "cmbKategori";
             this.cmbKategori.Size = new System.Drawing.Size(220, 24);
@@ -201,6 +206,10 @@
             // cmbTingkatKerusakan
             // 
             this.cmbTingkatKerusakan.FormattingEnabled = true;
+            this.cmbTingkatKerusakan.Items.AddRange(new object[] {
+            "Ringan ",
+            "Sedang",
+            "Berat"});
             this.cmbTingkatKerusakan.Location = new System.Drawing.Point(256, 131);
             this.cmbTingkatKerusakan.Name = "cmbTingkatKerusakan";
             this.cmbTingkatKerusakan.Size = new System.Drawing.Size(220, 24);
@@ -269,7 +278,7 @@
             this.dgvPenyakit.RowTemplate.Height = 24;
             this.dgvPenyakit.Size = new System.Drawing.Size(1086, 281);
             this.dgvPenyakit.TabIndex = 93;
-            this.dgvPenyakit.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPenyakit_CellContentClick);
+            this.dgvPenyakit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPenyakit_CellClick);
             // 
             // FormPenyakit
             // 
