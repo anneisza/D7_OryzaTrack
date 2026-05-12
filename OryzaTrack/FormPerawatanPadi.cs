@@ -160,7 +160,7 @@ namespace OryzaTrack
                     Bersihkan();
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Pilih data di tabel dulu!"); }
+            catch (Exception) { MessageBox.Show("Pilih data di tabel dulu!"); }
 
         }
 

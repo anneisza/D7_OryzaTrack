@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormKoneksi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormKoneksi.Designer.cs">
+      <DependentUpon>FormKoneksi.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLaporan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormKoneksi.resx">
+      <DependentUpon>FormKoneksi.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLaporan.resx">
       <DependentUpon>FormLaporan.cs</DependentUpon>
     </EmbeddedResource>

@@ -17,7 +17,7 @@ namespace OryzaTrack
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLogin2());
+            Application.Run(new FormKoneksi());
         }
     }
 }
