@@ -12,10 +12,10 @@ using OryzaTrackBLL;
 
 namespace OryzaTrack
 {
-   
     public partial class FormPerawatanPadi : Form
     {
         private int IDAdmin;
+        private int selectedIdPerawatanPadi;
         private PerawatanPadiBLL bllPerawatan = new PerawatanPadiBLL();
         private PadiBLL bllPadi = new PadiBLL();
         private PenyakitBLL bllPenyakit = new PenyakitBLL();
@@ -27,47 +27,39 @@ namespace OryzaTrack
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
         {
+            // Setting DataGridView saat form dibuka
+            dgvPerawatanPadi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPerawatanPadi.MultiSelect = false;
+            dgvPerawatanPadi.ReadOnly = true;
+            dgvPerawatanPadi.AllowUserToAddRows = false;
+            dgvPerawatanPadi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            //Daftarkan event cell click untuk DataGridView
+            dgvPerawatanPadi.CellClick += dgvPerawatanPadi_CellClick;
+
             LoadPadi();
             LoadPenyakit();
         }
 
 
         //Handler
-        private void LoadPadi()
-        {
-            try
-            {
-                DataTable dt = bllPadi.GetAll();
-                cmbIdPadi.ValueMember = "idPadi";
-                cmbIdPadi.DisplayMember = "jenisBibit"; // Sesuaikan nama kolom di DB
-                cmbIdPadi.DataSource = dt;
-                cmbIdPadi.SelectedIndex = -1;
-            }
-            catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
-        }
-
-        private void LoadPenyakit()
-        {
-            try
-            {
-                DataTable dt = bllPenyakit.GetAll();
-                cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.DisplayMember = "namaPenyakit"; // Sesuaikan nama kolom di DB
-                cmbIdPenyakit.DataSource = dt;
-                cmbIdPenyakit.SelectedIndex = -1;
-            }
-            catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
-        }
 
         private void LoadData()
         {
             try
             {
-                DataTable dt = bllPerawatan.GetAll();
-                dgvPerawatanPadi.DataSource = dt;
-                lblTotal.Text = "Jumlah : " + dt.Rows.Count.ToString();
+                dgvPerawatanPadi.DataSource = bllPerawatan.GetAll();
+                
+                TampilkanTotal();
             }
-            catch (Exception ex) { MessageBox.Show("Gagal load data: " + ex.Message); }
+            catch (Exception ex) { 
+                MessageBox.Show("Gagal load data: " + ex.Message, "Error : ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TampilkanTotal()
+        {
+            lblTotal.Text = "Jumlah : " + bllPerawatan.Total();
         }
 
         private void Bersihkan()
@@ -81,29 +73,128 @@ namespace OryzaTrack
             txtCari.Clear();
         }
 
+        private bool ValidasiInput()
+        {
+            if (cmbIdPadi.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih ID padi!");
+                return false;
+            }
+
+            if (cmbIdPenyakit.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih ID penyakit!");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtJenisPerawatan.Text))
+            {
+                MessageBox.Show("Isi jenis perawatan!");
+                return false;
+            }
+
+            if (cmbJenisPestisida.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih jenis pestisida!");
+                return false;
+            }
+
+            if (dtpTanggalPerawatan.Value > DateTime.Now)
+            {
+                MessageBox.Show("Tanggal perawatan tidak boleh di masa depan!");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtHasilPerawatan.Text))
+            {
+                MessageBox.Show("Isi hasil perawatan!");
+                return false;
+            }
+
+            return true;
+        }
+
+
+
+        private void LoadPadi()
+        {
+            try
+            {
+                DataTable dt = bllPadi.GetAll();
+
+                cmbIdPadi.ValueMember = "idPadi";
+                cmbIdPadi.DisplayMember = "idPadi"; // Sesuaikan nama kolom di DB
+
+                cmbIdPadi.DataSource = dt;
+                cmbIdPadi.SelectedIndex = -1;
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
+        }
+
+        private void LoadPenyakit()
+        {
+            try
+            {
+                DataTable dt = bllPenyakit.GetAll();
+
+                cmbIdPenyakit.ValueMember = "idPenyakit";
+                cmbIdPenyakit.DisplayMember = "idPenyakit"; // Sesuaikan nama kolom di DB
+
+                cmbIdPenyakit.DataSource = dt;
+                cmbIdPenyakit.SelectedIndex = -1;
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
+        }
+
 
 
         //Event Handler
 
         private void btnKoneksi_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Koneksi Berhasil & Data Diperbarui!");
+            try
+            {
+                bllPerawatan.GetAll();
+                MessageBox.Show("Database Terkoneksi!",
+                    "Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Koneksi gagal: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtCari_TextChanged(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtCari.Text))
+            {
+                LoadData();
+            }
+            else
+            {
+                dgvPerawatanPadi.DataSource = bllPerawatan.Cari(txtCari.Text.Trim());
+            }
 
         }
 
         private void btnCariData_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtCari.Text))
+            try
             {
-                dgvPerawatanPadi.DataSource = bllPerawatan.Cari(txtCari.Text);
+                if (string.IsNullOrWhiteSpace(txtCari.Text))
+                {
+                    LoadData();
+                }
+                else
+                {
+                    dgvPerawatanPadi.DataSource = bllPerawatan.Cari(txtCari.Text.Trim());
+                }
             }
-            else
+            catch (Exception ex)
             {
-                LoadData();
+                MessageBox.Show("Error: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -111,11 +202,13 @@ namespace OryzaTrack
         private void btnLoadData_Click(object sender, EventArgs e)
         {
             LoadData();
-
+            TampilkanTotal();
         }
 
         private void btnTambahData_Click(object sender, EventArgs e)
         {
+            if (!ValidasiInput()) return;
+
             try
             {
                 bool hasil = bllPerawatan.Tambah(
@@ -129,9 +222,14 @@ namespace OryzaTrack
 
                 if (hasil)
                 {
-                    MessageBox.Show("Data berhasil ditambah!");
+                    MessageBox.Show("Data Perawatan Padi berhasil ditambah!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadData();
                     Bersihkan();
+                    TampilkanTotal();
+                }
+                else
+                {
+                    MessageBox.Show("Gagal menambah data Perawatan Padi.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
@@ -140,11 +238,26 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            try
+            if (selectedIdPerawatanPadi == 0)
             {
-                int idPerawatan = Convert.ToInt32(dgvPerawatanPadi.CurrentRow.Cells[0].Value);
-                bool hasil = bllPerawatan.Ubah(
-                    idPerawatan,
+                MessageBox.Show("Pilih data yang akan diubah!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidasiInput()) return;
+
+            DialogResult konfirmasi = MessageBox.Show(
+                "Ubah data ini?",
+                "Konfirmasi Ubah", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (konfirmasi == DialogResult.Yes)
+            {
+                try
+                {
+                    int idPerawatan = Convert.ToInt32(dgvPerawatanPadi.CurrentRow.Cells[0].Value);
+                    bool hasil = bllPerawatan.Ubah(
+                        idPerawatan,
                     Convert.ToInt32(cmbIdPadi.SelectedValue),
                     Convert.ToInt32(cmbIdPenyakit.SelectedValue),
                     txtJenisPerawatan.Text,
@@ -153,32 +266,46 @@ namespace OryzaTrack
                     txtHasilPerawatan.Text
                 );
 
-                if (hasil)
-                {
-                    MessageBox.Show("Data berhasil diubah!");
-                    LoadData();
-                    Bersihkan();
-                }
-            }
-            catch (Exception) { MessageBox.Show("Pilih data di tabel dulu!"); }
-
-        }
-
-        private void btnHapusData_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                int idPerawatan = Convert.ToInt32(dgvPerawatanPadi.CurrentRow.Cells[0].Value);
-                if (MessageBox.Show("Hapus data ini?", "Konfirmasi", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    if (bllPerawatan.Hapus(idPerawatan))
+                    if (hasil)
                     {
+                        MessageBox.Show("Data Perawatan Padi berhasil diubah!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadData();
                         Bersihkan();
                     }
                 }
+                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
             }
-            catch { MessageBox.Show("Pilih data yang akan dihapus!"); }
+        }
+
+        private void btnHapusData_Click(object sender, EventArgs e)
+        {
+            if (selectedIdPerawatanPadi == 0)
+            {
+                MessageBox.Show("Pilih data yang akan dihapus!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult konfirmasi = MessageBox.Show(
+                "Hapus data ini?",
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (konfirmasi == DialogResult.Yes)
+            {
+                try
+                {
+                    bool hasil = bllPerawatan.Hapus(selectedIdPerawatanPadi);
+                    if (hasil)
+                    {
+                        MessageBox.Show("Data Perawatan Padi berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadData();
+                        Bersihkan();
+                        TampilkanTotal();
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            }
 
         }
 
@@ -194,10 +321,17 @@ namespace OryzaTrack
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvPerawatanPadi.Rows[e.RowIndex];
+
+                //harus sama dengan nama kolom di DataGridView
+                selectedIdPerawatanPadi = Convert.ToInt32(row.Cells["idPerawatanPadi"].Value);
+
+                // Set nilai pada form berdasarkan data yang dipilih
                 cmbIdPadi.SelectedValue = row.Cells["idPadi"].Value;
                 cmbIdPenyakit.SelectedValue = row.Cells["idPenyakit"].Value;
+                // Pastikan nama kolom di DataGridView sesuai dengan yang digunakan di sini
                 txtJenisPerawatan.Text = row.Cells["jenisPerawatan"].Value.ToString();
                 cmbJenisPestisida.Text = row.Cells["jenisPestisida"].Value.ToString();
+
                 dtpTanggalPerawatan.Value = Convert.ToDateTime(row.Cells["tanggalPerawatan"].Value);
                 txtHasilPerawatan.Text = row.Cells["hasilPerawatan"].Value.ToString();
             }
