@@ -57,6 +57,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="LaporanDAL.cs" />
     <Compile Include="PadiDAL.cs" />
     <Compile Include="PenyakitDAL.cs" />
     <Compile Include="PerawatanPadiDAL.cs" />
