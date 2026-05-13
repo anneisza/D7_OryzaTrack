@@ -439,3 +439,161 @@ BEGIN
 END;
 GO
 
+--================================================================================================
+-- =====================
+-- VIEW PADI
+-- =====================
+CREATE VIEW vw_Padi AS
+SELECT 
+    p.idPadi,
+    p.idPetani,
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    CONVERT(VARCHAR, p.tanggalTanam, 103) AS tanggalTanam  -- format DD/MM/YYYY
+FROM Padi p
+JOIN petani pt ON p.idPetani = pt.idPetani;
+GO
+
+-- =====================
+-- SP INSERT PADI
+-- =====================
+CREATE PROCEDURE sp_InsertPadi
+    @idPetani     INT,
+    @jenisBibit   VARCHAR(100),
+    @lokasiLahan  VARCHAR(100),
+    @tanggalTanam DATE,
+    @pesanHasil     VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek apakah petani ada dan aktif
+    IF NOT EXISTS (SELECT 1 FROM petani WHERE idPetani = @idPetani AND statusAktif = 1)
+    BEGIN
+        SET @pesanHasil = 'Petani tidak ditemukan atau tidak aktif!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek duplikasi lahan + petani yang sama di tanggal sama
+    IF EXISTS (
+        SELECT 1 FROM Padi 
+        WHERE idPetani = @idPetani 
+          AND lokasiLahan = @lokasiLahan 
+          AND tanggalTanam = @tanggalTanam
+    )
+    BEGIN
+        SET @pesanHasil = 'Petani sudah menanam di lahan ini pada tanggal yang sama!';
+        RETURN;
+    END
+
+    INSERT INTO Padi (idPetani, jenisBibit, lokasiLahan, tanggalTanam)
+    VALUES (@idPetani, @jenisBibit, @lokasiLahan, @tanggalTanam);
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE PADI
+-- =====================
+CREATE PROCEDURE sp_UpdatePadi
+    @idPadi       INT,
+    @idPetani     INT,
+    @jenisBibit   VARCHAR(100),
+    @lokasiLahan  VARCHAR(100),
+    @tanggalTanam DATE,
+    @pesanHasil     VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek data padi ada
+    IF NOT EXISTS (SELECT 1 FROM Padi WHERE idPadi = @idPadi)
+    BEGIN
+        SET @pesanHasil = 'Data padi tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek petani aktif
+    IF NOT EXISTS (SELECT 1 FROM petani WHERE idPetani = @idPetani AND statusAktif = 1)
+    BEGIN
+        SET @pesanHasil = 'Petani tidak ditemukan atau tidak aktif!';
+        RETURN;
+    END
+
+    -- Logika 3: Cek duplikasi lahan (kecuali dirinya sendiri)
+    IF EXISTS (
+        SELECT 1 FROM Padi 
+        WHERE idPetani = @idPetani 
+          AND lokasiLahan = @lokasiLahan 
+          AND tanggalTanam = @tanggalTanam
+          AND idPadi != @idPadi
+    )
+    BEGIN
+        SET @pesanHasil = 'Petani sudah menanam di lahan ini pada tanggal yang sama!';
+        RETURN;
+    END
+
+    UPDATE Padi
+    SET idPetani     = @idPetani,
+        jenisBibit   = @jenisBibit,
+        lokasiLahan  = @lokasiLahan,
+        tanggalTanam = @tanggalTanam
+    WHERE idPadi = @idPadi;
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP DELETE PADI
+-- =====================
+CREATE PROCEDURE sp_DeletePadi
+    @idPadi   INT,
+    @pesanHasil VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika: Cek apakah padi masih punya riwayat/perawatan
+    IF EXISTS (SELECT 1 FROM riwayatPenyakit WHERE idPadi = @idPadi)
+       OR EXISTS (SELECT 1 FROM perawatanPadi WHERE idPadi = @idPadi)
+    BEGIN
+        SET @pesanHasil = 'Data padi masih memiliki riwayat/perawatan, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    DELETE FROM Padi WHERE idPadi = @idPadi;
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP SEARCH PADI
+-- =====================
+CREATE PROCEDURE sp_SearchPadi
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        p.idPadi,
+        p.idPetani,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        CONVERT(VARCHAR, p.tanggalTanam, 103) AS tanggalTanam
+    FROM Padi p
+    JOIN petani pt ON p.idPetani = pt.idPetani
+    WHERE 
+        CAST(p.idPadi AS VARCHAR)            LIKE '%' + @keyword + '%'
+        OR pt.namaPetani                     LIKE '%' + @keyword + '%'
+        OR p.jenisBibit                      LIKE '%' + @keyword + '%'
+        OR p.lokasiLahan                     LIKE '%' + @keyword + '%'
+        OR CONVERT(VARCHAR, p.tanggalTanam, 103) LIKE '%' + @keyword + '%';
+END;
+GO
+

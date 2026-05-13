@@ -13,6 +13,8 @@ namespace OryzaTrack
 {
     public partial class FormPadi : Form
     {
+        private BindingSource bindingSource = new BindingSource();
+
         private int selectedIdPadi = 0;
         private int IDAdmin;
         private PadiBLL bll = new PadiBLL();
@@ -48,8 +50,10 @@ namespace OryzaTrack
         {
             try
             {
-                // Mengambil data dari PadiBLL
-                dgvPadi.DataSource = bll.GetAll();
+                DataTable dt = bll.GetAll();
+                bindingSource.DataSource = dt;
+                dgvPadi.DataSource = bindingSource;
+                bindingNavigator1.BindingSource = bindingSource; // hubungkan navigator
                 TampilkanTotal();
             }
             catch (Exception ex)
@@ -199,7 +203,6 @@ namespace OryzaTrack
             try
             {
                 bool hasil = bll.Tambah(
-                    Convert.ToInt32(selectedIdPadi),
                     Convert.ToInt32(cmbIdPetani.SelectedValue),
                     cmbJB.Text.Trim(),
                     cmbLokasiLahan.Text.Trim(),
@@ -323,15 +326,16 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dgvPadi.Rows[e.RowIndex];
-                selectedIdPadi = Convert.ToInt32(row.Cells["idPadi"].Value);
+                DataRowView row = (DataRowView)bindingSource.Current;
+                selectedIdPadi = Convert.ToInt32(row["idPadi"]);
 
                 // Gunakan SelectedValue untuk ComboBox yang di-bind ke DataSource
-                cmbIdPetani.SelectedValue = row.Cells["idPetani"].Value;
+                cmbIdPetani.SelectedValue = row["idPetani"];
 
-                cmbJB.Text = row.Cells["jenisBibit"].Value.ToString();
-                cmbLokasiLahan.Text = row.Cells["lokasiLahan"].Value.ToString();
-                dtpTanggalTanam.Value = Convert.ToDateTime(row.Cells["tanggalTanam"].Value);
+                cmbJB.Text = row["jenisBibit"].ToString();
+                cmbLokasiLahan.Text = row["lokasiLahan"].ToString();
+                dtpTanggalTanam.Value = DateTime.ParseExact(
+                    row["tanggalTanam"].ToString(), "dd/MM/yyyy", null);
             }
         }
 

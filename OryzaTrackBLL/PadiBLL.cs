@@ -12,14 +12,14 @@ namespace OryzaTrackBLL
     {
         PadiDAL dal = new PadiDAL();
 
+
+        public DataRow GetById(int idPadi) => dal.GetById(idPadi);
+        public DataTable Cari(string keyword) => dal.Search(keyword);
+
         /*=============================
           View Padi | GetAll()
         ==============================*/
-        public DataTable GetAll()
-        {
-            return dal.GetAll();
-        }
-
+        public DataTable GetAll() => dal.GetAll();
 
         /*=============================
                 GetById 
@@ -40,7 +40,7 @@ namespace OryzaTrackBLL
         /*=============================
                 Tambah 
         ==============================*/
-        public bool Tambah(int idPadi, int idPetani, string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
+        public bool Tambah(int idPetani, string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
         {
             // 1. Validasi Jenis Bibit
             string[] bibitValid = { "IR64", "Ciherang", "Inpari 32", "Mekongga" };
@@ -68,7 +68,10 @@ namespace OryzaTrackBLL
                 throw new Exception("Lokasi lahan tidak valid.");
             }
 
-            return dal.Insert(idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam);
+            // Validasi logika berat → serahkan ke SP
+            string hasil = dal.Insert(idPetani, jenisBibit, lokasiLahan, tanggalTanam);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -102,8 +105,9 @@ namespace OryzaTrackBLL
                 throw new Exception("Lokasi lahan tidak valid.");
             }
 
-
-            return dal.Update(idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam);
+            string hasil = dal.Update(idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -111,15 +115,15 @@ namespace OryzaTrackBLL
         ==============================*/
         public bool Hapus(int idPadi)
         {
-            return dal.Delete(idPadi);
+            string hasil = dal.Delete(idPadi);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
                 Total 
         ==============================*/
-        public int Total()
-        {
-            return dal.Count();
-        }
+
+        public int Total() => dal.Count();
     }
 }

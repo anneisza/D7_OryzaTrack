@@ -17,33 +17,17 @@ namespace OryzaTrackDAL
         ========================*/
         public DataTable GetAll()
         {
-            //pakai using biar connectionnya langsung close setelah selesai running blok kodenya
-            //SqlConnection kayak kabel fisik ke DB
             using (SqlConnection conn = db.GetConnection())
             {
-                //buka koneksi sama command buat ngejalanin query
                 conn.Open();
-                string query = "SELECT p.idPadi, p.idPetani, pt.namaPetani,  p.jenisBibit,  p.lokasiLahan, p.tanggalTanam FROM padi p JOIN petani pt  ON p.idPetani = pt.idPetani";
-
+                // Ganti JOIN query → pakai VIEW
+                string query = "SELECT * FROM vw_Padi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-
-                    //eksekusinya pakai SqlDataReader
-                    //SqlDataReader "pembaca" dari DB, satu2 per baris smp akhir
-                    //ExecuteReader apl ngirim perintah ke DB
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        //DataTable: tabel kosong di memori laptop, kek excel
-                        DataTable dt = new DataTable();
-
-                        //Ngisi DataTable (yg 'dt' tadi), dari hasil baca SqlDataReader
-                        //Mindahin dari db ke DataTable di sini, satu2 per baris smp akhir
-                        dt.Load(dr);
-
-                        //habis masuk ke dt, langsung return dt nya ke yg manggil (misalnya dgv)
-                        return dt;
-                    }
-
+                    DataTable dt = new DataTable();
+                    dt.Load(dr);
+                    return dt;
                 }
             }
         }
@@ -85,27 +69,10 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"
-                SELECT 
-                    p.idPadi,
-                    p.idPetani,
-                    pt.namaPetani,
-                    p.jenisBibit,
-                    p.lokasiLahan,
-                    p.tanggalTanam
-                FROM padi p
-                JOIN petani pt
-                    ON p.idPetani = pt.idPetani
-                WHERE 
-                    CAST(p.idPadi AS VARCHAR) LIKE @keyword
-                    OR CAST(p.idPetani AS VARCHAR) LIKE @keyword
-                    OR pt.namaPetani LIKE @keyword
-                    OR p.jenisBibit LIKE @keyword
-                    OR p.lokasiLahan LIKE @keyword
-                    OR CONVERT(VARCHAR, p.tanggalTanam, 120) LIKE @keyword";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("sp_SearchPadi", conn))
                 {
-                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@keyword", keyword);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         DataTable dt = new DataTable();
@@ -120,23 +87,26 @@ namespace OryzaTrackDAL
         /*=======================
                 Insert Padi
          ========================*/
-        public bool Insert(int idPadi, int idPetani, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
+        public string Insert(int idPadi, int idPetani, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO padi 
-                                (idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam) 
-                                VALUES 
-                                (@idPadi, @idPetani, @jenisBibit, @lokasiLahan, @tanggalTanam)";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idPadi", idPadi);
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
-                cmd.Parameters.AddWithValue("@jenisBibit", jenisPadi);
-                cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
-                cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
+                using (SqlCommand cmd = new SqlCommand("sp_InsertPadi", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    cmd.Parameters.AddWithValue("@jenisBibit", jenisBibit);
+                    cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
+                    cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam.Date);
 
-                return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 
@@ -148,20 +118,22 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE padi         
-                                SET idPetani = @idPetani,
-                                    jenisBibit = @jenisBibit, 
-                                    lokasiLahan = @lokasiLahan, 
-                                    tanggalTanam = @tanggalTanam
-                                WHERE idPadi = @idPadi";    
-                SqlCommand cmd = new SqlCommand(query, conn);
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePadi", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    cmd.Parameters.AddWithValue("@jenisBibit", jenisBibit);
+                    cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
+                    cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam.Date);
 
-                cmd.Parameters.AddWithValue("@idPadi", idPadi);
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
-                cmd.Parameters.AddWithValue("@jenisBibit", jenisPadi);
-                cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
-                cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
-                return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 
