@@ -18,33 +18,17 @@ namespace OryzaTrackDAL
         ========================*/
         public DataTable GetAll()
         {
-            //pakai using biar connectionnya langsung close setelah selesai running blok kodenya
-            //SqlConnection kayak kabel fisik ke DB
             using (SqlConnection conn = db.GetConnection())
             {
-                //buka koneksi sama command buat ngejalanin query
                 conn.Open();
-                string query = "SELECT * FROM petani";
-
+                // Ganti "SELECT * FROM petani" → pakai VIEW
+                string query = "SELECT * FROM vw_Petani";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-
-                    //eksekusinya pakai SqlDataReader
-                    //SqlDataReader "pembaca" dari DB, satu2 per baris smp akhir
-                    //ExecuteReader apl ngirim perintah ke DB
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        //DataTable: tabel kosong di memori laptop, kek excel
-                        DataTable dt = new DataTable();
-
-                        //Ngisi DataTable (yg 'dt' tadi), dari hasil baca SqlDataReader
-                        //Mindahin dari db ke DataTable di sini, satu2 per baris smp akhir
-                        dt.Load(dr);
-
-                        //habis masuk ke dt, langsung return dt nya ke yg manggil (misalnya dgv)
-                        return dt;
-                    }
-
+                    DataTable dt = new DataTable();
+                    dt.Load(dr);
+                    return dt;
                 }
             }
         }
@@ -105,16 +89,10 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT idPetani, namaPetani, NIK, alamat, noTelepon, statusAktif 
-                        FROM petani
-                        WHERE CAST(idPetani AS VARCHAR) LIKE @keyword
-                        OR namaPetani LIKE @keyword
-                        OR NIK LIKE @keyword
-                        OR alamat LIKE @keyword
-                        OR noTelepon LIKE @keyword";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("sp_SearchPetani", conn))
                 {
-                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@keyword", keyword);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         DataTable dt = new DataTable();
@@ -129,70 +107,80 @@ namespace OryzaTrackDAL
         /*=======================
                 Insert Petani 
          ========================*/
-        public bool Insert(string namaPetani, string nik, string alamat, string noTelepon)
+        public string Insert(string namaPetani, string nik, string alamat, string noTelepon)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO petani 
-                                (namaPetani, nik, alamat, noTelepon) 
-                                VALUES 
-                                (@namaPetani, @nik, @alamat, @noTelepon)";
+                using (SqlCommand cmd = new SqlCommand("sp_InsertPetani", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                    cmd.Parameters.AddWithValue("@NIK", nik);
+                    cmd.Parameters.AddWithValue("@alamat", alamat);
+                    cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                    // Parameter OUTPUT untuk ambil pesan dari SP
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
 
-                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                cmd.Parameters.AddWithValue("@nik", nik);
-                cmd.Parameters.AddWithValue("@alamat", alamat);
-                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                    cmd.ExecuteNonQuery();
 
-                return cmd.ExecuteNonQuery() > 0;
+                    // Return pesan dari SP ("OK" atau pesan error)
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 
         /*=======================
                Update Petani 
         ========================*/
-        public bool Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
+        public string Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE petani 
-                                SET namaPetani = @namaPetani, 
-                                    nik = @nik, 
-                                    alamat = @alamat, 
-                                    noTelepon = @noTelepon,
-                                    statusAktif = @statusAktif
-                                WHERE idPetani = @idPetani";
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePetani", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                    cmd.Parameters.AddWithValue("@NIK", nik);
+                    cmd.Parameters.AddWithValue("@alamat", alamat);
+                    cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                    cmd.Parameters.AddWithValue("@statusAktif", statusAktif);
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
 
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
-                cmd.Parameters.AddWithValue("@statusAktif", statusAktif);
-                cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                cmd.Parameters.AddWithValue("@nik", nik);
-                cmd.Parameters.AddWithValue("@alamat", alamat);
-                cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
-
-                return cmd.ExecuteNonQuery() > 0;
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 
         /*=======================
             Delete Petani 
         ========================*/
-        public bool Delete(int idPetani)
+        public string Delete(int idPetani)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"DELETE FROM petani WHERE idPetani = @idPetani";
+                using (SqlCommand cmd = new SqlCommand("sp_DeletePetani", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
 
-                return cmd.ExecuteNonQuery() > 0;
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 

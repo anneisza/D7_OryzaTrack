@@ -60,14 +60,13 @@ namespace OryzaTrackBLL
             if (!(noTelepon.StartsWith("08") || noTelepon.StartsWith("+62")))
                 throw new Exception("Format nomor telepon salah!");
 
-            // 2. CEK DUPLIKASI (PENTING: Harus sebelum Insert)
-            if (dal.IsNoTeleponExist(noTelepon))
-            {
-                throw new Exception("Nomor telepon sudah terdaftar!");
-            }
+            // Validasi duplikat sekarang ditangani SP, BLL tinggal cek pesannya
+            string hasil = dal.Insert(namaPetani, nik, alamat, noTelepon);
 
-            // 3. Simpan ke Database
-            return dal.Insert(namaPetani, nik, alamat, noTelepon);
+            if (hasil != "OK")
+                throw new Exception(hasil); // Lempar pesan dari SP ke Form
+
+            return true;
         }
 
         /*=======================
@@ -79,14 +78,12 @@ namespace OryzaTrackBLL
             // 1. Validasi format telepon
             if (!(noTelepon.StartsWith("08") || noTelepon.StartsWith("+62"))) throw new Exception("Format nomor telepon salah!");
 
-            // 2. Cek Duplikasi (Mengabaikan ID sendiri agar tidak bentrok dengan data lama)
-            if (dal.IsNoTeleponExist(noTelepon, idPetani))
-            {
-                throw new Exception("Nomor telepon sudah digunakan oleh petani lain!");
-            }
+            string hasil = dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
 
-            // 3. Update Database
-            return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
+            if (hasil != "OK")
+                throw new Exception(hasil);
+
+            return true;
         }
 
         /*=======================
@@ -95,9 +92,13 @@ namespace OryzaTrackBLL
 
         public bool Hapus(int idPetani)
         {
-            return dal.Delete(idPetani);
+            string hasil = dal.Delete(idPetani);
 
-        }
+            if (hasil != "OK")
+                throw new Exception(hasil); // Lempar pesan dari SP ke Form
+
+            return true;
+        }                       
 
         /*=======================
                 Total 

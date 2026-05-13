@@ -13,11 +13,14 @@ namespace OryzaTrack
 {
     public partial class FormPetani : Form
     {
+
         private int selectedIdPetani = 0;
         private PetaniBLL bll = new PetaniBLL();
         //variable data lama
         private string oldNama, oldNIK, oldAlamat, oldNoTelp;
         private bool oldStatus;
+        //binding source untuk datagridview
+        private BindingSource bindingSource = new BindingSource();
 
         public FormPetani(int idAdmin)
         {
@@ -56,7 +59,16 @@ namespace OryzaTrack
         {
             try
             {
-                dgvPetani.DataSource = bll.GetAll();
+                // Ambil data petani dari BLL dan set ke BindingSource
+                DataTable dt = bll.GetAll();
+                bindingSource.DataSource = dt;
+
+                // Binding DGV ke BindingSource
+                dgvPetani.DataSource = bindingSource;
+
+                // Binding Navigator ke BindingSource
+                bindingNavigator1.BindingSource = bindingSource;
+
                 TampilkanTotal();
             }
             catch (Exception ex)
@@ -379,18 +391,18 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dgvPetani.Rows[e.RowIndex];
-                selectedIdPetani = Convert.ToInt32(row.Cells["idPetani"].Value);
+                DataRowView row = (DataRowView)bindingSource.Current;
+                selectedIdPetani = Convert.ToInt32(row  ["idPetani"]);
 
                 // Simpan ke TextBox
-                txtNamaPetani.Text = oldNama = row.Cells["namaPetani"].Value.ToString();
-                txtNIK.Text = oldNIK = row.Cells["NIK"].Value.ToString();
-                txtAlamat.Text = oldAlamat = row.Cells["alamat"].Value.ToString();
-                txtNoTelepon.Text = oldNoTelp = row.Cells["noTelepon"].Value.ToString();
+                txtNamaPetani.Text = oldNama = row["namaPetani"].ToString();
+                txtNIK.Text = oldNIK = row["NIK"].ToString();
+                txtAlamat.Text = oldAlamat = row["alamat"].ToString();
+                txtNoTelepon.Text = oldNoTelp = row["noTelepon"]    .ToString();
 
-                bool status = Convert.ToBoolean(row.Cells["statusAktif"].Value);
-                cmbStatusAktif.SelectedIndex = status ? 0 : 1;
-                oldStatus = status;
+                // statusAktif sekarang "Aktif"/"Tidak Aktif" (dari VIEW)
+                cmbStatusAktif.SelectedIndex = row["statusAktif"].ToString() == "Aktif" ? 0 : 1;
+                oldStatus = cmbStatusAktif.SelectedIndex == 0;
             }
 
         }

@@ -285,3 +285,157 @@ ALTER TABLE riwayatPenyakit ADD CONSTRAINT CK_Riwayat_TanggalTerdeteksi
 ALTER TABLE riwayatPenyakit ADD CONSTRAINT CK_Riwayat_TanggalSelesai
     CHECK (tanggalSelesai IS NULL OR 
           (tanggalSelesai >= '2000-01-01' AND tanggalSelesai <= DATEADD(YEAR, 1, GETDATE())));
+
+
+/*======================
+         UCP2
+========================*/
+
+-- 1. PETANI
+
+--VIEW petani
+CREATE VIEW vw_Petani AS
+SELECT 
+    idPetani,
+    namaPetani,
+    NIK,
+    alamat,
+    noTelepon,
+    CASE WHEN statusAktif = 1 THEN 'Aktif' ELSE 'Tidak Aktif' END AS statusAktif
+FROM petani;
+
+-- =====================
+-- SP INSERT PETANI
+-- =====================
+CREATE PROCEDURE sp_InsertPetani
+    @namaPetani  VARCHAR(100),
+    @NIK         CHAR(16),
+    @alamat      VARCHAR(255),
+    @noTelepon   VARCHAR(15),
+    @pesanHasil    VARCHAR(200) OUTPUT  -- output pesan hasil
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek NIK duplikat (bukan sekadar INSERT biasa)
+    IF EXISTS (SELECT 1 FROM petani WHERE NIK = @NIK)
+    BEGIN
+        SET @pesanHasil = 'NIK sudah terdaftar di sistem!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek NoTelepon duplikat
+    IF EXISTS (SELECT 1 FROM petani WHERE noTelepon = @noTelepon)
+    BEGIN
+        SET @pesanHasil = 'Nomor telepon sudah digunakan petani lain!';
+        RETURN;
+    END
+
+    -- Baru INSERT kalau lolos validasi
+    INSERT INTO petani (namaPetani, NIK, alamat, noTelepon)
+    VALUES (@namaPetani, @NIK, @alamat, @noTelepon);
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE PETANI
+-- =====================
+CREATE PROCEDURE sp_UpdatePetani
+    @idPetani    INT,
+    @namaPetani  VARCHAR(100),
+    @NIK         CHAR(16),
+    @alamat      VARCHAR(255),
+    @noTelepon   VARCHAR(15),
+    @statusAktif BIT,
+    @pesanHasil    VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek apakah petani ada
+    IF NOT EXISTS (SELECT 1 FROM petani WHERE idPetani = @idPetani)
+    BEGIN
+        SET @pesanHasil = 'Data petani tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek NIK duplikat (kecuali milik sendiri)
+    IF EXISTS (SELECT 1 FROM petani WHERE NIK = @NIK AND idPetani != @idPetani)
+    BEGIN
+        SET @pesanHasil = 'NIK sudah digunakan petani lain!';
+        RETURN;
+    END
+
+    -- Logika 3: Cek NoTelepon duplikat (kecuali milik sendiri)
+    IF EXISTS (SELECT 1 FROM petani WHERE noTelepon = @noTelepon AND idPetani != @idPetani)
+    BEGIN
+        SET @pesanHasil = 'Nomor telepon sudah digunakan petani lain!';
+        RETURN;
+    END
+
+    UPDATE petani
+    SET namaPetani  = @namaPetani,
+        NIK         = @NIK,
+        alamat      = @alamat,
+        noTelepon   = @noTelepon,
+        statusAktif = @statusAktif
+    WHERE idPetani = @idPetani;
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP DELETE PETANI
+-- =====================
+CREATE PROCEDURE sp_DeletePetani
+    @idPetani INT,
+    @pesanHasil VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika: Cek apakah petani masih punya data Padi aktif
+    IF EXISTS (SELECT 1 FROM Padi WHERE idPetani = @idPetani)
+    BEGIN
+        SET @pesanHasil = 'Petani masih memiliki data padi, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    DELETE FROM petani WHERE idPetani = @idPetani;
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+/* =====================
+   SP SEARCH PETANI
+ =====================*/
+
+CREATE PROCEDURE sp_SearchPetani
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika tambahan: trim & ubah ke lowercase untuk pencarian fleksibel
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        idPetani,
+        namaPetani,
+        NIK,
+        alamat,
+        noTelepon,
+        CASE WHEN statusAktif = 1 THEN 'Aktif' ELSE 'Tidak Aktif' END AS statusAktif
+    FROM petani
+    WHERE 
+        CAST(idPetani AS VARCHAR) LIKE '%' + @keyword + '%'
+        OR namaPetani     LIKE '%' + @keyword + '%'
+        OR NIK            LIKE '%' + @keyword + '%'
+        OR alamat         LIKE '%' + @keyword + '%'
+        OR noTelepon      LIKE '%' + @keyword + '%';
+END;
+GO
+
