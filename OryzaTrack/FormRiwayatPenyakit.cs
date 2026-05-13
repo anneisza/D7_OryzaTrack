@@ -18,6 +18,10 @@ namespace OryzaTrack
         private RiwayatPenyakitBLL bll = new RiwayatPenyakitBLL();
         PadiBLL bllPadi = new PadiBLL();
         PenyakitBLL bllPenyakit = new PenyakitBLL();
+        //var data lama untuk validasi perubahan
+        private int oldIdPadi, oldIdPenyakit;
+        private DateTime oldTglDeteksi, oldTglSelesai;
+        private string oldKeterangan;
         public FormRiwayatPenyakit(int idAdmin)
         {
             InitializeComponent();
@@ -243,10 +247,16 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdRiwayatPenyakit == 0)
+            if (selectedIdRiwayatPenyakit == 0) { /* pesan error */ return; }
+
+            // VALIDASI: Apakah user benar-benar mengubah sesuatu?
+            if ((int)cmbIdPadi.SelectedValue == oldIdPadi &&
+                (int)cmbIdPenyakit.SelectedValue == oldIdPenyakit &&
+                dtpTanggalTerdeteksi.Value == oldTglDeteksi &&
+                dtpTanggalSelesai.Value == oldTglSelesai &&
+                txtKeterangan.Text.Trim() == oldKeterangan)
             {
-                MessageBox.Show("Pilih data dari tabel yang ingin diubah terlebih dahulu!",
-                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Data masih sama dengan sebelumnya. Tidak ada yang perlu diubah.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -341,23 +351,25 @@ namespace OryzaTrack
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvRiwayat.Rows[e.RowIndex];
-
-                // harus sama dengan nama kolomnya
                 selectedIdRiwayatPenyakit = Convert.ToInt32(row.Cells["idRiwayat"].Value);
 
-                // Gunakan SelectedValue atau Text untuk sinkronisasi ComboBox
+                // TIPS: Jangan gunakan .Text jika datanya dari hasil JOIN. 
+                // Gunakan pencarian index berdasarkan value asli jika memungkinkan.
                 cmbIdPadi.Text = row.Cells["jenisBibit"].Value.ToString();
                 cmbIdPenyakit.Text = row.Cells["Kategori"].Value.ToString();
 
-                dtpTanggalTerdeteksi.Value = Convert.ToDateTime(row.Cells["tanggalTerdeteksi"].Value);
+                // Simpan data lama untuk validasi redundansi
+                oldIdPadi = (int)cmbIdPadi.SelectedValue;
+                oldIdPenyakit = (int)cmbIdPenyakit.SelectedValue;
 
-                // Handle Tanggal Selesai jika null
+                dtpTanggalTerdeteksi.Value = oldTglDeteksi = Convert.ToDateTime(row.Cells["tanggalTerdeteksi"].Value);
+
                 if (row.Cells["tanggalSelesai"].Value != DBNull.Value)
                 {
-                    dtpTanggalSelesai.Value = Convert.ToDateTime(row.Cells["tanggalSelesai"].Value);
+                    dtpTanggalSelesai.Value = oldTglSelesai = Convert.ToDateTime(row.Cells["tanggalSelesai"].Value);
                 }
 
-                txtKeterangan.Text = row.Cells["keterangan"].Value.ToString();
+                txtKeterangan.Text = oldKeterangan = row.Cells["keterangan"].Value.ToString();
             }
         }
 

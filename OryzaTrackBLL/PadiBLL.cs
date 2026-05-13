@@ -40,7 +40,7 @@ namespace OryzaTrackBLL
         /*=============================
                 Tambah 
         ==============================*/
-        public bool Tambah(int idPetani, string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
+        public bool Tambah(int idPadi, int idPetani, string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
         {
             // 1. Validasi Jenis Bibit
             string[] bibitValid = { "IR64", "Ciherang", "Inpari 32", "Mekongga" };
@@ -68,7 +68,7 @@ namespace OryzaTrackBLL
                 throw new Exception("Lokasi lahan tidak valid.");
             }
 
-            return dal.Insert(jenisBibit, lokasiLahan, tanggalTanam);
+            return dal.Insert(idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam);
         }
 
         /*=============================
@@ -103,7 +103,7 @@ namespace OryzaTrackBLL
             }
 
 
-            return dal.Update(idPadi, jenisBibit, lokasiLahan, tanggalTanam);
+            return dal.Update(idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam);
         }
 
         /*=============================

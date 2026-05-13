@@ -70,20 +70,25 @@ namespace OryzaTrack
 
         private bool ValidasiInput()
         {
-            //idPetani harus dipilih
-            if (cmbIdPetani.SelectedIndex == -1) return true;
+            if (cmbIdPetani.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih Petani terlebih dahulu!");
+                return false;
+            }
+            if (cmbJB.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih Jenis Bibit!");
+                return false;
+            }
+            if (cmbLokasiLahan.SelectedIndex == -1)
+            {
+                MessageBox.Show("Pilih Lokasi Lahan!");
+                return false;
+            }
 
-            //jenis benih harus dipilih
-            if (cmbJB.SelectedIndex == -1) return true;
-
-            //lokasi lahan harus dipilih
-            if (cmbLokasiLahan.SelectedIndex == -1) return true;
-
-            //tanggal tanam tidak boleh lebih dari hari ini dan kurang dari tahun 2000
             if (dtpTanggalTanam.Value > DateTime.Now || dtpTanggalTanam.Value.Year < 2000)
             {
-                MessageBox.Show("Tanggal tanam tidak valid! Harus antara tahun 2000 dan hari ini.");
-                dtpTanggalTanam.Focus();
+                MessageBox.Show("Tanggal tanam tidak valid!");
                 return false;
             }
             return true;
@@ -299,12 +304,15 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row =  dgvPadi.Rows[e.RowIndex];
+                DataGridViewRow row = dgvPadi.Rows[e.RowIndex];
                 selectedIdPadi = Convert.ToInt32(row.Cells["idPadi"].Value);
-                cmbIdPetani.Text = row.Cells["idPetani"].Value.ToString();
+
+                // Gunakan SelectedValue untuk ComboBox yang di-bind ke DataSource
+                cmbIdPetani.SelectedValue = row.Cells["idPetani"].Value;
+
                 cmbJB.Text = row.Cells["jenisBibit"].Value.ToString();
                 cmbLokasiLahan.Text = row.Cells["lokasiLahan"].Value.ToString();
-                dtpTanggalTanam.Value = DateTime.Parse(row.Cells["tanggalTanam"].Value.ToString());
+                dtpTanggalTanam.Value = Convert.ToDateTime(row.Cells["tanggalTanam"].Value);
             }
         }
 

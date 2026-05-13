@@ -69,6 +69,15 @@ namespace OryzaTrackBLL
             }
 
             return dal.Insert(namaPetani, nik, alamat, noTelepon);
+
+
+            //cek nomor telepon sudah terdaftar atau belum
+            if (dal.IsNoTeleponExist(noTelepon))
+            {
+                throw new Exception("Nomor telepon sudah terdaftar!");
+            }
+
+            return dal.Insert(namaPetani, nik, alamat, noTelepon);
         }
 
         /*=======================
@@ -77,6 +86,14 @@ namespace OryzaTrackBLL
 
         public bool Ubah(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
+            return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
+
+            // Cek duplicate nomor telepon (kecuali milik user ini sendiri)
+            if (dal.IsNoTeleponExist(noTelepon, idPetani))
+            {
+                throw new Exception("Nomor telepon sudah digunakan oleh petani lain!");
+            }
+
             return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
         }
 
@@ -87,6 +104,7 @@ namespace OryzaTrackBLL
         public bool Hapus(int idPetani)
         {
             return dal.Delete(idPetani);
+
         }
 
         /*=======================

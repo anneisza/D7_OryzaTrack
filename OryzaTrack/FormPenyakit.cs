@@ -15,6 +15,8 @@ namespace OryzaTrack
     {
         private int selectedIdPenyakit = 0;
         private PenyakitBLL bll = new PenyakitBLL();
+        private string oldKategori, oldGejala, oldTingkat;
+        private DateTime oldTanggal;
         public FormPenyakit(int idAdmin)
         {
             InitializeComponent();
@@ -205,10 +207,15 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPenyakit == 0)
+            if (selectedIdPenyakit == 0) { /* pesan error */ return; }
+
+            // VALIDASI: Cek apakah ada perubahan
+            if (cmbKategori.Text == oldKategori &&
+                txtGejalaPenyakit.Text.Trim() == oldGejala &&
+                cmbTingkatKerusakan.Text == oldTingkat &&
+                dtpTanggalSerangan.Value == oldTanggal)
             {
-                MessageBox.Show("Pilih data dari tabel yang ingin diubah terlebih dahulu!",
-                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Tidak ada perubahan data untuk diperbarui.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -299,10 +306,12 @@ namespace OryzaTrack
             {
                 DataGridViewRow row = dgvPenyakit.Rows[e.RowIndex];
                 selectedIdPenyakit = Convert.ToInt32(row.Cells["idPenyakit"].Value);
-                cmbKategori.Text = row.Cells["kategori"].Value.ToString();
-                txtGejalaPenyakit.Text = row.Cells["gejalaPenyakit"].Value.ToString();
-                cmbTingkatKerusakan.Text = row.Cells["tingkatKerusakan"].Value.ToString();
-                dtpTanggalSerangan.Value = DateTime.Parse(row.Cells["tanggalSerangan"].Value.ToString());
+
+                // Simpan ke form dan ke variabel 'old'
+                cmbKategori.Text = oldKategori = row.Cells["kategori"].Value.ToString();
+                txtGejalaPenyakit.Text = oldGejala = row.Cells["gejalaPenyakit"].Value.ToString();
+                cmbTingkatKerusakan.Text = oldTingkat = row.Cells["tingkatKerusakan"].Value.ToString();
+                dtpTanggalSerangan.Value = oldTanggal = Convert.ToDateTime(row.Cells["tanggalSerangan"].Value);
             }
 
         }

@@ -212,5 +212,24 @@ namespace OryzaTrackDAL
                 }
             }
         }
+
+
+        //
+        public bool IsNoTeleponExist(string noTelepon, int idPetani = 0)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                // Jika idPetani > 0, berarti ini untuk pengecekan saat UPDATE (mengabaikan dirinya sendiri)
+                string query = "SELECT COUNT(*) FROM petani WHERE noTelepon = @noTelepon AND idPetani != @idPetani";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                    cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
     }
 }

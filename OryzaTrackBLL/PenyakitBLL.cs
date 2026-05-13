@@ -67,8 +67,16 @@ namespace OryzaTrackBLL
                     throw new Exception("Tanggal serangan tidak valid! Pastikan antara tahun 2000 hingga hari ini.");
                 }
 
-                return dal.Insert(kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan);
-            }
+                try
+                {
+                    return dal.Insert(kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan);
+                }
+                catch (Exception ex)
+                {
+                    // Melempar pesan spesifik jika database mati
+                    throw new Exception("Gagal menyimpan ke database. Pastikan koneksi server aktif. Detail: " + ex.Message);
+                }
+        }
 
             /*=============================
                     Ubah 

@@ -120,19 +120,19 @@ namespace OryzaTrackDAL
         /*=======================
                 Insert Padi
          ========================*/
-        public bool Insert(string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
+        public bool Insert(int idPadi, int idPetani, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
                 string query = @"INSERT INTO padi 
-                                (jenisPadi, lokasiLahan, tanggalTanam) 
+                                (idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam) 
                                 VALUES 
-                                (@jenisPadi, @lokasiLahan, @tanggalTanam)";
-
+                                (@idPadi, @idPetani, @jenisBibit, @lokasiLahan, @tanggalTanam)";
                 SqlCommand cmd = new SqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@jenisPadi", jenisPadi);
+                cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                cmd.Parameters.AddWithValue("@jenisBibit", jenisPadi);
                 cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
                 cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
 
@@ -143,20 +143,22 @@ namespace OryzaTrackDAL
         /*=======================
                Update Padi
         ========================*/
-        public bool Update(int idPadi, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
+        public bool Update(int idPadi, int idPetani,   string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
                 string query = @"UPDATE padi         
-                                SET jenisPadi = @jenisPadi, 
+                                SET idPetani = @idPetani,
+                                    jenisBibit = @jenisBibit, 
                                     lokasiLahan = @lokasiLahan, 
                                     tanggalTanam = @tanggalTanam
                                 WHERE idPadi = @idPadi";    
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@idPadi", idPadi);
-                cmd.Parameters.AddWithValue("@jenisPadi", jenisPadi);
+                cmd.Parameters.AddWithValue("@idPetani", idPetani);
+                cmd.Parameters.AddWithValue("@jenisBibit", jenisPadi);
                 cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
                 cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam);
                 return cmd.ExecuteNonQuery() > 0;

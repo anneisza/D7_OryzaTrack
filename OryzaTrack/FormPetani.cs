@@ -15,6 +15,9 @@ namespace OryzaTrack
     {
         private int selectedIdPetani = 0;
         private PetaniBLL bll = new PetaniBLL();
+        //variable data lama
+        private string oldNama, oldNIK, oldAlamat, oldNoTelp;
+        private bool oldStatus;
 
         public FormPetani(int idAdmin)
         {
@@ -188,10 +191,18 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPetani == 0)
+            if (selectedIdPetani == 0) return;
+
+            bool currentStatus = cmbStatusAktif.SelectedIndex == 0;
+
+            // VALIDASI: Cek apakah ada perubahan data
+            if (txtNamaPetani.Text.Trim() == oldNama &&
+                txtNIK.Text.Trim() == oldNIK &&
+                txtAlamat.Text.Trim() == oldAlamat &&
+                txtNoTelepon.Text.Trim() == oldNoTelp &&
+                currentStatus == oldStatus)
             {
-                MessageBox.Show("Pilih data dari tabel yang ingin diubah terlebih dahulu!",
-                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Tidak ada data yang diubah.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -347,17 +358,16 @@ namespace OryzaTrack
             {
                 DataGridViewRow row = dgvPetani.Rows[e.RowIndex];
                 selectedIdPetani = Convert.ToInt32(row.Cells["idPetani"].Value);
-                txtNamaPetani.Text = row.Cells["namaPetani"].Value.ToString();
-                txtNIK.Text = row.Cells["NIK"].Value.ToString();
-                txtAlamat.Text = row.Cells["alamat"].Value.ToString();
-                txtNoTelepon.Text = row.Cells["noTelepon"].Value.ToString();
-                //cek status
-                bool status = false;
-                if (row.Cells["statusAktif"].Value != null)
-                {
-                    status = Convert.ToBoolean(row.Cells["statusAktif"].Value);
-                }
+
+                // Simpan ke TextBox
+                txtNamaPetani.Text = oldNama = row.Cells["namaPetani"].Value.ToString();
+                txtNIK.Text = oldNIK = row.Cells["NIK"].Value.ToString();
+                txtAlamat.Text = oldAlamat = row.Cells["alamat"].Value.ToString();
+                txtNoTelepon.Text = oldNoTelp = row.Cells["noTelepon"].Value.ToString();
+
+                bool status = Convert.ToBoolean(row.Cells["statusAktif"].Value);
                 cmbStatusAktif.SelectedIndex = status ? 0 : 1;
+                oldStatus = status;
             }
 
         }
