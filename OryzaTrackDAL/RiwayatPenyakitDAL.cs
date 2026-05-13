@@ -20,12 +20,8 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                // Menggunakan JOIN agar tampilan di tabel lebih informatif
-                string query = @"SELECT r.idRiwayat, p.jenisBibit, py.Kategori, 
-                                r.tanggalTerdeteksi, r.tanggalSelesai, r.keterangan 
-                                FROM riwayatPenyakit r
-                                JOIN Padi p ON r.idPadi = p.idPadi
-                                JOIN Penyakit py ON r.idPenyakit = py.idPenyakit";
+                // sp
+                string query = "SELECT * FROM vw_RiwayatPenyakit";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -73,24 +69,11 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT 
-                                    r.idRiwayat, 
-                                    p.jenisBibit, 
-                                    py.Kategori, 
-                                    r.tanggalTerdeteksi, 
-                                    r.keterangan 
-                                FROM riwayatPenyakit r
-                                JOIN Padi p ON r.idPadi = p.idPadi
-                                JOIN Penyakit py ON r.idPenyakit = py.idPenyakit
-                                WHERE 
-                                    p.jenisBibit LIKE @keyword 
-                                    OR py.Kategori LIKE @keyword 
-                                    OR r.keterangan LIKE @keyword
-                                    OR CAST(r.idRiwayat AS VARCHAR) LIKE @keyword
-                                    OR CAST(r.tanggalTerdeteksi AS VARCHAR) LIKE @keyword";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_SearchRiwayat", conn))
                 {
+                    //sp
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -105,25 +88,33 @@ namespace OryzaTrackDAL
         /*=============================
                 Insert Riwayat 
         ==============================*/
-        public bool Insert(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
+        public string Insert(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO riwayatPenyakit 
-                                (idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan) 
-                                VALUES 
-                                (@idPadi, @idPenyakit, @tanggalTerdeteksi, @tanggalSelesai, @keterangan)";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_InsertRiwayat", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
-                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
-                    cmd.Parameters.AddWithValue("@tanggalSelesai", (object)tanggalSelesai ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi.Date);
+
+                    // Handle nullable DateTime
+                    if (tanggalSelesai.HasValue)
+                        cmd.Parameters.AddWithValue("@tanggalSelesai", tanggalSelesai.Value.Date);
+                    else
+                        cmd.Parameters.AddWithValue("@tanggalSelesai", DBNull.Value);
+
                     cmd.Parameters.AddWithValue("@keterangan", keterangan);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -131,35 +122,34 @@ namespace OryzaTrackDAL
         /*=============================
                Update Riwayat 
         ==============================*/
-        public bool Update(int idRiwayat, int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
+        public string Update(int idRiwayat, int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE riwayatPenyakit 
-                                SET idPadi = @idPadi, 
-                                    idPenyakit = @idPenyakit, 
-                                    tanggalTerdeteksi = @tanggalTerdeteksi, 
-                                    tanggalSelesai = @tanggalSelesai,
-                                    keterangan = @keterangan
-                                WHERE idRiwayat = @idRiwayat";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateRiwayat", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
-                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
-
+                    cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi.Date);
+                    
                     // Handle null untuk tanggalSelesai
                     if (tanggalSelesai.HasValue)
-                        cmd.Parameters.AddWithValue("@tanggalSelesai", tanggalSelesai.Value);
+                        cmd.Parameters.AddWithValue("@tanggalSelesai", tanggalSelesai.Value.Date);
                     else
                         cmd.Parameters.AddWithValue("@tanggalSelesai", DBNull.Value);
 
                     cmd.Parameters.AddWithValue("@keterangan", keterangan);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -167,17 +157,23 @@ namespace OryzaTrackDAL
         /*=============================
             Delete Riwayat 
         ==============================*/
-        public bool Delete(int idRiwayat)
+        public string Delete(int idRiwayat)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"DELETE FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_DeleteRiwayat", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
-                    return cmd.ExecuteNonQuery() > 0;
+
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }

@@ -15,26 +15,17 @@ namespace OryzaTrackBLL
         /*=============================
           View Riwayat | GetAll()
         ==============================*/
-        public DataTable GetAll()
-        {
-            return dal.GetAll();
-        }
+        public DataTable GetAll() => dal.GetAll();
 
         /*=============================
                 GetById 
         ==============================*/
-        public DataRow GetById(int idRiwayat)
-        {
-            return dal.GetById(idRiwayat);
-        }
+        public DataRow GetById(int idRiwayat) => dal.GetById(idRiwayat);
 
         /*=============================
                 Cari 
         ==============================*/
-        public DataTable Cari(string keyword)
-        {
-            return dal.Search(keyword);
-        }
+        public DataTable Cari(string keyword) => dal.Search(keyword);
 
         /*=============================
                 Tambah 
@@ -59,8 +50,11 @@ namespace OryzaTrackBLL
                 throw new Exception("Keterangan riwayat minimal harus 5 karakter!");
             }
 
-            // return hasil dari DAL Insert, yang sudah pasti true kalau berhasil, dan false kalau gagal (misalnya karena koneksi DB error)
-            return dal.Insert(idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan);
+            // Logika berat (cek riwayat aktif duplikat) → ditangani SP
+            string hasil = dal.Insert(idPadi, idPenyakit, tanggalTerdeteksi,
+                                      tanggalSelesai, keterangan);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -93,7 +87,10 @@ namespace OryzaTrackBLL
                 throw new Exception("Keterangan tidak boleh kosong.");
             }
 
-            return dal.Update(idRiwayat, idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan);
+            string hasil = dal.Update(idRiwayat, idPadi, idPenyakit,
+                                      tanggalTerdeteksi, tanggalSelesai, keterangan);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -101,16 +98,15 @@ namespace OryzaTrackBLL
         ==============================*/
         public bool Hapus(int idRiwayat)
         {
-            return dal.Delete(idRiwayat);
+            string hasil = dal.Delete(idRiwayat);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
                 Total 
         ==============================*/
-        public int Total()
-        {
-            return dal.Count();
-        }
+        public int Total() => dal.Count();
 
 
         //*=================

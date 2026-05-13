@@ -1006,3 +1006,220 @@ BEGIN
         OR CONVERT(VARCHAR, pp.tanggalPerawatan,103) LIKE '%' + @keyword + '%';
 END;
 GO
+
+--================================================================================================
+
+-- =====================
+-- VIEW RIWAYAT PENYAKIT
+-- =====================
+CREATE VIEW vw_RiwayatPenyakit AS
+SELECT 
+    r.idRiwayat,
+    r.idPadi,       -- wajib ada untuk CellClick SelectedValue
+    r.idPenyakit,   -- wajib ada untuk CellClick SelectedValue
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    pn.Kategori         AS kategoriPenyakit,
+    pn.tingkatKerusakan,
+    CONVERT(VARCHAR, r.tanggalTerdeteksi, 103) AS tanggalTerdeteksi,
+    CASE 
+        WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+        ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+    END AS tanggalSelesai,
+    r.keterangan
+FROM riwayatPenyakit r
+JOIN Padi p         ON r.idPadi     = p.idPadi
+JOIN petani pt      ON p.idPetani   = pt.idPetani
+JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit;
+GO
+
+-- =====================
+-- SP INSERT RIWAYAT
+-- =====================
+CREATE PROCEDURE sp_InsertRiwayat
+    @idPadi             INT,
+    @idPenyakit         INT,
+    @tanggalTerdeteksi  DATE,
+    @tanggalSelesai     DATE = NULL,
+    @keterangan         VARCHAR(255),
+    @hasilMsg           VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek padi ada
+    IF NOT EXISTS (SELECT 1 FROM Padi WHERE idPadi = @idPadi)
+    BEGIN
+        SET @hasilMsg = 'Data padi tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek penyakit ada
+    IF NOT EXISTS (SELECT 1 FROM Penyakit WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @hasilMsg = 'Data penyakit tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 3: Cek apakah padi + penyakit yang sama sudah ada riwayat aktif
+    --           (tanggalSelesai masih NULL = belum selesai)
+    IF EXISTS (
+        SELECT 1 FROM riwayatPenyakit
+        WHERE idPadi      = @idPadi
+          AND idPenyakit  = @idPenyakit
+          AND tanggalSelesai IS NULL
+    )
+    BEGIN
+        SET @hasilMsg = 'Padi ini masih memiliki riwayat penyakit aktif yang belum selesai!';
+        RETURN;
+    END
+
+    -- Logika 4: Validasi urutan tanggal
+    IF @tanggalSelesai IS NOT NULL AND @tanggalSelesai < @tanggalTerdeteksi
+    BEGIN
+        SET @hasilMsg = 'Tanggal selesai tidak boleh sebelum tanggal terdeteksi!';
+        RETURN;
+    END
+
+    INSERT INTO riwayatPenyakit 
+        (idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan)
+    VALUES 
+        (@idPadi, @idPenyakit, @tanggalTerdeteksi, @tanggalSelesai, @keterangan);
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE RIWAYAT
+-- =====================
+CREATE PROCEDURE sp_UpdateRiwayat
+    @idRiwayat          INT,
+    @idPadi             INT,
+    @idPenyakit         INT,
+    @tanggalTerdeteksi  DATE,
+    @tanggalSelesai     DATE = NULL,
+    @keterangan         VARCHAR(255),
+    @hasilMsg           VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek data riwayat ada
+    IF NOT EXISTS (SELECT 1 FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat)
+    BEGIN
+        SET @hasilMsg = 'Data riwayat tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek urutan tanggal
+    IF @tanggalSelesai IS NOT NULL AND @tanggalSelesai < @tanggalTerdeteksi
+    BEGIN
+        SET @hasilMsg = 'Tanggal selesai tidak boleh sebelum tanggal terdeteksi!';
+        RETURN;
+    END
+
+    -- Logika 3: Jika riwayat sudah selesai (tanggalSelesai terisi),
+    --           tidak boleh diubah kembali jadi aktif (NULL)
+    DECLARE @tglSelesaiLama DATE;
+    SELECT @tglSelesaiLama = tanggalSelesai 
+    FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat;
+
+    IF @tglSelesaiLama IS NOT NULL AND @tanggalSelesai IS NULL
+    BEGIN
+        SET @hasilMsg = 'Riwayat yang sudah selesai tidak bisa dikembalikan ke status aktif!';
+        RETURN;
+    END
+
+    -- Logika 4: Cek duplikasi riwayat aktif (kecuali dirinya sendiri)
+    IF EXISTS (
+        SELECT 1 FROM riwayatPenyakit
+        WHERE idPadi        = @idPadi
+          AND idPenyakit    = @idPenyakit
+          AND tanggalSelesai IS NULL
+          AND idRiwayat    != @idRiwayat
+    )
+    BEGIN
+        SET @hasilMsg = 'Sudah ada riwayat aktif lain untuk padi dan penyakit yang sama!';
+        RETURN;
+    END
+
+    UPDATE riwayatPenyakit
+    SET idPadi             = @idPadi,
+        idPenyakit         = @idPenyakit,
+        tanggalTerdeteksi  = @tanggalTerdeteksi,
+        tanggalSelesai     = @tanggalSelesai,
+        keterangan         = @keterangan
+    WHERE idRiwayat = @idRiwayat;
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP DELETE RIWAYAT
+-- =====================
+CREATE PROCEDURE sp_DeleteRiwayat
+    @idRiwayat INT,
+    @hasilMsg  VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika: Riwayat yang masih aktif (belum selesai) tidak boleh dihapus
+    DECLARE @tglSelesai DATE;
+    SELECT @tglSelesai = tanggalSelesai 
+    FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat;
+
+    IF @tglSelesai IS NULL
+    BEGIN
+        SET @hasilMsg = 'Riwayat penyakit yang masih aktif tidak bisa dihapus! Isi tanggal selesai terlebih dahulu.';
+        RETURN;
+    END
+
+    DELETE FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat;
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP SEARCH RIWAYAT
+-- =====================
+CREATE PROCEDURE sp_SearchRiwayat
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        r.idRiwayat,
+        r.idPadi,
+        r.idPenyakit,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori         AS kategoriPenyakit,
+        pn.tingkatKerusakan,
+        CONVERT(VARCHAR, r.tanggalTerdeteksi, 103) AS tanggalTerdeteksi,
+        CASE 
+            WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+            ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+        END AS tanggalSelesai,
+        r.keterangan
+    FROM riwayatPenyakit r
+    JOIN Padi p         ON r.idPadi     = p.idPadi
+    JOIN petani pt      ON p.idPetani   = pt.idPetani
+    JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit
+    WHERE
+        pt.namaPetani                              LIKE '%' + @keyword + '%'
+        OR p.jenisBibit                            LIKE '%' + @keyword + '%'
+        OR p.lokasiLahan                           LIKE '%' + @keyword + '%'
+        OR pn.Kategori                             LIKE '%' + @keyword + '%'
+        OR pn.tingkatKerusakan                     LIKE '%' + @keyword + '%'
+        OR r.keterangan                            LIKE '%' + @keyword + '%'
+        OR CONVERT(VARCHAR, r.tanggalTerdeteksi, 103) LIKE '%' + @keyword + '%'
+        OR CAST(r.idRiwayat AS VARCHAR)            LIKE '%' + @keyword + '%';
+END;
+GO

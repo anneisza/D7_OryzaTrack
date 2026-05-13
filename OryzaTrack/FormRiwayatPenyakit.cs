@@ -13,6 +13,9 @@ namespace OryzaTrack
 {
     public partial class FormRiwayatPenyakit : Form
     {
+        //binding
+        private BindingSource bindingSource = new BindingSource();
+
         private int IDAdmin;
         private int selectedIdRiwayatPenyakit = 0; // Menyimpan ID riwayat penyakit yang dipilih
         private RiwayatPenyakitBLL bll = new RiwayatPenyakitBLL();
@@ -55,8 +58,11 @@ namespace OryzaTrack
         {
             try
             {
-                // Mengambil data dari PadiBLL
-                dgvRiwayat.DataSource = bll.GetAll();
+                //binding source 
+                DataTable dt = bll.GetAll();
+                bindingSource.DataSource = dt;
+                dgvRiwayat.DataSource = bindingSource;
+                bindingNavigator1.BindingSource = bindingSource;
                 TampilkanTotal();
             }
             catch (Exception ex)
@@ -120,7 +126,7 @@ namespace OryzaTrack
 
                 // ATUR MEMBER DULU SEBELUM DATASOURCE
                 cmbIdPadi.ValueMember = "idPadi";
-                cmbIdPadi.DisplayMember = "idPadi";
+                cmbIdPadi.DisplayMember = "jenisBibit";
 
                 cmbIdPadi.DataSource = dt;
                 cmbIdPadi.SelectedIndex = -1;
@@ -141,7 +147,7 @@ namespace OryzaTrack
 
                 // ATUR MEMBER DULU SEBELUM DATASOURCE
                 cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.DisplayMember = "idPenyakit";
+                cmbIdPenyakit.DisplayMember = "kategori";
 
                 cmbIdPenyakit.DataSource = dt;
                 cmbIdPenyakit.SelectedIndex = -1;
@@ -374,26 +380,32 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dgvRiwayat.Rows[e.RowIndex];
-                selectedIdRiwayatPenyakit = Convert.ToInt32(row.Cells["idRiwayat"].Value);
+                DataRowView row = (DataRowView)bindingSource.Current;
+                selectedIdRiwayatPenyakit = Convert.ToInt32(row["idRiwayat"]);
 
                 // TIPS: Jangan gunakan .Text jika datanya dari hasil JOIN. 
                 // Gunakan pencarian index berdasarkan value asli jika memungkinkan.
-                cmbIdPadi.Text = row.Cells["jenisBibit"].Value.ToString();
-                cmbIdPenyakit.Text = row.Cells["Kategori"].Value.ToString();
+                cmbIdPadi.SelectedValue = row["idPadi"];
+                cmbIdPenyakit.SelectedValue = row["idPenyakit"];
 
                 // Simpan data lama untuk validasi redundansi
-                oldIdPadi = (int)cmbIdPadi.SelectedValue;
-                oldIdPenyakit = (int)cmbIdPenyakit.SelectedValue;
+                oldIdPadi = Convert.ToInt32(row["idPadi"]);
+                oldIdPenyakit = Convert.ToInt32(row["idPenyakit"]);
 
-                dtpTanggalTerdeteksi.Value = oldTglDeteksi = Convert.ToDateTime(row.Cells["tanggalTerdeteksi"].Value);
+                // tanggalTerdeteksi dari VIEW berupa string DD/MM/YYYY
+                dtpTanggalTerdeteksi.Value = oldTglDeteksi = DateTime.ParseExact(
+                    row["tanggalTerdeteksi"].ToString(), "dd/MM/yyyy", null);
 
-                if (row.Cells["tanggalSelesai"].Value != DBNull.Value)
-                {
-                    dtpTanggalSelesai.Value = oldTglSelesai = Convert.ToDateTime(row.Cells["tanggalSelesai"].Value);
-                }
 
-                txtKeterangan.Text = oldKeterangan = row.Cells["keterangan"].Value.ToString();
+                // tanggalSelesai bisa "Belum Selesai" (dari CASE di VIEW)
+                string tglSelesaiStr = row["tanggalSelesai"].ToString();
+                if (tglSelesaiStr == "Belum Selesai")
+                    dtpTanggalSelesai.Value = oldTglSelesai = DateTime.Now;
+                else
+                    dtpTanggalSelesai.Value = oldTglSelesai = DateTime.ParseExact(
+                        tglSelesaiStr, "dd/MM/yyyy", null);
+
+                txtKeterangan.Text = oldKeterangan = row["keterangan"].ToString();
             }
         }
 
