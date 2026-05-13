@@ -60,8 +60,13 @@ namespace OryzaTrack
 
         private void FormKoneksi_Load(object sender, EventArgs e)
         {
-            lblStatus.Text = "Tekan 'Koneksi Database' untuk memulai.";
+            lblStatus.Text = "Tekan \"Koneksi Database\"!";
             btnMasuk.Enabled = false;
+
+        }
+
+        private void lblStatus_Click(object sender, EventArgs e)
+        {
 
         }
     }

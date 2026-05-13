@@ -8,6 +8,7 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackDAL.pdb
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackDAL.dll.config
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrackUI.csproj.AssemblyReference.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormKoneksi.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormLaporan.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormLogin2.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormMenu.resources
@@ -22,4 +23,3 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTra.E05AE895.Up2Date
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.exe
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.pdb
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormKoneksi.resources

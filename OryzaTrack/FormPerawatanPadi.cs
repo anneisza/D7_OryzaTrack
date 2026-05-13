@@ -69,7 +69,7 @@ namespace OryzaTrack
             txtJenisPerawatan.Clear();
             cmbJenisPestisida.SelectedIndex = -1;
             dtpTanggalPerawatan.Value = DateTime.Now;
-            txtHasilPerawatan.Clear();
+            cmbHasil.SelectedIndex = -1;
             txtCari.Clear();
         }
 
@@ -105,9 +105,9 @@ namespace OryzaTrack
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtHasilPerawatan.Text))
+            if (cmbHasil.SelectedIndex == -1)
             {
-                MessageBox.Show("Isi hasil perawatan!");
+                MessageBox.Show("Pilih hasil perawatan!");
                 return false;
             }
 
@@ -217,7 +217,7 @@ namespace OryzaTrack
                     txtJenisPerawatan.Text,
                     cmbJenisPestisida.Text,
                     dtpTanggalPerawatan.Value,
-                    txtHasilPerawatan.Text
+                    cmbHasil.Text
                 );
 
                 if (hasil)
@@ -263,7 +263,7 @@ namespace OryzaTrack
                     txtJenisPerawatan.Text,
                     cmbJenisPestisida.Text,
                     dtpTanggalPerawatan.Value,
-                    txtHasilPerawatan.Text
+                    cmbHasil.Text
                 );
 
                     if (hasil)
@@ -333,7 +333,7 @@ namespace OryzaTrack
                 cmbJenisPestisida.Text = row.Cells["jenisPestisida"].Value.ToString();
 
                 dtpTanggalPerawatan.Value = Convert.ToDateTime(row.Cells["tanggalPerawatan"].Value);
-                txtHasilPerawatan.Text = row.Cells["hasilPerawatan"].Value.ToString();
+                cmbHasil.Text = row.Cells["hasilPerawatan"].Value.ToString();
             }
 
         }

@@ -111,5 +111,14 @@ namespace OryzaTrackBLL
         {
             return dal.Count();
         }
+
+
+        //*=================
+        // GetStatistikPenyakit
+        //*=================
+        public DataTable GetStatistikPenyakit()
+        {
+            return dal.GetStatistikPenyakit();
+        }
     }
 }

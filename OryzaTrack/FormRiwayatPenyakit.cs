@@ -16,6 +16,8 @@ namespace OryzaTrack
         private int IDAdmin;
         private int selectedIdRiwayatPenyakit = 0; // Menyimpan ID riwayat penyakit yang dipilih
         private RiwayatPenyakitBLL bll = new RiwayatPenyakitBLL();
+        PadiBLL bllPadi = new PadiBLL();
+        PenyakitBLL bllPenyakit = new PenyakitBLL();
         public FormRiwayatPenyakit(int idAdmin)
         {
             InitializeComponent();
@@ -106,7 +108,6 @@ namespace OryzaTrack
             try
             {
                 // Pakai PadiBLL untuk mengambil data padi, karena kita butuh jenisBibit untuk ditampilkan di ComboBox
-                PadiBLL bllPadi = new PadiBLL();
                 DataTable dt = bllPadi.GetAll();
 
                 // ATUR MEMBER DULU SEBELUM DATASOURCE
@@ -127,7 +128,7 @@ namespace OryzaTrack
         {
             try
             {
-                PenyakitBLL bllPenyakit = new PenyakitBLL();
+
                 DataTable dt = bllPenyakit.GetAll();
 
                 // ATUR MEMBER DULU SEBELUM DATASOURCE

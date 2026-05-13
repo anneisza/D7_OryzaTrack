@@ -192,5 +192,27 @@ namespace OryzaTrackDAL
                 }
             }
         }
+
+        //*=============================
+        // GetStatistikPenyakit
+        //==============================*/
+        public DataTable GetStatistikPenyakit() {
+            DataTable dt = new DataTable();
+            // Query ini menggabungkan tabel riwayat dengan tabel penyakit 
+            // untuk menghitung berapa kali tiap penyakit muncul
+            string query = @"
+        SELECT p.kategori, COUNT(r.idRiwayat) as Total 
+        FROM riwayatPenyakit r
+        JOIN penyakit p ON r.idPenyakit = p.idPenyakit
+        GROUP BY p.kategori";
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            return dt;
+        }
     }
 }

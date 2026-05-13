@@ -42,6 +42,7 @@
             this.btnCariData = new System.Windows.Forms.Button();
             this.txtCari = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblHasilPerawatan = new System.Windows.Forms.Label();
             this.cmbIdPadi = new System.Windows.Forms.ComboBox();
             this.lblJenisPsetisida = new System.Windows.Forms.Label();
             this.dtpTanggalPerawatan = new System.Windows.Forms.DateTimePicker();
@@ -52,8 +53,7 @@
             this.liblIdPadi = new System.Windows.Forms.Label();
             this.lblJenisPerawatan = new System.Windows.Forms.Label();
             this.txtJenisPerawatan = new System.Windows.Forms.TextBox();
-            this.lblHasilPerawatan = new System.Windows.Forms.Label();
-            this.txtHasilPerawatan = new System.Windows.Forms.TextBox();
+            this.cmbHasil = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatanPadi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -191,7 +191,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Teal;
-            this.groupBox1.Controls.Add(this.txtHasilPerawatan);
+            this.groupBox1.Controls.Add(this.cmbHasil);
             this.groupBox1.Controls.Add(this.lblHasilPerawatan);
             this.groupBox1.Controls.Add(this.cmbIdPadi);
             this.groupBox1.Controls.Add(this.lblJenisPsetisida);
@@ -208,6 +208,16 @@
             this.groupBox1.Size = new System.Drawing.Size(847, 286);
             this.groupBox1.TabIndex = 101;
             this.groupBox1.TabStop = false;
+            // 
+            // lblHasilPerawatan
+            // 
+            this.lblHasilPerawatan.AutoSize = true;
+            this.lblHasilPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHasilPerawatan.Location = new System.Drawing.Point(77, 221);
+            this.lblHasilPerawatan.Name = "lblHasilPerawatan";
+            this.lblHasilPerawatan.Size = new System.Drawing.Size(142, 20);
+            this.lblHasilPerawatan.TabIndex = 74;
+            this.lblHasilPerawatan.Text = "Hasil Perawatan: ";
             // 
             // cmbIdPadi
             // 
@@ -245,6 +255,10 @@
             // cmbJenisPestisida
             // 
             this.cmbJenisPestisida.FormattingEnabled = true;
+            this.cmbJenisPestisida.Items.AddRange(new object[] {
+            "Insektisida Furadan",
+            "Fungisida Dithane",
+            "Herbisida Glyphosate"});
             this.cmbJenisPestisida.Location = new System.Drawing.Point(256, 131);
             this.cmbJenisPestisida.Name = "cmbJenisPestisida";
             this.cmbJenisPestisida.Size = new System.Drawing.Size(236, 24);
@@ -298,23 +312,17 @@
             this.txtJenisPerawatan.Size = new System.Drawing.Size(236, 22);
             this.txtJenisPerawatan.TabIndex = 51;
             // 
-            // lblHasilPerawatan
+            // cmbHasil
             // 
-            this.lblHasilPerawatan.AutoSize = true;
-            this.lblHasilPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHasilPerawatan.Location = new System.Drawing.Point(77, 221);
-            this.lblHasilPerawatan.Name = "lblHasilPerawatan";
-            this.lblHasilPerawatan.Size = new System.Drawing.Size(142, 20);
-            this.lblHasilPerawatan.TabIndex = 74;
-            this.lblHasilPerawatan.Text = "Hasil Perawatan: ";
-            // 
-            // txtHasilPerawatan
-            // 
-            this.txtHasilPerawatan.Location = new System.Drawing.Point(256, 219);
-            this.txtHasilPerawatan.Multiline = true;
-            this.txtHasilPerawatan.Name = "txtHasilPerawatan";
-            this.txtHasilPerawatan.Size = new System.Drawing.Size(236, 22);
-            this.txtHasilPerawatan.TabIndex = 75;
+            this.cmbHasil.FormattingEnabled = true;
+            this.cmbHasil.Items.AddRange(new object[] {
+            "Berhasil",
+            "Sebagian Berhasil",
+            "Gagal"});
+            this.cmbHasil.Location = new System.Drawing.Point(256, 217);
+            this.cmbHasil.Name = "cmbHasil";
+            this.cmbHasil.Size = new System.Drawing.Size(236, 24);
+            this.cmbHasil.TabIndex = 76;
             // 
             // FormPerawatanPadi
             // 
@@ -371,7 +379,7 @@
         private System.Windows.Forms.TextBox txtJenisPerawatan;
         private System.Windows.Forms.Label lblJenisPsetisida;
         private System.Windows.Forms.ComboBox cmbIdPadi;
-        private System.Windows.Forms.TextBox txtHasilPerawatan;
         private System.Windows.Forms.Label lblHasilPerawatan;
+        private System.Windows.Forms.ComboBox cmbHasil;
     }
 }

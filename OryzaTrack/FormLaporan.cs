@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using OryzaTrackBLL;
 
 namespace OryzaTrack
@@ -30,50 +31,57 @@ namespace OryzaTrack
         ================================*/
         private void FormLaporan_Load(object sender, EventArgs e)
         {
-            // Isi ComboBox filter
-            cmbKategori.Items.Clear();
-            cmbKategori.Items.Add("Semua");
-            cmbKategori.Items.Add("Hama");
-            cmbKategori.Items.Add("Penyakit");
-            cmbKategori.SelectedIndex = 0;
-
-            cmbTingkatKerusakan.Items.Clear();
-            cmbTingkatKerusakan.Items.Add("Semua");
-            cmbTingkatKerusakan.Items.Add("Ringan");
-            cmbTingkatKerusakan.Items.Add("Sedang");
-            cmbTingkatKerusakan.Items.Add("Berat");
-            cmbTingkatKerusakan.SelectedIndex = 0;
-
-            cmbStatus.Items.Clear();
-            cmbStatus.Items.Add("Semua");
-            cmbStatus.Items.Add("Aktif");
-            cmbStatus.Items.Add("Nonaktif");
-            cmbStatus.SelectedIndex = 0;
-
-            // Set default rentang tanggal (awal tahun ini s/d hari ini)
+            // Set Default Tanggal
             dtpTanggalAwal.Value = new DateTime(DateTime.Now.Year, 1, 1);
             dtpTanggalAkhir.Value = DateTime.Now;
 
-            // Muat semua data pertama kali
+            // Inisialisasi ComboBox (Sesuaikan dengan data di DB)
+            MuatFilterComboBox();
+
             MuatSemuaData();
         }
 
-        /*==============================
-            MUAT SEMUA DATA
-        ================================*/
+        //filter combo box untuk jenis bibit dan jenis penyakit
+        private void MuatFilterComboBox()
+        {
+            try
+            {
+                // --- Filter Kategori (Hama/Penyakit) ---
+                cmbJenisPenyakit.Items.Clear();
+                cmbJenisPenyakit.Items.Add("Semua");
+                cmbJenisPenyakit.Items.Add("Hama");
+                cmbJenisPenyakit.Items.Add("Penyakit");
+                cmbJenisPenyakit.SelectedIndex = 0; // Pilih "Semua" sebagai default
+
+                // --- Filter Jenis Bibit (Dari Database + "Semua") ---
+                DataTable dtPadi = padiBLL.GetAll();
+                cmbJenisBibit.Items.Clear();
+                cmbJenisBibit.Items.Add("Semua");
+
+                foreach (DataRow row in dtPadi.Rows)
+                {
+                    if (row["jenisBibit"] != DBNull.Value)
+                    {
+                        cmbJenisBibit.Items.Add(row["jenisBibit"].ToString());
+                    }
+                }
+                cmbJenisBibit.SelectedIndex = 0; // Pilih "Semua" sebagai default
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat filter: " + ex.Message);
+            }
+        }
+
+        //muat semua data
         private void MuatSemuaData()
         {
             MuatKartuRingkasan();
-            MuatPetani();
-            MuatPadi();
-            MuatPenyakit();
-            MuatRiwayat();
-            MuatPerawatan();
+            MuatLaporanUtama(); // Menggantikan MuatPetani, MuatPadi, dll
+            MuatPieChart();     // Fungsi baru untuk grafik
         }
 
-        /*==============================
-            KARTU RINGKASAN (Label angka)
-        ================================*/
+        //muat kartu ringkasan
         private void MuatKartuRingkasan()
         {
             try
@@ -84,202 +92,90 @@ namespace OryzaTrack
                 labelRiwayat.Text = riwayatBLL.Total().ToString();
                 labelPerawatan.Text = perawatanBLL.Total().ToString();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal memuat ringkasan: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
-        /*==============================
-            TAB PETANI
-        ================================*/
-        private void MuatPetani()
+        private void MuatLaporanUtama()
         {
-            try
-            {
-                string statusFilter = cmbStatus.SelectedItem?.ToString();
-                DataTable dt;
 
-                if (statusFilter == "Aktif")
-                    dt = petaniBLL.GetAktif();
-                else
-                    dt = petaniBLL.GetAll();
-
-                // Filter Nonaktif manual karena BLL tidak punya GetNonAktif
-                if (statusFilter == "Nonaktif")
-                {
-                    DataView dv = new DataView(dt);
-                    dv.RowFilter = "statusAktif = 0";
-                    dt = dv.ToTable();
-                }
-
-                dgvPetani.DataSource = dt;
-                AturKolomDgv(dgvPetani);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal memuat data petani: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /*==============================
-            TAB PADI
-        ================================*/
-        private void MuatPadi()
-        {
-            try
-            {
-                DataTable dt = padiBLL.GetAll();
-
-                // Filter tanggal tanam
-                DataView dv = new DataView(dt);
-                dv.RowFilter = string.Format(
-                    "tanggalTanam >= #{0}# AND tanggalTanam <= #{1}#",
-                    dtpTanggalAwal.Value.ToString("MM/dd/yyyy"),
-                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy")
-                );
-                dt = dv.ToTable();
-
-                dgvPadi.DataSource = dt;
-                AturKolomDgv(dgvPadi);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal memuat data padi: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /*==============================
-            TAB PENYAKIT
-        ================================*/
-        private void MuatPenyakit()
-        {
-            try
-            {
-                DataTable dt = penyakitBLL.GetAll();
-                DataView dv = new DataView(dt);
-
-                // Bangun filter string
-                List<string> filters = new List<string>();
-
-                // Filter tanggal serangan
-                filters.Add(string.Format(
-                    "tanggalSerangan >= #{0}# AND tanggalSerangan <= #{1}#",
-                    dtpTanggalAwal.Value.ToString("MM/dd/yyyy"),
-                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy")
-                ));
-
-                // Filter kategori
-                string kategori = cmbKategori.SelectedItem?.ToString();
-                if (kategori != "Semua" && !string.IsNullOrEmpty(kategori))
-                    filters.Add(string.Format("Kategori = '{0}'", kategori));
-
-                // Filter tingkat kerusakan
-                string tingkat = cmbTingkatKerusakan.SelectedItem?.ToString();
-                if (tingkat != "Semua" && !string.IsNullOrEmpty(tingkat))
-                    filters.Add(string.Format("tingkatKerusakan = '{0}'", tingkat));
-
-                dv.RowFilter = string.Join(" AND ", filters);
-                dt = dv.ToTable();
-
-                dgvPenyakit.DataSource = dt;
-                AturKolomDgv(dgvPenyakit);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal memuat data penyakit: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /*==============================
-            TAB RIWAYAT PENYAKIT
-        ================================*/
-        private void MuatRiwayat()
-        {
             try
             {
                 DataTable dt = riwayatBLL.GetAll();
                 DataView dv = new DataView(dt);
 
-                // Filter tanggal terdeteksi
-                List<string> filters = new List<string>();
-                filters.Add(string.Format(
-                    "tanggalTerdeteksi >= #{0}# AND tanggalTerdeteksi <= #{1}#",
+                // 1. Filter Tanggal (Wajib)
+                string filter = string.Format("tanggalTerdeteksi >= #{0}# AND tanggalTerdeteksi <= #{1}#",
                     dtpTanggalAwal.Value.ToString("MM/dd/yyyy"),
-                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy")
-                ));
+                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy"));
 
-                dv.RowFilter = string.Join(" AND ", filters);
-                dt = dv.ToTable();
+                // 2. Filter Jenis Bibit (Hanya jika bukan "Semua")
+                if (cmbJenisBibit.Text != "Semua" && !string.IsNullOrWhiteSpace(cmbJenisBibit.Text))
+                {
+                    filter += string.Format(" AND jenisBibit = '{0}'", cmbJenisBibit.Text);
+                }
 
-                dgvRiwayat.DataSource = dt;
-                AturKolomDgv(dgvRiwayat);
+                // 3. Filter Kategori/Jenis Penyakit (Hanya jika bukan "Semua")
+                if (cmbJenisPenyakit.Text != "Semua" && !string.IsNullOrWhiteSpace(cmbJenisPenyakit.Text))
+                {
+                    // Pastikan di DataTable hasil JOIN Anda ada kolom bernama 'Kategori'
+                    filter += string.Format(" AND Kategori = '{0}'", cmbJenisPenyakit.Text);
+                }
+
+                dv.RowFilter = filter;
+                dgvLaporan.DataSource = dv.ToTable();
+                AturKolomDgv(dgvLaporan);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal memuat data riwayat: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Gagal memfilter data: " + ex.Message);
             }
         }
 
-        /*==============================
-            TAB PERAWATAN PADI
-        ================================*/
-        private void MuatPerawatan()
+        private void MuatPieChart()
         {
             try
             {
-                DataTable dt = perawatanBLL.GetAll();
-                DataView dv = new DataView(dt);
+                DataTable dt = riwayatBLL.GetStatistikPenyakit();
 
-                // Filter tanggal perawatan
-                List<string> filters = new List<string>();
-                filters.Add(string.Format(
-                    "tanggalPerawatan >= #{0}# AND tanggalPerawatan <= #{1}#",
-                    dtpTanggalAwal.Value.ToString("MM/dd/yyyy"),
-                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy")
-                ));
+                // Cek jika data kosong, jangan lanjut biar tidak error
+                if (dt == null || dt.Rows.Count == 0) return;
 
-                dv.RowFilter = string.Join(" AND ", filters);
-                dt = dv.ToTable();
+                chart1.Series.Clear();
+                chart1.Titles.Clear();
+                chart1.Titles.Add("Sebaran Penyakit Padi");
 
-                dgvPerawatan.DataSource = dt;
-                AturKolomDgv(dgvPerawatan);
+                Series s = new Series("Penyakit");
+                s.ChartType = SeriesChartType.Pie;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    // Pastikan row["Total"] dikonversi ke double/int
+                    double jumlah = Convert.ToDouble(row["Total"]);
+                    string nama = row["kategori"].ToString();
+
+                    s.Points.AddXY(nama, jumlah);
+                }
+
+                // Tampilkan angka/persentase di dalam Pie
+                s.IsValueShownAsLabel = true;
+                s.LabelFormat = "0"; // Menampilkan jumlah angka bulat
+
+                chart1.Series.Add(s);
+                chart1.ChartAreas[0].Area3DStyle.Enable3D = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal memuat data perawatan: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Jangan cuma Console.WriteLine, MessageBox saja biar kelihatan errornya
+                MessageBox.Show("Gagal muat Chart: " + ex.Message);
             }
         }
 
-        /*==============================
-            HELPER: Atur tampilan DGV
-        ================================*/
-        private void AturKolomDgv(DataGridView dgv)
-        {
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgv.ReadOnly = true;
-            dgv.AllowUserToAddRows = false;
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        }
 
         /*==============================
             TOMBOL TAMPILKAN
         ================================*/
         private void buttonTampilkan_Click(object sender, EventArgs e)
         {
-            // Validasi rentang tanggal
-            if (dtpTanggalAwal.Value > dtpTanggalAkhir.Value)
-            {
-                MessageBox.Show("Tanggal awal tidak boleh lebih besar dari tanggal akhir!",
-                    "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
             MuatSemuaData();
         }
@@ -289,25 +185,19 @@ namespace OryzaTrack
         ================================*/
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            // Reset semua filter ke default
+            cmbJenisBibit.SelectedIndex = -1;
+            cmbJenisPenyakit.SelectedIndex = -1;
             dtpTanggalAwal.Value = new DateTime(DateTime.Now.Year, 1, 1);
-            dtpTanggalAkhir.Value = DateTime.Now;
-            cmbKategori.SelectedIndex = 0;
-            cmbTingkatKerusakan.SelectedIndex = 0;
-            cmbStatus.SelectedIndex = 0;
-
             MuatSemuaData();
         }
 
-        /*==============================
-            EVENT HANDLERS (tidak dipakai,
-            filter hanya lewat tombol Tampilkan)
-        ================================*/
-        private void dgvPetani_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void dgvPadi_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void dgvPenyakit_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void dgvRiwayat_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void dgvPerawatan_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void AturKolomDgv(DataGridView dgv)
+        {
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
 
         private void labelPadi_Click(object sender, EventArgs e) { }
         private void lblPadii_Click(object sender, EventArgs e) { }
@@ -317,8 +207,20 @@ namespace OryzaTrack
 
         private void dtpTanggalAwal_ValueChanged(object sender, EventArgs e) { }
         private void dtpTanggalAkhir_ValueChanged(object sender, EventArgs e) { }
-        private void cmbKategori_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void cmbTingkatKerusakan_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e) { }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbJenisBibit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbJenisPenyakit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
