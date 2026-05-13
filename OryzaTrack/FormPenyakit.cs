@@ -13,6 +13,9 @@ namespace OryzaTrack
 {
     public partial class FormPenyakit : Form
     {
+        //binding
+        private BindingSource bindingSource = new BindingSource();
+
         private int selectedIdPenyakit = 0;
         private PenyakitBLL bll = new PenyakitBLL();
         private string oldKategori, oldGejala, oldTingkat;
@@ -48,8 +51,10 @@ namespace OryzaTrack
         {
             try
             {
-                // Mengambil data dari PenyakitBLL
-                dgvPenyakit.DataSource = bll.GetAll();
+                DataTable dt = bll.GetAll();
+                bindingSource.DataSource = dt;
+                dgvPenyakit.DataSource = bindingSource;
+                bindingNavigator1.BindingSource = bindingSource;
                 TampilkanTotal();
             }
             catch (Exception ex)
@@ -221,7 +226,12 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPenyakit == 0) { /* pesan error */ return; }
+            if (selectedIdPenyakit == 0)
+            {
+                MessageBox.Show("Pilih data yang ingin diubah!", "Peringatan",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             // VALIDASI: Cek apakah ada perubahan
             if (cmbKategori.Text == oldKategori &&
@@ -245,7 +255,7 @@ namespace OryzaTrack
             {
                 try
                 {
-                    bool hasil = bll.Ubah(
+                    string hasil = bll.Ubah(
                         selectedIdPenyakit,
                         cmbKategori.Text.Trim(),
                         txtGejalaPenyakit.Text.Trim(),
@@ -253,13 +263,21 @@ namespace OryzaTrack
                         dtpTanggalSerangan.Value
                     );
 
-                    if (hasil)
+                    if (hasil == "OK")
                     {
                         MessageBox.Show("Data penyakit berhasil diubah!",
                             "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         BersihkanForm();
                         LoadData();
                     }
+                    else if (hasil.StartsWith("PERINGATAN"))
+                    {
+                        MessageBox.Show(hasil, "Perhatian",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    BersihkanForm();
+                    LoadData();
+
                 }
                 catch (Exception ex)
                 {
@@ -318,17 +336,19 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dgvPenyakit.Rows[e.RowIndex];
-                selectedIdPenyakit = Convert.ToInt32(row.Cells["idPenyakit"].Value);
+                DataRowView row = (DataRowView)bindingSource.Current;
+                selectedIdPenyakit = Convert.ToInt32(row["idPenyakit"]);
 
                 // Simpan ke form dan ke variabel 'old'
-                cmbKategori.Text = oldKategori = row.Cells["kategori"].Value.ToString();
-                txtGejalaPenyakit.Text = oldGejala = row.Cells["gejalaPenyakit"].Value.ToString();
-                cmbTingkatKerusakan.Text = oldTingkat = row.Cells["tingkatKerusakan"].Value.ToString();
-                dtpTanggalSerangan.Value = oldTanggal = Convert.ToDateTime(row.Cells["tanggalSerangan"].Value);
+                cmbKategori.Text = oldKategori = row["kategori"].ToString();
+                txtGejalaPenyakit.Text = oldGejala = row["gejalaPenyakit"].ToString();
+                cmbTingkatKerusakan.Text = oldTingkat = row["tingkatKerusakan"].ToString();
+
+                //tgl
+                dtpTanggalSerangan.Value = oldTanggal = DateTime.ParseExact(
+            row["tanggalSerangan"].ToString(), "dd/MM/yyyy", null);
+
             }
-
         }
-
     }
 }

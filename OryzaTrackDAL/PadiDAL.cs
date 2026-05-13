@@ -87,7 +87,7 @@ namespace OryzaTrackDAL
         /*=======================
                 Insert Padi
          ========================*/
-        public string Insert(int idPadi, int idPetani, string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
+        public string Insert(int idPetani, string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -100,7 +100,7 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
                     cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam.Date);
 
-                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
                     outputMsg.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outputMsg);
 
@@ -113,7 +113,7 @@ namespace OryzaTrackDAL
         /*=======================
                Update Padi
         ========================*/
-        public bool Update(int idPadi, int idPetani,   string jenisPadi, string lokasiLahan, DateTime tanggalTanam)
+        public string Update(int idPadi, int idPetani,   string jenisBibit, string lokasiLahan, DateTime tanggalTanam)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -127,7 +127,7 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@lokasiLahan", lokasiLahan);
                     cmd.Parameters.AddWithValue("@tanggalTanam", tanggalTanam.Date);
 
-                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
                     outputMsg.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outputMsg);
 
@@ -140,17 +140,22 @@ namespace OryzaTrackDAL
         /*=======================
             Delete Padi
         ========================*/
-        public bool Delete(int idPadi)
+        public string Delete(int idPadi)
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
-                string query = @"DELETE FROM padi WHERE idPadi = @idPadi";
+                using (SqlCommand cmd = new SqlCommand("sp_DeletePadi", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idPadi", idPadi);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
 
-                return cmd.ExecuteNonQuery() > 0;
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
+                }
             }
         }
 

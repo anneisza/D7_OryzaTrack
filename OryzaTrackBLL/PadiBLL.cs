@@ -12,10 +12,6 @@ namespace OryzaTrackBLL
     {
         PadiDAL dal = new PadiDAL();
 
-
-        public DataRow GetById(int idPadi) => dal.GetById(idPadi);
-        public DataTable Cari(string keyword) => dal.Search(keyword);
-
         /*=============================
           View Padi | GetAll()
         ==============================*/
@@ -24,18 +20,13 @@ namespace OryzaTrackBLL
         /*=============================
                 GetById 
         ==============================*/
-        public DataRow GetById(int idPadi)
-        {
-            return dal.GetById(idPadi);
-        }
+
+        public DataRow GetById(int idPadi) => dal.GetById(idPadi);
 
         /*=============================
                 Cari 
         ==============================*/
-        public DataTable Cari(string keyword)
-        {
-            return dal.Search(keyword);
-        }
+        public DataTable Cari(string keyword) => dal.Search(keyword);
 
         /*=============================
                 Tambah 

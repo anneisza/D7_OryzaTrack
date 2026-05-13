@@ -12,34 +12,25 @@ namespace OryzaTrackBLL
      {
             PenyakitDAL dal = new PenyakitDAL();
 
-            /*=============================
-              View Penyakit | GetAll()
-            ==============================*/
-            public DataTable GetAll()
-            {
-                return dal.GetAll();
-            }
+        /*=============================
+          View Penyakit | GetAll()
+        ==============================*/
+        public DataTable GetAll() => dal.GetAll();
 
-            /*=============================
-                    GetById 
-            ==============================*/
-            public DataRow GetById(int idPenyakit)
-            {
-                return dal.GetById(idPenyakit);
-            }
+        /*=============================
+                GetById 
+        ==============================*/
+        public DataRow GetById(int idPenyakit) => dal.GetById(idPenyakit);
 
-            /*=============================
-                    Cari 
-            ==============================*/
-            public DataTable Cari(string keyword)
-            {
-                return dal.Search(keyword);
-            }
+        /*=============================
+                Cari 
+        ==============================*/
+        public DataTable Cari(string keyword) => dal.Search(keyword);
 
-            /*=============================
-                    Tambah 
-            ==============================*/
-            public bool Tambah(string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
+        /*=============================
+                Tambah 
+        ==============================*/
+        public bool Tambah(string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
             {
                 // 1. Validasi Kategori (Hama atau Penyakit)
                 string[] kategoriValid = { "Hama", "Penyakit" };
@@ -67,21 +58,19 @@ namespace OryzaTrackBLL
                     throw new Exception("Tanggal serangan tidak valid! Pastikan antara tahun 2000 hingga hari ini.");
                 }
 
-                try
-                {
-                    return dal.Insert(kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan);
-                }
-                catch (Exception ex)
-                {
-                    // Melempar pesan spesifik jika database mati
-                    throw new Exception("Gagal menyimpan ke database. Pastikan koneksi server aktif. Detail: " + ex.Message);
-                }
+                // Validasi logika berat → serahkan ke SP
+                string hasil = dal.Insert(kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan);
+
+                if (hasil != "OK")
+                    throw new Exception(hasil);
+
+                return true;
         }
 
             /*=============================
                     Ubah 
             ==============================*/
-            public bool Ubah(int idPenyakit, string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
+            public string Ubah(int idPenyakit, string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
             {
                 // Re-validasi logika bisnis agar data tetap konsisten saat update
                 if (!new[] { "Hama", "Penyakit" }.Contains(kategori))
@@ -95,24 +84,30 @@ namespace OryzaTrackBLL
 
                 if (tanggalSerangan > DateTime.Now)
                     throw new Exception("Tanggal tidak boleh di masa depan.");
+                string hasil = dal.Update(idPenyakit, kategori, gejalaPenyakit,
+                                  tingkatKerusakan, tanggalSerangan);
 
-                return dal.Update(idPenyakit, kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan);
-            }
+                // Kalau error dari SP → lempar exception
+                // Kalau PERINGATAN → kembalikan pesannya ke Form untuk ditampilkan
+                if (!hasil.StartsWith("OK") && !hasil.StartsWith("PERINGATAN"))
+                    throw new Exception(hasil);
+
+                return hasil;
+        }
 
             /*=============================
                     Hapus 
             ==============================*/
             public bool Hapus(int idPenyakit)
             {
-                return dal.Delete(idPenyakit);
+                string hasil = dal.Delete(idPenyakit);
+                if (hasil != "OK") throw new Exception(hasil);
+                return true;
             }
 
-            /*=============================
-                    Total 
-            ==============================*/
-            public int Total()
-            {
-                return dal.Count();
-            }
-        }
+        /*=============================
+                Total 
+        ==============================*/
+        public int Total() => dal.Count();
+    }
 }

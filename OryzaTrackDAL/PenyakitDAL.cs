@@ -20,7 +20,9 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM penyakit";
+                //pakai view
+                string query = "SELECT * FROM vw_Penyakit";
+
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -68,23 +70,12 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                // Mencari berdasarkan kategori, gejala
-                string query = @"SELECT 
-                            idPenyakit, 
-                            Kategori, 
-                            gejalaPenyakit, 
-                            tingkatKerusakan, 
-                            tanggalSerangan 
-                        FROM Penyakit 
-                        WHERE 
-                            CAST(idPenyakit AS VARCHAR) LIKE @keyword 
-                            OR Kategori LIKE @keyword 
-                            OR gejalaPenyakit LIKE @keyword 
-                            OR tingkatKerusakan LIKE @keyword 
-                            OR CAST(tanggalSerangan AS VARCHAR) LIKE @keyword";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //pakai sp
+                using (SqlCommand cmd = new SqlCommand("sp_SearchPenyakit", conn))
                 {
+                    // sp_SearchPenyakit menerima parameter @keyword
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -99,24 +90,28 @@ namespace OryzaTrackDAL
         /*=============================
                 Insert Penyakit 
         ==============================*/
-        public bool Insert(string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan  )
+        public string Insert(string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan  )
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO penyakit 
-                                (kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan) 
-                                VALUES 
-                                (@kategori, @gejalaPenyakit, @tingkatKerusakan, @tanggalSerangan)";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_InsertPenyakit", conn))
                 {
+                    //sp_InsertPenyakit menerima parameter @kategori, @gejalaPenyakit, @tingkatKerusakan, @tanggalSerangan
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@kategori", kategori);
                     cmd.Parameters.AddWithValue("@gejalaPenyakit", gejalaPenyakit);
                     cmd.Parameters.AddWithValue("@tingkatKerusakan", tingkatKerusakan);
                     cmd.Parameters.AddWithValue("@tanggalSerangan", tanggalSerangan );
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -124,27 +119,29 @@ namespace OryzaTrackDAL
         /*=============================
                Update Penyakit 
         ==============================*/
-        public bool Update(int idPenyakit, string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
+        public string Update(int idPenyakit, string kategori, string gejalaPenyakit, string tingkatKerusakan, DateTime tanggalSerangan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE penyakit 
-                                SET kategori = @kategori, 
-                                    gejalaPenyakit = @gejalaPenyakit, 
-                                    tingkatKerusakan = @tingkatKerusakan, 
-                                    tanggalSerangan = @tanggalSerangan
-                                WHERE idPenyakit = @idPenyakit";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePenyakit", conn))
                 {
+                    //sp
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
                     cmd.Parameters.AddWithValue("@kategori", kategori);
                     cmd.Parameters.AddWithValue("@gejalaPenyakit", gejalaPenyakit);
                     cmd.Parameters.AddWithValue("@tingkatKerusakan", tingkatKerusakan);
                     cmd.Parameters.AddWithValue("@tanggalSerangan", tanggalSerangan);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -152,17 +149,23 @@ namespace OryzaTrackDAL
         /*=============================
             Delete Penyakit 
         ==============================*/
-        public bool Delete(int idPenyakit)
+        public string Delete(int idPenyakit)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"DELETE FROM penyakit WHERE idPenyakit = @idPenyakit";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_DeletePenyakit", conn))
+                {   //sp_DeletePenyakit menerima parameter @idPenyakit
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
-                    return cmd.ExecuteNonQuery() > 0;
+
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
