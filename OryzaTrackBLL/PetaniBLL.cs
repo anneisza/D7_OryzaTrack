@@ -50,33 +50,23 @@ namespace OryzaTrackBLL
         ========================*/
         public bool Tambah(string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
-            //nama gak boleh kurang dari 2 karakter
-            if (namaPetani.Length < 2)
-            {
+            // 1. Validasi Input Dasar
+            if (namaPetani.Length < 2) 
                 throw new Exception("Nama petani minimal harus 2 karakter!");
-            }
 
-            //nik harus 16 digit angka
-            if (nik.Length != 16 || !nik.All(char.IsDigit))
-            {
-                throw new Exception("NIK harus berjumlah 16 digit angka!");
-            }
+            if (nik.Length != 16 || !nik.All(char.IsDigit)) 
+                throw new Exception("NIK harus 16 digit angka!");
 
-            //format nomortelepon harus 08 atau +62
             if (!(noTelepon.StartsWith("08") || noTelepon.StartsWith("+62")))
-            {
-                throw new Exception("Nomor telepon harus diawali dengan '08' atau '+62'!");
-            }
+                throw new Exception("Format nomor telepon salah!");
 
-            return dal.Insert(namaPetani, nik, alamat, noTelepon);
-
-
-            //cek nomor telepon sudah terdaftar atau belum
+            // 2. CEK DUPLIKASI (PENTING: Harus sebelum Insert)
             if (dal.IsNoTeleponExist(noTelepon))
             {
                 throw new Exception("Nomor telepon sudah terdaftar!");
             }
 
+            // 3. Simpan ke Database
             return dal.Insert(namaPetani, nik, alamat, noTelepon);
         }
 
@@ -86,14 +76,16 @@ namespace OryzaTrackBLL
 
         public bool Ubah(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
-            return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
+            // 1. Validasi format telepon
+            if (!(noTelepon.StartsWith("08") || noTelepon.StartsWith("+62"))) throw new Exception("Format nomor telepon salah!");
 
-            // Cek duplicate nomor telepon (kecuali milik user ini sendiri)
+            // 2. Cek Duplikasi (Mengabaikan ID sendiri agar tidak bentrok dengan data lama)
             if (dal.IsNoTeleponExist(noTelepon, idPetani))
             {
                 throw new Exception("Nomor telepon sudah digunakan oleh petani lain!");
             }
 
+            // 3. Update Database
             return dal.Update(idPetani, namaPetani, nik, alamat, noTelepon, statusAktif);
         }
 

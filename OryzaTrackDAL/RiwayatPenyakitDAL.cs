@@ -150,8 +150,13 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
                     cmd.Parameters.AddWithValue("@tanggalTerdeteksi", tanggalTerdeteksi);
+
                     // Handle null untuk tanggalSelesai
-                    cmd.Parameters.AddWithValue("@tanggalSelesai", (object)tanggalSelesai ?? DBNull.Value);
+                    if (tanggalSelesai.HasValue)
+                        cmd.Parameters.AddWithValue("@tanggalSelesai", tanggalSelesai.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@tanggalSelesai", DBNull.Value);
+
                     cmd.Parameters.AddWithValue("@keterangan", keterangan);
 
                     return cmd.ExecuteNonQuery() > 0;

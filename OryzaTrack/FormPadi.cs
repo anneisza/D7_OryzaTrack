@@ -181,6 +181,7 @@ namespace OryzaTrack
             try
             {
                 bool hasil = bll.Tambah(
+                    Convert.ToInt32(selectedIdPadi),
                     Convert.ToInt32(cmbIdPetani.SelectedValue),
                     cmbJB.Text.Trim(),
                     cmbLokasiLahan.Text.Trim(),
