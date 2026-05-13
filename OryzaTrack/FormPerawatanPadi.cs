@@ -14,6 +14,9 @@ namespace OryzaTrack
 {
     public partial class FormPerawatanPadi : Form
     {
+        //binding
+        private BindingSource bindingSource = new BindingSource();
+
         private int IDAdmin;
         private int selectedIdPerawatanPadi;
         private PerawatanPadiBLL bllPerawatan = new PerawatanPadiBLL();
@@ -52,6 +55,11 @@ namespace OryzaTrack
         {
             try
             {
+                // Ambil data dari BLL dan set ke BindingSource
+                DataTable dt = bllPerawatan.GetAll();
+                bindingSource.DataSource = dt;
+                dgvPerawatanPadi.DataSource = bindingSource;
+                bindingNavigator1.BindingSource = bindingSource;
                 dgvPerawatanPadi.DataSource = bllPerawatan.GetAll();
                 
                 TampilkanTotal();
@@ -142,7 +150,7 @@ namespace OryzaTrack
                 DataTable dt = bllPenyakit.GetAll();
 
                 cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.DisplayMember = "idPenyakit"; // Sesuaikan nama kolom di DB
+                cmbIdPenyakit.DisplayMember = "kategori"; // Sesuaikan nama kolom di DB
 
                 cmbIdPenyakit.DataSource = dt;
                 cmbIdPenyakit.SelectedIndex = -1;
@@ -274,12 +282,11 @@ namespace OryzaTrack
             {
                 try
                 {
-                    int idPerawatan = Convert.ToInt32(dgvPerawatanPadi.CurrentRow.Cells[0].Value);
                     bool hasil = bllPerawatan.Ubah(
-                        idPerawatan,
+                        selectedIdPerawatanPadi,
                     Convert.ToInt32(cmbIdPadi.SelectedValue),
                     Convert.ToInt32(cmbIdPenyakit.SelectedValue),
-                    txtJenisPerawatan.Text,
+                    txtJenisPerawatan.Text.Trim(),
                     cmbJenisPestisida.Text,
                     dtpTanggalPerawatan.Value,
                     cmbHasil.Text
@@ -339,20 +346,23 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dgvPerawatanPadi.Rows[e.RowIndex];
+                //pakai bindingSource untuk dapatkan data dari baris yang diklik
+                DataRowView row = (DataRowView)bindingSource.Current;
 
                 //harus sama dengan nama kolom di DataGridView
-                selectedIdPerawatanPadi = Convert.ToInt32(row.Cells["idPerawatanPadi"].Value);
+                selectedIdPerawatanPadi = Convert.ToInt32(row["idPerawatan"]);
 
                 // Set nilai pada form berdasarkan data yang dipilih
-                cmbIdPadi.SelectedValue = row.Cells["idPadi"].Value;
-                cmbIdPenyakit.SelectedValue = row.Cells["idPenyakit"].Value;
+                cmbIdPadi.SelectedValue = row["idPadi"];
+                cmbIdPenyakit.SelectedValue = row["idPenyakit"];
                 // Pastikan nama kolom di DataGridView sesuai dengan yang digunakan di sini
-                txtJenisPerawatan.Text = row.Cells["jenisPerawatan"].Value.ToString();
-                cmbJenisPestisida.Text = row.Cells["jenisPestisida"].Value.ToString();
+                txtJenisPerawatan.Text = row["jenisPerawatan"].ToString();
+                cmbJenisPestisida.Text = row["jenisPestisida"].ToString();
 
-                dtpTanggalPerawatan.Value = Convert.ToDateTime(row.Cells["tanggalPerawatan"].Value);
-                cmbHasil.Text = row.Cells["hasilPerawatan"].Value.ToString();
+                dtpTanggalPerawatan.Value = DateTime.ParseExact(
+                    row["tanggalPerawatan"].ToString(), "dd/MM/yyyy", null);
+
+                cmbHasil.Text = row["hasilPerawatan"].ToString();
             }
 
         }

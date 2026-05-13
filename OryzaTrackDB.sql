@@ -597,3 +597,412 @@ BEGIN
 END;
 GO
 
+--============================================================================================
+
+-- =====================
+-- VIEW PENYAKIT
+-- =====================
+CREATE VIEW vw_Penyakit AS
+SELECT 
+    idPenyakit,
+    Kategori,
+    gejalaPenyakit,
+    tingkatKerusakan,
+    CONVERT(VARCHAR, tanggalSerangan, 103) AS tanggalSerangan  -- format DD/MM/YYYY
+FROM Penyakit;
+GO
+
+-- =====================
+-- SP INSERT PENYAKIT
+-- =====================
+CREATE PROCEDURE sp_InsertPenyakit
+    @kategori        VARCHAR(50),
+    @gejalaPenyakit  VARCHAR(MAX),
+    @tingkatKerusakan VARCHAR(50),
+    @tanggalSerangan DATE,
+    @pesanHasil        VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek duplikasi gejala + kategori yang sama di tanggal sama
+    IF EXISTS (
+        SELECT 1 FROM Penyakit
+        WHERE Kategori        = @kategori
+          AND gejalaPenyakit  = @gejalaPenyakit
+          AND tanggalSerangan = @tanggalSerangan
+    )
+    BEGIN
+        SET @pesanHasil = 'Data penyakit dengan gejala dan tanggal serangan yang sama sudah ada!';
+        RETURN;
+    END
+
+    -- Logika 2: Tanggal tidak boleh masa depan (double-check di DB)
+    IF @tanggalSerangan > CAST(GETDATE() AS DATE)
+    BEGIN
+        SET @pesanHasil = 'Tanggal serangan tidak boleh di masa depan!';
+        RETURN;
+    END
+
+    INSERT INTO Penyakit (Kategori, gejalaPenyakit, tingkatKerusakan, tanggalSerangan)
+    VALUES (@kategori, @gejalaPenyakit, @tingkatKerusakan, @tanggalSerangan);
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE PENYAKIT
+-- =====================
+CREATE PROCEDURE sp_UpdatePenyakit
+    @idPenyakit       INT,
+    @kategori         VARCHAR(50),
+    @gejalaPenyakit   VARCHAR(MAX),
+    @tingkatKerusakan VARCHAR(50),
+    @tanggalSerangan  DATE,
+    @pesanHasil         VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek data ada
+    IF NOT EXISTS (SELECT 1 FROM Penyakit WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @pesanHasil = 'Data penyakit tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek duplikasi (kecuali dirinya sendiri)
+    IF EXISTS (
+        SELECT 1 FROM Penyakit
+        WHERE Kategori        = @kategori
+          AND gejalaPenyakit  = @gejalaPenyakit
+          AND tanggalSerangan = @tanggalSerangan
+          AND idPenyakit     != @idPenyakit
+    )
+    BEGIN
+        SET @pesanHasil = 'Data penyakit serupa sudah ada di tanggal yang sama!';
+        RETURN;
+    END
+
+    -- Logika 3: Cek apakah tingkat kerusakan naik drastis (Ringan → Berat langsung)
+    -- Sebagai warning/log, tetap lanjut update tapi catat di log
+    DECLARE @tingkatLama VARCHAR(50);
+    SELECT @tingkatLama = tingkatKerusakan FROM Penyakit WHERE idPenyakit = @idPenyakit;
+
+    IF @tingkatLama = 'Ringan' AND @tingkatKerusakan = 'Berat'
+    BEGIN
+        -- Tidak block, tapi beri pesan khusus
+        UPDATE Penyakit
+        SET Kategori         = @kategori,
+            gejalaPenyakit   = @gejalaPenyakit,
+            tingkatKerusakan = @tingkatKerusakan,
+            tanggalSerangan  = @tanggalSerangan
+        WHERE idPenyakit = @idPenyakit;
+
+        SET @pesanHasil = 'PERINGATAN: Tingkat kerusakan naik drastis dari Ringan ke Berat!';
+        RETURN;
+    END
+
+    UPDATE Penyakit
+    SET Kategori         = @kategori,
+        gejalaPenyakit   = @gejalaPenyakit,
+        tingkatKerusakan = @tingkatKerusakan,
+        tanggalSerangan  = @tanggalSerangan
+    WHERE idPenyakit = @idPenyakit;
+
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP DELETE PENYAKIT
+-- =====================
+CREATE PROCEDURE sp_DeletePenyakit
+    @idPenyakit INT,
+    @pesanHasil   VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika: Cek apakah penyakit masih dipakai di riwayat atau perawatan
+    IF EXISTS (SELECT 1 FROM riwayatPenyakit WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @pesanHasil = 'Penyakit masih terdaftar di Riwayat Penyakit, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    IF EXISTS (SELECT 1 FROM perawatanPadi WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @pesanHasil = 'Penyakit masih terdaftar di Perawatan Padi, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    DELETE FROM Penyakit WHERE idPenyakit = @idPenyakit;
+    SET @pesanHasil = 'OK';
+END;
+GO
+
+-- =====================
+-- SP SEARCH PENYAKIT
+-- =====================
+CREATE PROCEDURE sp_SearchPenyakit
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        idPenyakit,
+        Kategori,
+        gejalaPenyakit,
+        tingkatKerusakan,
+        CONVERT(VARCHAR, tanggalSerangan, 103) AS tanggalSerangan
+    FROM Penyakit
+    WHERE 
+        CAST(idPenyakit AS VARCHAR)                    LIKE '%' + @keyword + '%'
+        OR Kategori                                    LIKE '%' + @keyword + '%'
+        OR gejalaPenyakit                              LIKE '%' + @keyword + '%'
+        OR tingkatKerusakan                            LIKE '%' + @keyword + '%'
+        OR CONVERT(VARCHAR, tanggalSerangan, 103)      LIKE '%' + @keyword + '%';
+END;
+GO
+
+--==========================================================================================================
+
+-- =====================
+-- VIEW PERAWATAN PADI
+-- =====================
+CREATE VIEW vw_PerawatanPadi AS
+SELECT 
+    pp.idPerawatan,
+    pp.idPadi,
+    pp.idPenyakit,
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    pn.Kategori         AS kategoriPenyakit,
+    pp.jenisPerawatan,
+    pp.jenisPestisida,
+    CONVERT(VARCHAR, pp.tanggalPerawatan, 103) AS tanggalPerawatan,
+    pp.hasilPerawatan
+FROM perawatanPadi pp
+JOIN Padi p         ON pp.idPadi     = p.idPadi
+JOIN petani pt      ON p.idPetani    = pt.idPetani
+JOIN Penyakit pn    ON pp.idPenyakit = pn.idPenyakit;
+GO
+
+-- =====================
+-- SP INSERT PERAWATAN
+-- =====================
+CREATE PROCEDURE sp_InsertPerawatan
+    @idPadi           INT,
+    @idPenyakit       INT,
+    @jenisPerawatan   VARCHAR(100),
+    @jenisPestisida   VARCHAR(100),
+    @tanggalPerawatan DATE,
+    @hasilPerawatan   VARCHAR(100),
+    @hasilMsg         VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek padi ada
+    IF NOT EXISTS (SELECT 1 FROM Padi WHERE idPadi = @idPadi)
+    BEGIN
+        SET @hasilMsg = 'Data padi tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek penyakit ada
+    IF NOT EXISTS (SELECT 1 FROM Penyakit WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @hasilMsg = 'Data penyakit tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 3: Cek apakah kombinasi padi+penyakit sudah pernah dirawat
+    --           di tanggal yang sama (hindari duplikasi perawatan)
+    IF EXISTS (
+        SELECT 1 FROM perawatanPadi
+        WHERE idPadi           = @idPadi
+          AND idPenyakit       = @idPenyakit
+          AND tanggalPerawatan = @tanggalPerawatan
+    )
+    BEGIN
+        SET @hasilMsg = 'Perawatan untuk padi dan penyakit ini pada tanggal tersebut sudah ada!';
+        RETURN;
+    END
+
+    -- Logika 4: Validasi konsistensi pestisida dengan kategori penyakit
+    DECLARE @kategori VARCHAR(50);
+    SELECT @kategori = Kategori FROM Penyakit WHERE idPenyakit = @idPenyakit;
+
+    IF @kategori = 'Hama' AND @jenisPestisida = 'Fungisida Dithane'
+    BEGIN
+        SET @hasilMsg = 'Fungisida Dithane tidak cocok untuk kategori Hama!';
+        RETURN;
+    END
+
+    IF @kategori = 'Penyakit' AND @jenisPestisida = 'Insektisida Furadan'
+    BEGIN
+        SET @hasilMsg = 'Insektisida Furadan tidak cocok untuk kategori Penyakit (jamur/bakteri)!';
+        RETURN;
+    END
+
+    INSERT INTO perawatanPadi 
+        (idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan)
+    VALUES 
+        (@idPadi, @idPenyakit, @jenisPerawatan, @jenisPestisida, @tanggalPerawatan, @hasilPerawatan);
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE PERAWATAN
+-- =====================
+CREATE PROCEDURE sp_UpdatePerawatan
+    @idPerawatan      INT,
+    @idPadi           INT,
+    @idPenyakit       INT,
+    @jenisPerawatan   VARCHAR(100),
+    @jenisPestisida   VARCHAR(100),
+    @tanggalPerawatan DATE,
+    @hasilPerawatan   VARCHAR(100),
+    @hasilMsg         VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek data perawatan ada
+    IF NOT EXISTS (SELECT 1 FROM perawatanPadi WHERE idPerawatan = @idPerawatan)
+    BEGIN
+        SET @hasilMsg = 'Data perawatan tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek duplikasi (kecuali dirinya sendiri)
+    IF EXISTS (
+        SELECT 1 FROM perawatanPadi
+        WHERE idPadi           = @idPadi
+          AND idPenyakit       = @idPenyakit
+          AND tanggalPerawatan = @tanggalPerawatan
+          AND idPerawatan     != @idPerawatan
+    )
+    BEGIN
+        SET @hasilMsg = 'Perawatan serupa pada tanggal ini sudah ada!';
+        RETURN;
+    END
+
+    -- Logika 3: Validasi konsistensi pestisida vs kategori penyakit
+    DECLARE @kategori VARCHAR(50);
+    SELECT @kategori = Kategori FROM Penyakit WHERE idPenyakit = @idPenyakit;
+
+    IF @kategori = 'Hama' AND @jenisPestisida = 'Fungisida Dithane'
+    BEGIN
+        SET @hasilMsg = 'Fungisida Dithane tidak cocok untuk kategori Hama!';
+        RETURN;
+    END
+
+    IF @kategori = 'Penyakit' AND @jenisPestisida = 'Insektisida Furadan'
+    BEGIN
+        SET @hasilMsg = 'Insektisida Furadan tidak cocok untuk kategori Penyakit!';
+        RETURN;
+    END
+
+    -- Logika 4: Jika hasil sebelumnya 'Berhasil', tidak boleh diubah ke 'Gagal'
+    DECLARE @hasilLama VARCHAR(100);
+    SELECT @hasilLama = hasilPerawatan FROM perawatanPadi WHERE idPerawatan = @idPerawatan;
+
+    IF @hasilLama = 'Berhasil' AND @hasilPerawatan = 'Gagal'
+    BEGIN
+        SET @hasilMsg = 'Perawatan yang sudah Berhasil tidak bisa diubah menjadi Gagal!';
+        RETURN;
+    END
+
+    UPDATE perawatanPadi
+    SET idPadi           = @idPadi,
+        idPenyakit       = @idPenyakit,
+        jenisPerawatan   = @jenisPerawatan,
+        jenisPestisida   = @jenisPestisida,
+        tanggalPerawatan = @tanggalPerawatan,
+        hasilPerawatan   = @hasilPerawatan
+    WHERE idPerawatan = @idPerawatan;
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP DELETE PERAWATAN
+-- =====================
+CREATE PROCEDURE sp_DeletePerawatan
+    @idPerawatan INT,
+    @hasilMsg    VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika: Tidak boleh hapus jika hasil perawatan = 'Berhasil'
+    --         karena bisa jadi referensi laporan penting
+    DECLARE @hasil VARCHAR(100);
+    SELECT @hasil = hasilPerawatan 
+    FROM perawatanPadi 
+    WHERE idPerawatan = @idPerawatan;
+
+    IF @hasil IS NULL
+    BEGIN
+        SET @hasilMsg = 'Data perawatan tidak ditemukan!';
+        RETURN;
+    END
+
+    IF @hasil = 'Berhasil'
+    BEGIN
+        SET @hasilMsg = 'Perawatan yang sudah Berhasil tidak dapat dihapus karena menjadi referensi laporan!';
+        RETURN;
+    END
+
+    DELETE FROM perawatanPadi WHERE idPerawatan = @idPerawatan;
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP SEARCH PERAWATAN
+-- =====================
+CREATE PROCEDURE sp_SearchPerawatan
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        pp.idPerawatan,
+        pp.idPadi,
+        pp.idPenyakit,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori         AS kategoriPenyakit,
+        pp.jenisPerawatan,
+        pp.jenisPestisida,
+        CONVERT(VARCHAR, pp.tanggalPerawatan, 103) AS tanggalPerawatan,
+        pp.hasilPerawatan
+    FROM perawatanPadi pp
+    JOIN Padi p         ON pp.idPadi     = p.idPadi
+    JOIN petani pt      ON p.idPetani    = pt.idPetani
+    JOIN Penyakit pn    ON pp.idPenyakit = pn.idPenyakit
+    WHERE 
+        CAST(pp.idPerawatan AS VARCHAR)              LIKE '%' + @keyword + '%'
+        OR pt.namaPetani                             LIKE '%' + @keyword + '%'
+        OR p.jenisBibit                              LIKE '%' + @keyword + '%'
+        OR pn.Kategori                               LIKE '%' + @keyword + '%'
+        OR pp.jenisPerawatan                         LIKE '%' + @keyword + '%'
+        OR pp.jenisPestisida                         LIKE '%' + @keyword + '%'
+        OR pp.hasilPerawatan                         LIKE '%' + @keyword + '%'
+        OR CONVERT(VARCHAR, pp.tanggalPerawatan,103) LIKE '%' + @keyword + '%';
+END;
+GO

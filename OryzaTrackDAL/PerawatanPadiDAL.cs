@@ -20,8 +20,9 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM perawatanPadi";
 
+                //sp
+                string query = "SELECT * FROM vw_PerawatanPadi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     using (SqlDataReader dr = cmd.ExecuteReader())
@@ -68,13 +69,10 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT * FROM perawatanPadi 
-                                WHERE jenisPerawatan LIKE @keyword 
-                                OR jenisPestisida LIKE @keyword 
-                                OR hasilPerawatan LIKE @keyword";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_SearchPerawatan", conn))
+                {//sp
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -89,18 +87,16 @@ namespace OryzaTrackDAL
         /*=============================
                 Insert Perawatan 
         ==============================*/
-        public bool Insert(int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public string Insert(int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"INSERT INTO perawatanPadi 
-                                (idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan) 
-                                VALUES 
-                                (@idPadi, @idPenyakit, @jenisPerawatan, @jenisPestisida, @tanggalPerawatan, @hasilPerawatan)";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_InsertPerawatan", conn))
                 {
+                    //sp
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
                     cmd.Parameters.AddWithValue("@jenisPerawatan", jenisPerawatan);
@@ -108,7 +104,12 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@tanggalPerawatan", tanggalPerawatan);
                     cmd.Parameters.AddWithValue("@hasilPerawatan", hasilPerawatan);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -116,22 +117,15 @@ namespace OryzaTrackDAL
         /*=============================
                Update Perawatan 
         ==============================*/
-        public bool Update(int idPerawatan, int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public string Update(int idPerawatan, int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"UPDATE perawatanPadi 
-                                SET idPadi = @idPadi, 
-                                    idPenyakit = @idPenyakit, 
-                                    jenisPerawatan = @jenisPerawatan, 
-                                    jenisPestisida = @jenisPestisida,
-                                    tanggalPerawatan = @tanggalPerawatan,
-                                    hasilPerawatan = @hasilPerawatan
-                                WHERE idPerawatan = @idPerawatan";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePerawatan", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPerawatan", idPerawatan);
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
@@ -140,7 +134,13 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@tanggalPerawatan", tanggalPerawatan);
                     cmd.Parameters.AddWithValue("@hasilPerawatan", hasilPerawatan);
 
-                    return cmd.ExecuteNonQuery() > 0;
+
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }
@@ -148,17 +148,23 @@ namespace OryzaTrackDAL
         /*=============================
             Delete Perawatan 
         ==============================*/
-        public bool Delete(int idPerawatan)
+        public string Delete(int idPerawatan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = @"DELETE FROM perawatanPadi WHERE idPerawatan = @idPerawatan";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                //sp
+                using (SqlCommand cmd = new SqlCommand("sp_DeletePerawatan", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPerawatan", idPerawatan);
-                    return cmd.ExecuteNonQuery() > 0;
+
+                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    outputMsg.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputMsg);
+
+                    cmd.ExecuteNonQuery();
+                    return outputMsg.Value.ToString();
                 }
             }
         }

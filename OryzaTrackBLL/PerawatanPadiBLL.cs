@@ -15,26 +15,17 @@ namespace OryzaTrackBLL
         /*=============================
           View Perawatan | GetAll()
         ==============================*/
-        public DataTable GetAll()
-        {
-            return dal.GetAll();
-        }
+        public DataTable GetAll() => dal.GetAll();
 
         /*=============================
                 GetById 
         ==============================*/
-        public DataRow GetById(int idPerawatan)
-        {
-            return dal.GetById(idPerawatan);
-        }
+        public DataRow GetById(int idPerawatan) => dal.GetById(idPerawatan);
 
         /*=============================
                 Cari 
         ==============================*/
-        public DataTable Cari(string keyword)
-        {
-            return dal.Search(keyword);
-        }
+        public DataTable Cari(string keyword) => dal.Search(keyword);
 
         /*=============================
                 Tambah 
@@ -72,7 +63,11 @@ namespace OryzaTrackBLL
                 throw new Exception("Jenis perawatan terlalu singkat, minimal harus 5 karakter!");
             }
 
-            return dal.Insert(idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            // Logika konsistensi pestisida vs penyakit → ditangani SP
+            string hasil = dal.Insert(idPadi, idPenyakit, jenisPerawatan,
+                                      jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -90,7 +85,11 @@ namespace OryzaTrackBLL
             if (tanggalPerawatan > DateTime.Now)
                 throw new Exception("Tanggal perawatan tidak boleh di masa depan.");
 
-            return dal.Update(idPerawatan, idPadi, idPenyakit, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            //sp
+            string hasil = dal.Update(idPerawatan, idPadi, idPenyakit, jenisPerawatan,
+                                      jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
@@ -98,15 +97,14 @@ namespace OryzaTrackBLL
         ==============================*/
         public bool Hapus(int idPerawatan)
         {
-            return dal.Delete(idPerawatan);
+            string hasil = dal.Delete(idPerawatan);
+            if (hasil != "OK") throw new Exception(hasil);
+            return true;
         }
 
         /*=============================
                 Total 
         ==============================*/
-        public int Total()
-        {
-            return dal.Count();
-        }
+        public int Total() => dal.Count();
     }
 }
