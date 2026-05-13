@@ -108,5 +108,15 @@ namespace OryzaTrackBLL
             return dal.Count();
         }
 
+        //injection
+        public DataTable CariRentan(string keyword)
+        {
+            return dal.SearchRentan(keyword);
+        }
+
+        public bool ResetData()
+        {
+            return dal.ResetData();
+        }
     }
 }

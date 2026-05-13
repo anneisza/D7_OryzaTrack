@@ -20,6 +20,7 @@ namespace OryzaTrack
         private PenyakitBLL penyakitBLL = new PenyakitBLL();
         private RiwayatPenyakitBLL riwayatBLL = new RiwayatPenyakitBLL();
         private PerawatanPadiBLL perawatanBLL = new PerawatanPadiBLL();
+        private LaporanBLL laporanBLL = new LaporanBLL();
 
         public FormLaporan()
         {
@@ -58,11 +59,15 @@ namespace OryzaTrack
                 cmbJenisBibit.Items.Clear();
                 cmbJenisBibit.Items.Add("Semua");
 
+                // Pakai HashSet supaya tidak ada duplikat
+                HashSet<string> bibitSudahAda = new HashSet<string>();
                 foreach (DataRow row in dtPadi.Rows)
                 {
-                    if (row["jenisBibit"] != DBNull.Value)
+                    string bibit = row["jenisBibit"].ToString();
+                    if (!bibitSudahAda.Contains(bibit))
                     {
-                        cmbJenisBibit.Items.Add(row["jenisBibit"].ToString());
+                        cmbJenisBibit.Items.Add(bibit);
+                        bibitSudahAda.Add(bibit);
                     }
                 }
                 cmbJenisBibit.SelectedIndex = 0; // Pilih "Semua" sebagai default
@@ -97,37 +102,26 @@ namespace OryzaTrack
 
         private void MuatLaporanUtama()
         {
-
             try
             {
-                DataTable dt = riwayatBLL.GetAll();
-                DataView dv = new DataView(dt);
+                string jenisBibit = cmbJenisBibit.Text;
+                string kategori = cmbJenisPenyakit.Text;
 
-                // 1. Filter Tanggal (Wajib)
-                string filter = string.Format("tanggalTerdeteksi >= #{0}# AND tanggalTerdeteksi <= #{1}#",
-                    dtpTanggalAwal.Value.ToString("MM/dd/yyyy"),
-                    dtpTanggalAkhir.Value.ToString("MM/dd/yyyy"));
+                // sp_GetLaporan dipanggil dari sini via LaporanBLL → LaporanDAL
+                DataTable dt = laporanBLL.GetLaporan(
+                    dtpTanggalAwal.Value,
+                    dtpTanggalAkhir.Value,
+                    jenisBibit,
+                    kategori
+                );
 
-                // 2. Filter Jenis Bibit (Hanya jika bukan "Semua")
-                if (cmbJenisBibit.Text != "Semua" && !string.IsNullOrWhiteSpace(cmbJenisBibit.Text))
-                {
-                    filter += string.Format(" AND jenisBibit = '{0}'", cmbJenisBibit.Text);
-                }
-
-                // 3. Filter Kategori/Jenis Penyakit (Hanya jika bukan "Semua")
-                if (cmbJenisPenyakit.Text != "Semua" && !string.IsNullOrWhiteSpace(cmbJenisPenyakit.Text))
-                {
-                    // Pastikan di DataTable hasil JOIN Anda ada kolom bernama 'Kategori'
-                    filter += string.Format(" AND Kategori = '{0}'", cmbJenisPenyakit.Text);
-                }
-
-                dv.RowFilter = filter;
-                dgvLaporan.DataSource = dv.ToTable();
+                dgvLaporan.DataSource = dt; // langsung, tanpa DataView
                 AturKolomDgv(dgvLaporan);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal memfilter data: " + ex.Message);
+                MessageBox.Show("Gagal memfilter data: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -185,9 +179,10 @@ namespace OryzaTrack
         ================================*/
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            cmbJenisBibit.SelectedIndex = -1;
-            cmbJenisPenyakit.SelectedIndex = -1;
+            cmbJenisBibit.SelectedIndex = 0;
+            cmbJenisPenyakit.SelectedIndex = 0;
             dtpTanggalAwal.Value = new DateTime(DateTime.Now.Year, 1, 1);
+            dtpTanggalAkhir.Value = DateTime.Now;
             MuatSemuaData();
         }
 

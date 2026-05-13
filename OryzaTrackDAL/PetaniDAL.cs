@@ -20,14 +20,14 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
+
                 // Ganti "SELECT * FROM petani" → pakai VIEW
                 string query = "SELECT * FROM vw_Petani";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
-                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
-                    dt.Load(dr);
+                    da.Fill(dt);
                     return dt;
                 }
             }
@@ -40,16 +40,14 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
                 string query = "SELECT idPetani, namaPetani FROM petani WHERE statusAktif = 1";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Load(dr);
-                        return dt;
-                    }
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    dt.Fill(dr);
+                    return dt;
+                  
                 }
             }
         }
@@ -88,17 +86,16 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
+
                 using (SqlCommand cmd = new SqlCommand("sp_SearchPetani", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", keyword);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Load(dr);
-                        return dt;
-                    }
+                        
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
                 }
             }
         }
@@ -193,10 +190,16 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT COUNT(*) FROM petani";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("sp_CountPetani", conn))
                 {
-                    return (int)cmd.ExecuteScalar();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter outputTotal = new SqlParameter("@totalData", SqlDbType.Int);
+                    outputTotal.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputTotal);
+
+                    cmd.ExecuteNonQuery();
+                    return (int)outputTotal.Value;
                 }
             }
         }
@@ -216,6 +219,48 @@ namespace OryzaTrackDAL
                     cmd.Parameters.AddWithValue("@idPetani", idPetani);
                     int count = (int)cmd.ExecuteScalar();
                     return count > 0;
+                }
+            }
+        }
+
+        //injection
+        public DataTable SearchRentan(string keyword)
+        {
+            // Method SENGAJA tidak aman untuk demo SQL Injection
+            string queryRentan =
+                "SELECT idPetani, namaPetani, NIK, alamat, noTelepon " +
+                "FROM petani " +
+                "WHERE namaPetani = '" + keyword + "'";
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(queryRentan, conn))
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    DataTable dt = new DataTable();
+                    dt.Load(dr);
+                    return dt;
+                }
+            }
+        }
+
+        public bool ResetData()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                string resetQuery = @"
+            DELETE FROM petani;
+            DBCC CHECKIDENT ('petani', RESEED, 0);
+            INSERT INTO petani (namaPetani, NIK, alamat, noTelepon, statusAktif)
+            SELECT namaPetani, NIK, alamat, noTelepon, statusAktif
+            FROM petani_backup;";
+
+                using (SqlCommand cmd = new SqlCommand(resetQuery, conn))
+                {
+                    cmd.ExecuteNonQuery();
+                    return true;
                 }
             }
         }

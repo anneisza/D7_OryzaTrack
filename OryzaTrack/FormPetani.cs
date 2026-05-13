@@ -1,13 +1,14 @@
-﻿using System;
+﻿using OryzaTrackBLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OryzaTrackBLL;
 
 namespace OryzaTrack
 {
@@ -344,6 +345,106 @@ namespace OryzaTrack
         {
 
 
+        }
+
+
+        private void btnTestInjection_Click(object sender, EventArgs e)
+        {
+            string inputBerbahaya = txtCari.Text;
+
+            if (string.IsNullOrWhiteSpace(inputBerbahaya))
+            {
+                MessageBox.Show(
+                    "Isi txtCari dulu!\n\n" +
+                    "Contoh input berbahaya:\n" +
+                    "' OR '1'='1' --\n" +
+                    "' OR 1=1 --",
+                    "Petunjuk", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Tampilkan query yang terbentuk (untuk edukasi)
+            string queryInfo =
+                "SELECT idPetani, namaPetani, NIK, alamat, noTelepon " +
+                "FROM petani " +
+                "WHERE namaPetani = '" + inputBerbahaya + "'";
+
+            MessageBox.Show(
+                "Query yang dijalankan:\n\n" + queryInfo,
+                "⚠️ Query Tidak Aman",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            try
+            {
+                // Panggil via BLL → DAL (tidak perlu DatabaseConnection di Form)
+                DataTable dt = bll.CariRentan(inputBerbahaya);
+                dgvPetani.DataSource = dt;
+
+                if (dt.Rows.Count > 1)
+                {
+                    MessageBox.Show(
+                        $"⚠️ SQL INJECTION BERHASIL!\n\n" +
+                        $"Jumlah data bocor: {dt.Rows.Count} baris\n\n" +
+                        $"Semua data petani berhasil diakses\n" +
+                        $"tanpa mengetahui nama yang benar!",
+                        "Injection Berhasil!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+                else if (dt.Rows.Count == 1)
+                {
+                    MessageBox.Show(
+                        "Query normal — hanya 1 data ditemukan.",
+                        "Normal", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Data tidak ditemukan.",
+                        "Kosong", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            DialogResult konfirmasi = MessageBox.Show(
+                "Reset data petani ke kondisi awal demo?\n" +
+                "Semua perubahan akan dikembalikan!",
+                "Konfirmasi Reset",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (konfirmasi == DialogResult.Yes)
+            {
+                try
+                {
+                    // Panggil via BLL → DAL
+                    bool hasil = bll.ResetData();
+                    if (hasil)
+                    {
+                        LoadData();
+                        MessageBox.Show(
+                            "Data berhasil direset ke kondisi awal!",
+                            "Reset Berhasil",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal reset: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void btnCariData_Click(object sender, EventArgs e)

@@ -19,19 +19,18 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
                 //pakai view
                 string query = "SELECT * FROM vw_Penyakit";
 
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+
                         DataTable dt = new DataTable();
-                        dt.Load(dr);
+                        da.Fill(dt);
                         return dt;
-                    }
+
                 }
             }
         }
@@ -69,7 +68,6 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
 
                 //pakai sp
                 using (SqlCommand cmd = new SqlCommand("sp_SearchPenyakit", conn))
@@ -77,12 +75,10 @@ namespace OryzaTrackDAL
                     // sp_SearchPenyakit menerima parameter @keyword
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
-                        dt.Load(dr);
+                        da.Fill(dt);
                         return dt;
-                    }
                 }
             }
         }
@@ -178,10 +174,16 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT COUNT(*) FROM penyakit";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("sp_CountPenyakit", conn))
                 {
-                    return (int)cmd.ExecuteScalar();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter outputTotal = new SqlParameter("@totalData", SqlDbType.Int);
+                    outputTotal.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputTotal);
+
+                    cmd.ExecuteNonQuery();
+                    return (int)outputTotal.Value;
                 }
             }
         }

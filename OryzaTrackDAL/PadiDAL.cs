@@ -19,14 +19,13 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
                 // Ganti JOIN query → pakai VIEW
                 string query = "SELECT * FROM vw_Padi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
-                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
+                    SqlDataAdapter da = new SqlDataAdapter();
                     DataTable dt = new DataTable();
-                    dt.Load(dr);
+                    da.Fill(dt);
                     return dt;
                 }
             }
@@ -68,17 +67,16 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                conn.Open();
                 using (SqlCommand cmd = new SqlCommand("sp_SearchPadi", conn))
                 {
+
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@keyword", keyword);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Load(dr);
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                        da.Fill(dt);
                         return dt;
-                    }
                 }
             }
         }
@@ -168,10 +166,17 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT COUNT(*) FROM padi";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+
+                using (SqlCommand cmd = new SqlCommand("sp_CountPadi", conn))
                 {
-                    return (int)cmd.ExecuteScalar();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter outputTotal = new SqlParameter("@totalData", SqlDbType.Int);
+                    outputTotal.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(outputTotal);
+
+                    cmd.ExecuteNonQuery();
+                    return (int)outputTotal.Value;
                 }
             }
         }

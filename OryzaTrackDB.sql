@@ -1223,3 +1223,128 @@ BEGIN
         OR CAST(r.idRiwayat AS VARCHAR)            LIKE '%' + @keyword + '%';
 END;
 GO
+
+--=====================================================================================
+-- =====================
+-- VIEW LAPORAN
+-- (sama dengan vw_RiwayatPenyakit tapi tanggal tetap DATE
+--  supaya filter tanggal di SP bisa jalan)
+-- =====================
+CREATE VIEW vw_Laporan AS
+SELECT 
+    r.idRiwayat,
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    pn.Kategori             AS kategoriPenyakit,
+    pn.tingkatKerusakan,
+    r.tanggalTerdeteksi,    -- tetap DATE, bukan dikonversi string
+    CASE 
+        WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+        ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+    END AS tanggalSelesai,
+    r.keterangan,
+    pp.jenisPerawatan,
+    pp.jenisPestisida,
+    pp.hasilPerawatan
+FROM riwayatPenyakit r
+JOIN Padi p         ON r.idPadi     = p.idPadi
+JOIN petani pt      ON p.idPetani   = pt.idPetani
+JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit
+LEFT JOIN perawatanPadi pp 
+    ON pp.idPadi = r.idPadi AND pp.idPenyakit = r.idPenyakit;
+GO
+
+-- =====================
+-- SP LAPORAN DENGAN FILTER
+-- =====================
+CREATE PROCEDURE sp_GetLaporan
+    @tanggalAwal    DATE,
+    @tanggalAkhir   DATE,
+    @jenisBibit     VARCHAR(100) = NULL,  -- NULL = Semua
+    @kategori       VARCHAR(50)  = NULL   -- NULL = Semua
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        r.idRiwayat,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori             AS kategoriPenyakit,
+        pn.tingkatKerusakan,
+        CONVERT(VARCHAR, r.tanggalTerdeteksi, 103) AS tanggalTerdeteksi,
+        CASE 
+            WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+            ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+        END AS tanggalSelesai,
+        r.keterangan,
+        pp.jenisPerawatan,
+        pp.jenisPestisida,
+        pp.hasilPerawatan
+    FROM riwayatPenyakit r
+    JOIN Padi p         ON r.idPadi     = p.idPadi
+    JOIN petani pt      ON p.idPetani   = pt.idPetani
+    JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit
+    LEFT JOIN perawatanPadi pp 
+        ON pp.idPadi = r.idPadi AND pp.idPenyakit = r.idPenyakit
+    WHERE 
+        r.tanggalTerdeteksi BETWEEN @tanggalAwal AND @tanggalAkhir
+        AND (@jenisBibit IS NULL OR p.jenisBibit = @jenisBibit)
+        AND (@kategori   IS NULL OR pn.Kategori  = @kategori);
+END;
+GO
+
+--================================================================================
+-- SP COUNT dengan OUTPUT Parameter
+--petani
+CREATE PROCEDURE sp_CountPetani
+    @totalData INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT @totalData = COUNT(*) FROM petani;
+END;
+GO
+
+--padi
+CREATE PROCEDURE sp_CountPadi        
+    @totalData INT OUTPUT 
+AS 
+BEGIN 
+    SELECT @totalData = COUNT(*) FROM Padi; 
+END;
+GO
+
+--penyakit
+CREATE PROCEDURE sp_CountPenyakit
+    @totalData INT OUTPUT 
+AS 
+BEGIN 
+    SELECT @totalData = COUNT(*) FROM Penyakit; 
+END;
+GO
+
+--perawatan
+CREATE PROCEDURE sp_CountPerawatan
+    @totalData INT OUTPUT 
+AS 
+BEGIN 
+    SELECT @totalData = COUNT(*) FROM perawatanPadi; 
+END;
+GO
+
+--riwayat
+CREATE PROCEDURE sp_CountRiwayat 
+    @totalData INT OUTPUT 
+AS 
+BEGIN 
+    SELECT @totalData = COUNT(*) FROM riwayatPenyakit; 
+END;
+GO
+
+--===========================================================
+--Backup data petani ke tabel sementara
+--===========================================================
+SELECT * INTO petani_backup FROM petani;
