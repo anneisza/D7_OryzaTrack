@@ -34,6 +34,10 @@ namespace OryzaTrack
             // Daftarkan event CellClick
             dgvPenyakit.CellClick += dgvPenyakit_CellClick;
 
+            //nonaktifin buttonnya dulu
+            SetButtonsEnabled(false);
+            Application.DoEvents();
+
         }
 
         // =====================
@@ -111,6 +115,17 @@ namespace OryzaTrack
             return true;
         }
 
+        //matiin tombol
+        private void SetButtonsEnabled(bool status)
+        {
+            btnLoadData.Enabled = status;
+            btnTambahData.Enabled = status;
+            btnUbahData.Enabled = status;
+            btnHapusData.Enabled = status;
+            btnBersihkan.Enabled = status;
+            btnCariData.Enabled = status;
+        }
+
         //tombol koneksi
 
         private void btnKoneksi_Click(object sender, EventArgs e)
@@ -126,20 +141,18 @@ namespace OryzaTrack
                 MessageBox.Show("Koneksi gagal: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                // 2. NYALAKAN KEMBALI di blok finally
+                SetButtonsEnabled(true);
+            }
 
         }
+
 
         //cari
         private void txtCari_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCari.Text))
-            {
-                LoadData();
-            }
-            else
-            {
-                dgvPenyakit.DataSource = bll.Cari(txtCari.Text.Trim());
-            }
 
         }
 
@@ -149,7 +162,8 @@ namespace OryzaTrack
             {
                 if (string.IsNullOrWhiteSpace(txtCari.Text))
                 {
-                    LoadData();
+                    MessageBox.Show("Masukkan kata kunci untuk mencari data penyakit!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
                 }
                 else
                 {

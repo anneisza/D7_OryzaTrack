@@ -39,6 +39,10 @@ namespace OryzaTrack
 
             LoadPadi();
             LoadPenyakit();
+
+            //matiin tombol dulu, nanti diaktifkan setelah koneksi berhasil
+            SetButtonsEnabled(false);
+            Application.DoEvents();
         }
 
 
@@ -147,13 +151,28 @@ namespace OryzaTrack
         }
 
 
+        //matiin tombol
+        private void SetButtonsEnabled(bool status)
+        {
+            btnLoadData.Enabled = status;
+            btnTambahData.Enabled = status;
+            btnUbahData.Enabled = status;
+            btnHapusData.Enabled = status;
+            btnBersihkan.Enabled = status;
+            btnCariData.Enabled = status;
+        }
 
-        //Event Handler
+        // =====================
+        //     EVENT HANDLER
+        // =====================
+
+        //tombol koneksi
 
         private void btnKoneksi_Click(object sender, EventArgs e)
         {
             try
             {
+
                 bllPerawatan.GetAll();
                 MessageBox.Show("Database Terkoneksi!",
                     "Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -162,19 +181,19 @@ namespace OryzaTrack
             {
                 MessageBox.Show("Koneksi gagal: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnLoadData.Enabled = false;
             }
+
+            finally
+            {
+                // 2. NYALAKAN KEMBALI di blok finally
+                SetButtonsEnabled(true);
+            }
+
         }
 
         private void txtCari_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCari.Text))
-            {
-                LoadData();
-            }
-            else
-            {
-                dgvPerawatanPadi.DataSource = bllPerawatan.Cari(txtCari.Text.Trim());
-            }
 
         }
 
@@ -184,7 +203,7 @@ namespace OryzaTrack
             {
                 if (string.IsNullOrWhiteSpace(txtCari.Text))
                 {
-                    LoadData();
+                    MessageBox.Show("Masukkan data yang ingin dicari!"); return;
                 }
                 else
                 {

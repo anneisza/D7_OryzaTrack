@@ -42,6 +42,10 @@ namespace OryzaTrack
             // Daftarkan event CellClick
             dgvPetani.CellClick += dgvPetani_CellClick;
 
+            //matiin tombol dulu sampai koneksi berhasil
+            SetButtonsEnabled(false);
+            Application.DoEvents();
+
         }
 
         // =====================
@@ -124,15 +128,28 @@ namespace OryzaTrack
             }
             return true;
         }
+        //matiin tombol
+        private void SetButtonsEnabled(bool status)
+        {
+            btnLoadData.Enabled = status;
+            btnTambahData.Enabled = status;
+            btnUbahData.Enabled = status;
+            btnHapusData.Enabled = status;
+            btnBersihkan.Enabled = status;
+            btnCariData.Enabled = status;
+        }
 
         // =====================
-        // EVENT TOMBOL
+        //     EVENT HANDLER
         // =====================
+
+        //tombol koneksi
 
         private void btnKoneksi_Click(object sender, EventArgs e)
         {
             try
             {
+
                 bll.GetAll();
                 MessageBox.Show("Database Terkoneksi!",
                     "Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -141,6 +158,13 @@ namespace OryzaTrack
             {
                 MessageBox.Show("Koneksi gagal: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnLoadData.Enabled = false;
+            }
+
+            finally
+            {
+                // 2. NYALAKAN KEMBALI di blok finally
+                SetButtonsEnabled(true);
             }
 
         }
@@ -183,15 +207,19 @@ namespace OryzaTrack
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPetani == 0) return;
+            if (selectedIdPetani == 0)
+            {
+                MessageBox.Show("Pilih data dari tabel yang ingin diubah!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             bool currentStatus = cmbStatusAktif.SelectedIndex == 0;
 
@@ -302,14 +330,7 @@ namespace OryzaTrack
 
         private void txtCari_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCari.Text))
-            {
-                LoadData();
-            }
-            else
-            {
-                dgvPetani.DataSource = bll.Cari(txtCari.Text.Trim());
-            }
+
 
         }
 
@@ -319,7 +340,9 @@ namespace OryzaTrack
             {
                 if (string.IsNullOrWhiteSpace(txtCari.Text))
                 {
-                    LoadData();
+                    MessageBox.Show("Masukkan kata kunci pencarian!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                    return;
                 }
                 else
                 {

@@ -39,8 +39,12 @@ namespace OryzaTrack
             // Daftarkan event CellClick
             dgvRiwayat.CellClick += dgvRiwayat_CellClick;
 
+            btnLoadData.Enabled = false; // Disable tombol load data sampai koneksi dicek
             LoadPadi();
             LoadPenyakit();
+
+            SetButtonsEnabled(false);
+            Application.DoEvents();
 
         }
 
@@ -149,14 +153,30 @@ namespace OryzaTrack
             }
         }
 
+
+
+        //matiin tombol
+        private void SetButtonsEnabled(bool status)
+        {
+            btnLoadData.Enabled = status;
+            btnTambahData.Enabled = status;
+            btnUbahData.Enabled = status;
+            btnHapusData.Enabled = status;
+            btnBersihkan.Enabled = status;
+            btnCariData.Enabled = status;
+        }
+
         // =====================
         //     EVENT HANDLER
         // =====================
+
+        //tombol koneksi
 
         private void btnKoneksi_Click(object sender, EventArgs e)
         {
             try
             {
+
                 bll.GetAll();
                 MessageBox.Show("Database Terkoneksi!",
                     "Koneksi", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -165,20 +185,19 @@ namespace OryzaTrack
             {
                 MessageBox.Show("Koneksi gagal: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnLoadData.Enabled = false;
+            }
+
+            finally
+            {
+                // 2. NYALAKAN KEMBALI di blok finally
+                SetButtonsEnabled(true);
             }
 
         }
 
         private void txtCari_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCari.Text))
-            {
-                LoadData();
-            }
-            else
-            {
-                dgvRiwayat.DataSource = bll.Cari(txtCari.Text.Trim());
-            }
 
         }
 
@@ -188,7 +207,8 @@ namespace OryzaTrack
             {
                 if (string.IsNullOrWhiteSpace(txtCari.Text))
                 {
-                    LoadData();
+                    MessageBox.Show("Masukkan kata kunci pencarian terlebih dahulu.",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -247,7 +267,11 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdRiwayatPenyakit == 0) { /* pesan error */ return; }
+            if (selectedIdRiwayatPenyakit == 0)
+            {
+                MessageBox.Show("Pilih data dari tabel yang ingin diubah!",
+                    "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; }
 
             // VALIDASI: Apakah user benar-benar mengubah sesuatu?
             if ((int)cmbIdPadi.SelectedValue == oldIdPadi &&
