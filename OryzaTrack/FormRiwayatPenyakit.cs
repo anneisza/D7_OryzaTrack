@@ -23,16 +23,29 @@ namespace OryzaTrack
         PenyakitBLL bllPenyakit = new PenyakitBLL();
         //var data lama untuk validasi perubahan
         private int oldIdPadi, oldIdPenyakit;
-        private DateTime oldTglDeteksi, oldTglSelesai;
+        private DateTime oldTglDeteksi;
+        private DateTime? oldTglSelesai;
         private string oldKeterangan;
         public FormRiwayatPenyakit(int idAdmin)
         {
             InitializeComponent();
             IDAdmin = idAdmin;
+            // Pasang event secara manual (pasti terpanggil)
+            chkSelesai.CheckedChanged += chkSelesai_CheckedChanged;
         }
 
         private void FormRiwayatPenyakit_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'view_combo.v_ListKategori' table. You can move, or remove it, as needed.
+            this.v_ListKategoriTableAdapter.Fill(this.view_combo.v_ListKategori);
+            // TODO: This line of code loads data into the 'view_combo.v_ListBibit' table. You can move, or remove it, as needed.
+            this.v_ListBibitTableAdapter.Fill(this.view_combo.v_ListBibit);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_RiwayatPenyakit' table. You can move, or remove it, as needed.
+            this.vw_RiwayatPenyakitTableAdapter.Fill(this.oryzaTrackDataSet1.vw_RiwayatPenyakit);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Padi' table. You can move, or remove it, as needed.
+            this.vw_PadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Padi);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Penyakit' table. You can move, or remove it, as needed.
+            this.vw_PenyakitTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Penyakit);
             // Setting DataGridView saat form dibuka
             dgvRiwayat.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRiwayat.MultiSelect = false;
@@ -42,9 +55,16 @@ namespace OryzaTrack
             // Daftarkan event CellClick
             dgvRiwayat.CellClick += dgvRiwayat_CellClick;
 
+            // Daftarkan event checkbox secara eksplisit di Load
+            chkSelesai.CheckedChanged += chkSelesai_CheckedChanged;
+
+            // Set kondisi awal dtpTanggalSelesai
+            dtpTanggalSelesai.Enabled = false;
+
             btnLoadData.Enabled = false; // Disable tombol load data sampai koneksi dicek
             LoadPadi();
             LoadPenyakit();
+            BersihkanForm();
 
             SetButtonsEnabled(false);
             Application.DoEvents();
@@ -107,13 +127,36 @@ namespace OryzaTrack
                     "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            if (dtpTanggalSelesai.Value < dtpTanggalTerdeteksi.Value)
+            if (chkSelesai.Checked)
             {
-                MessageBox.Show("Tanggal Selesai tidak boleh sebelum Tanggal Terdeteksi.",
-                    "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (dtpTanggalSelesai.Value < dtpTanggalTerdeteksi.Value)
+                {
+                    MessageBox.Show("Tanggal Selesai tidak boleh sebelum Tanggal Terdeteksi.", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                // FIX: tidak boleh lebih dari hari ini
+                if (dtpTanggalSelesai.Value > DateTime.Now)
+                {
+                    MessageBox.Show("Tanggal Selesai tidak boleh melebihi hari ini.", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+            if (string.IsNullOrWhiteSpace(txtKeterangan.Text) || txtKeterangan.Text.Trim().Length < 5)
+            {
+                MessageBox.Show("Keterangan minimal harus 5 karakter!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             return true;
+        }
+
+        //checkbox Selesai mengontrol enable/disable dtpTanggalSelesai
+        private void chkSelesai_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpTanggalSelesai.Enabled = chkSelesai.Checked;
+            if (!chkSelesai.Checked)
+            {
+                dtpTanggalSelesai.Value = DateTime.Now; // reset value
+            }
         }
 
         //combo box untuk id padi
@@ -121,20 +164,23 @@ namespace OryzaTrack
         {
             try
             {
-                // Pakai PadiBLL untuk mengambil data padi, karena kita butuh jenisBibit untuk ditampilkan di ComboBox
                 DataTable dt = bllPadi.GetAll();
+                // Filter data unik berdasarkan jenisBibit, buang baris kosong/null
+                var listBibit = dt.AsEnumerable()
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("jenisBibit")))
+                    .GroupBy(row => row.Field<string>("jenisBibit").Trim())
+                    .Select(g => new {
+                        idPadi = g.First().Field<int>("idPadi"),
+                        jenisBibit = g.Key
+                    })
+                    .ToList();
 
-                // ATUR MEMBER DULU SEBELUM DATASOURCE
-                cmbIdPadi.ValueMember = "idPadi";
+                cmbIdPadi.DataSource = listBibit;
                 cmbIdPadi.DisplayMember = "jenisBibit";
-
-                cmbIdPadi.DataSource = dt;
+                cmbIdPadi.ValueMember = "idPadi";   // ← harus idPadi, bukan string
                 cmbIdPadi.SelectedIndex = -1;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal load data petani: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
         }
 
         //combo box untuk id penyakit
@@ -142,21 +188,22 @@ namespace OryzaTrack
         {
             try
             {
-
                 DataTable dt = bllPenyakit.GetAll();
+                var listKategori = dt.AsEnumerable()
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Kategori")))
+                    .GroupBy(row => row.Field<string>("Kategori").Trim())
+                    .Select(g => new {
+                        idPenyakit = g.First().Field<int>("idPenyakit"),
+                        Kategori = g.Key
+                    })
+                    .ToList();
 
-                // ATUR MEMBER DULU SEBELUM DATASOURCE
+                cmbIdPenyakit.DataSource = listKategori;
+                cmbIdPenyakit.DisplayMember = "Kategori";
                 cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.DisplayMember = "kategori";
-
-                cmbIdPenyakit.DataSource = dt;
                 cmbIdPenyakit.SelectedIndex = -1;
-
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Gagal load data penyakit: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
         }
 
 
@@ -216,10 +263,8 @@ namespace OryzaTrack
                     MessageBox.Show("Masukkan kata kunci pencarian terlebih dahulu.",
                         "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                else
-                {
-                    dgvRiwayat.DataSource = bll.Cari(txtCari.Text.Trim());
-                }
+                bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
+                dgvRiwayat.DataSource = bindingSource;
             }
             catch (Exception ex)
             {
@@ -241,26 +286,21 @@ namespace OryzaTrack
 
             try
             {
+                // kirim null jika checkbox tidak dicentang
+                DateTime? tglSelesai = chkSelesai.Checked ? dtpTanggalSelesai.Value : (DateTime?)null;
+
                 bool hasil = bll.Tambah(
                     Convert.ToInt32(cmbIdPadi.SelectedValue),
                     Convert.ToInt32(cmbIdPenyakit.SelectedValue),
                     dtpTanggalTerdeteksi.Value,
-                    dtpTanggalSelesai.Value,
-                    txtKeterangan.Text.Trim()
-                );
+                    tglSelesai,
+                    txtKeterangan.Text.Trim());
 
                 if (hasil)
                 {
-                    MessageBox.Show("Data riwayat penyakit berhasil ditambahkan!",
-                        "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Data riwayat penyakit berhasil ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     BersihkanForm();
                     LoadData();
-                    TampilkanTotal();
-                }
-                else
-                {
-                    MessageBox.Show("Gagal menambahkan data!",
-                        "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -400,10 +440,16 @@ namespace OryzaTrack
                 // tanggalSelesai bisa "Belum Selesai" (dari CASE di VIEW)
                 string tglSelesaiStr = row["tanggalSelesai"].ToString();
                 if (tglSelesaiStr == "Belum Selesai")
-                    dtpTanggalSelesai.Value = oldTglSelesai = DateTime.Now;
+                {
+                    chkSelesai.Checked = false;      // ini akan trigger event → dtp disable
+                                                     // Jangan panggil dtpTanggalSelesai.Enabled = false; karena sudah di event
+                    dtpTanggalSelesai.Value = DateTime.Now;
+                }
                 else
-                    dtpTanggalSelesai.Value = oldTglSelesai = DateTime.ParseExact(
-                        tglSelesaiStr, "dd/MM/yyyy", null);
+                {
+                    chkSelesai.Checked = true;       // trigger event → dtp enable
+                    dtpTanggalSelesai.Value = DateTime.ParseExact(tglSelesaiStr, "dd/MM/yyyy", null);
+                }
 
                 txtKeterangan.Text = oldKeterangan = row["keterangan"].ToString();
             }

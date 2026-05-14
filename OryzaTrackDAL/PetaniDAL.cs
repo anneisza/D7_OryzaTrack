@@ -45,7 +45,7 @@ namespace OryzaTrackDAL
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
-                    dt.Fill(dr);
+                    da.Fill(dt);
                     return dt;
                   
                 }
@@ -171,7 +171,7 @@ namespace OryzaTrackDAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPetani", idPetani);
 
-                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
                     outputMsg.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outputMsg);
 

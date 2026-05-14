@@ -61,6 +61,40 @@ namespace OryzaTrackDAL
             }
         }
 
+        /*==========================================================
+  Metode Tambahan untuk Binding ComboBox (Tanpa Duplikat)
+============================================================*/
+
+        public DataTable GetKategoriUnik()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                string query = "SELECT DISTINCT kategori FROM penyakit WHERE kategori IS NOT NULL";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+
+        public DataTable GetTingkatKerusakanUnik()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                string query = "SELECT DISTINCT tingkatKerusakan FROM penyakit WHERE tingkatKerusakan IS NOT NULL";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+
         /*=============================
                 Search Penyakit 
         ==============================*/
@@ -74,7 +108,7 @@ namespace OryzaTrackDAL
                 {
                     // sp_SearchPenyakit menerima parameter @keyword
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    cmd.Parameters.AddWithValue("@keyword", keyword);
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);

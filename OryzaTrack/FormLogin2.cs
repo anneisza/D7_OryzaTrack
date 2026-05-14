@@ -72,7 +72,7 @@ namespace OryzaTrack
             {
                 int idAdmin = bll.Login(
                     txtUsername.Text.Trim(),
-                    txtPassword.Text.Trim()
+                    txtPassword.Text
                 );
 
                 if (idAdmin > 0)

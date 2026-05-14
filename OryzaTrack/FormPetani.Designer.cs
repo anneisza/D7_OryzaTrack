@@ -38,10 +38,19 @@
             this.btnUbahData = new System.Windows.Forms.Button();
             this.btnTambahData = new System.Windows.Forms.Button();
             this.btnCariData = new System.Windows.Forms.Button();
+            this.spSearchPetaniBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.oryzaTrackDataSet1 = new OryzaTrack.OryzaTrackDataSet1();
             this.txtCari = new System.Windows.Forms.TextBox();
+            this.vwPetaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.txtNIK = new System.Windows.Forms.TextBox();
             this.txtNamaPetani = new System.Windows.Forms.TextBox();
             this.dgvPetani = new System.Windows.Forms.DataGridView();
+            this.idPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.namaPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nIKDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.alamatDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.noTeleponDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusAktifDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtNoTelepon = new System.Windows.Forms.TextBox();
             this.lblNoTelepon = new System.Windows.Forms.Label();
@@ -65,13 +74,32 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.cutToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.btnTestInjection = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.spSearchPetaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.sp_SearchPetaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.sp_SearchPetaniTableAdapter();
+            this.spSearchPetaniBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.vw_PetaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -149,6 +177,7 @@
             // 
             // btnCariData
             // 
+            this.btnCariData.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.spSearchPetaniBindingSource1, "namaPetani", true));
             this.btnCariData.Location = new System.Drawing.Point(914, 24);
             this.btnCariData.Name = "btnCariData";
             this.btnCariData.Size = new System.Drawing.Size(105, 33);
@@ -156,6 +185,16 @@
             this.btnCariData.Text = "Cari";
             this.btnCariData.UseVisualStyleBackColor = true;
             this.btnCariData.Click += new System.EventHandler(this.btnCariData_Click);
+            // 
+            // spSearchPetaniBindingSource1
+            // 
+            this.spSearchPetaniBindingSource1.DataMember = "sp_SearchPetani";
+            this.spSearchPetaniBindingSource1.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // oryzaTrackDataSet1
+            // 
+            this.oryzaTrackDataSet1.DataSetName = "OryzaTrackDataSet1";
+            this.oryzaTrackDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // txtCari
             // 
@@ -165,6 +204,11 @@
             this.txtCari.Size = new System.Drawing.Size(667, 33);
             this.txtCari.TabIndex = 53;
             this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
+            // 
+            // vwPetaniBindingSource
+            // 
+            this.vwPetaniBindingSource.DataMember = "vw_Petani";
+            this.vwPetaniBindingSource.DataSource = this.oryzaTrackDataSet1;
             // 
             // txtNIK
             // 
@@ -187,10 +231,20 @@
             // 
             this.dgvPetani.AllowUserToAddRows = false;
             this.dgvPetani.AllowUserToDeleteRows = false;
+            this.dgvPetani.AutoGenerateColumns = false;
             this.dgvPetani.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPetani.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPetani.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPetani.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPetani.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idPetaniDataGridViewTextBoxColumn,
+            this.namaPetaniDataGridViewTextBoxColumn,
+            this.nIKDataGridViewTextBoxColumn,
+            this.alamatDataGridViewTextBoxColumn,
+            this.noTeleponDataGridViewTextBoxColumn,
+            this.statusAktifDataGridViewTextBoxColumn});
+            this.dgvPetani.Cursor = System.Windows.Forms.Cursors.AppStarting;
+            this.dgvPetani.DataSource = this.vwPetaniBindingSource;
             this.dgvPetani.Location = new System.Drawing.Point(68, 422);
             this.dgvPetani.Name = "dgvPetani";
             this.dgvPetani.ReadOnly = true;
@@ -199,6 +253,60 @@
             this.dgvPetani.Size = new System.Drawing.Size(1086, 281);
             this.dgvPetani.TabIndex = 49;
             this.dgvPetani.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPetani_CellClick);
+            // 
+            // idPetaniDataGridViewTextBoxColumn
+            // 
+            this.idPetaniDataGridViewTextBoxColumn.DataPropertyName = "idPetani";
+            this.idPetaniDataGridViewTextBoxColumn.HeaderText = "idPetani";
+            this.idPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idPetaniDataGridViewTextBoxColumn.Name = "idPetaniDataGridViewTextBoxColumn";
+            this.idPetaniDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idPetaniDataGridViewTextBoxColumn.Width = 85;
+            // 
+            // namaPetaniDataGridViewTextBoxColumn
+            // 
+            this.namaPetaniDataGridViewTextBoxColumn.DataPropertyName = "namaPetani";
+            this.namaPetaniDataGridViewTextBoxColumn.HeaderText = "namaPetani";
+            this.namaPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.namaPetaniDataGridViewTextBoxColumn.Name = "namaPetaniDataGridViewTextBoxColumn";
+            this.namaPetaniDataGridViewTextBoxColumn.ReadOnly = true;
+            this.namaPetaniDataGridViewTextBoxColumn.Width = 108;
+            // 
+            // nIKDataGridViewTextBoxColumn
+            // 
+            this.nIKDataGridViewTextBoxColumn.DataPropertyName = "NIK";
+            this.nIKDataGridViewTextBoxColumn.HeaderText = "NIK";
+            this.nIKDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.nIKDataGridViewTextBoxColumn.Name = "nIKDataGridViewTextBoxColumn";
+            this.nIKDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nIKDataGridViewTextBoxColumn.Width = 57;
+            // 
+            // alamatDataGridViewTextBoxColumn
+            // 
+            this.alamatDataGridViewTextBoxColumn.DataPropertyName = "alamat";
+            this.alamatDataGridViewTextBoxColumn.HeaderText = "alamat";
+            this.alamatDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.alamatDataGridViewTextBoxColumn.Name = "alamatDataGridViewTextBoxColumn";
+            this.alamatDataGridViewTextBoxColumn.ReadOnly = true;
+            this.alamatDataGridViewTextBoxColumn.Width = 77;
+            // 
+            // noTeleponDataGridViewTextBoxColumn
+            // 
+            this.noTeleponDataGridViewTextBoxColumn.DataPropertyName = "noTelepon";
+            this.noTeleponDataGridViewTextBoxColumn.HeaderText = "noTelepon";
+            this.noTeleponDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.noTeleponDataGridViewTextBoxColumn.Name = "noTeleponDataGridViewTextBoxColumn";
+            this.noTeleponDataGridViewTextBoxColumn.ReadOnly = true;
+            this.noTeleponDataGridViewTextBoxColumn.Width = 102;
+            // 
+            // statusAktifDataGridViewTextBoxColumn
+            // 
+            this.statusAktifDataGridViewTextBoxColumn.DataPropertyName = "statusAktif";
+            this.statusAktifDataGridViewTextBoxColumn.HeaderText = "statusAktif";
+            this.statusAktifDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.statusAktifDataGridViewTextBoxColumn.Name = "statusAktifDataGridViewTextBoxColumn";
+            this.statusAktifDataGridViewTextBoxColumn.ReadOnly = true;
+            this.statusAktifDataGridViewTextBoxColumn.Width = 96;
             // 
             // groupBox1
             // 
@@ -262,6 +370,7 @@
             this.cmbStatusAktif.Name = "cmbStatusAktif";
             this.cmbStatusAktif.Size = new System.Drawing.Size(220, 24);
             this.cmbStatusAktif.TabIndex = 44;
+            this.cmbStatusAktif.ValueMember = "statusAktif";
             // 
             // lblNamaPetani
             // 
@@ -331,7 +440,17 @@
             this.bindingNavigatorMoveLastItem,
             this.bindingNavigatorSeparator2,
             this.bindingNavigatorAddNewItem,
-            this.bindingNavigatorDeleteItem});
+            this.bindingNavigatorDeleteItem,
+            this.newToolStripButton,
+            this.openToolStripButton,
+            this.saveToolStripButton,
+            this.printToolStripButton,
+            this.toolStripSeparator,
+            this.cutToolStripButton,
+            this.copyToolStripButton,
+            this.pasteToolStripButton,
+            this.toolStripSeparator1,
+            this.helpToolStripButton});
             this.bindingNavigator1.Location = new System.Drawing.Point(1161, 0);
             this.bindingNavigator1.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
             this.bindingNavigator1.MoveLastItem = this.bindingNavigatorMoveLastItem;
@@ -429,6 +548,88 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(50, 6);
             // 
+            // newToolStripButton
+            // 
+            this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+            this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.newToolStripButton.Name = "newToolStripButton";
+            this.newToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.newToolStripButton.Text = "&New";
+            // 
+            // openToolStripButton
+            // 
+            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openToolStripButton.Name = "openToolStripButton";
+            this.openToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.openToolStripButton.Text = "&Open";
+            // 
+            // saveToolStripButton
+            // 
+            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveToolStripButton.Name = "saveToolStripButton";
+            this.saveToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.saveToolStripButton.Text = "&Save";
+            // 
+            // printToolStripButton
+            // 
+            this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
+            this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.printToolStripButton.Name = "printToolStripButton";
+            this.printToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.printToolStripButton.Text = "&Print";
+            // 
+            // toolStripSeparator
+            // 
+            this.toolStripSeparator.Name = "toolStripSeparator";
+            this.toolStripSeparator.Size = new System.Drawing.Size(50, 6);
+            // 
+            // cutToolStripButton
+            // 
+            this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
+            this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cutToolStripButton.Name = "cutToolStripButton";
+            this.cutToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.cutToolStripButton.Text = "C&ut";
+            // 
+            // copyToolStripButton
+            // 
+            this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
+            this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.copyToolStripButton.Name = "copyToolStripButton";
+            this.copyToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.copyToolStripButton.Text = "&Copy";
+            // 
+            // pasteToolStripButton
+            // 
+            this.pasteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.pasteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripButton.Image")));
+            this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.pasteToolStripButton.Name = "pasteToolStripButton";
+            this.pasteToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.pasteToolStripButton.Text = "&Paste";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(50, 6);
+            // 
+            // helpToolStripButton
+            // 
+            this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
+            this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.helpToolStripButton.Name = "helpToolStripButton";
+            this.helpToolStripButton.Size = new System.Drawing.Size(50, 24);
+            this.helpToolStripButton.Text = "He&lp";
+            // 
             // btnTestInjection
             // 
             this.btnTestInjection.Location = new System.Drawing.Point(943, 324);
@@ -448,6 +649,24 @@
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // spSearchPetaniBindingSource
+            // 
+            this.spSearchPetaniBindingSource.DataMember = "sp_SearchPetani";
+            this.spSearchPetaniBindingSource.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // sp_SearchPetaniTableAdapter
+            // 
+            this.sp_SearchPetaniTableAdapter.ClearBeforeFill = true;
+            // 
+            // spSearchPetaniBindingSource2
+            // 
+            this.spSearchPetaniBindingSource2.DataMember = "sp_SearchPetani";
+            this.spSearchPetaniBindingSource2.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // vw_PetaniTableAdapter
+            // 
+            this.vw_PetaniTableAdapter.ClearBeforeFill = true;
             // 
             // FormPetani
             // 
@@ -474,12 +693,17 @@
             this.Text = "FormPetani";
             this.Load += new System.EventHandler(this.FormPetani_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -524,5 +748,28 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.Button btnTestInjection;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.ToolStripButton newToolStripButton;
+        private System.Windows.Forms.ToolStripButton openToolStripButton;
+        private System.Windows.Forms.ToolStripButton saveToolStripButton;
+        private System.Windows.Forms.ToolStripButton printToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private System.Windows.Forms.ToolStripButton cutToolStripButton;
+        private System.Windows.Forms.ToolStripButton copyToolStripButton;
+        private System.Windows.Forms.ToolStripButton pasteToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton helpToolStripButton;
+        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource;
+        private OryzaTrackDataSet1 oryzaTrackDataSet1;
+        private OryzaTrackDataSet1TableAdapters.sp_SearchPetaniTableAdapter sp_SearchPetaniTableAdapter;
+        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource2;
+        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource1;
+        private System.Windows.Forms.BindingSource vwPetaniBindingSource;
+        private OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter vw_PetaniTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idPetaniDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn namaPetaniDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nIKDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn alamatDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn noTeleponDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn statusAktifDataGridViewTextBoxColumn;
     }
 }

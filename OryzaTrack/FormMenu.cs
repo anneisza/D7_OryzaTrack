@@ -86,7 +86,7 @@ namespace OryzaTrack
             {
                 FormLogin2 login = new FormLogin2();
                 login.Show();
-                this.Hide();
+                this.Close();
             }
         }
     }

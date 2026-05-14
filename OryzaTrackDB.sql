@@ -1348,3 +1348,55 @@ GO
 --Backup data petani ke tabel sementara
 --===========================================================
 SELECT * INTO petani_backup FROM petani;
+
+--------------------------------------------------------------
+
+-- Hapus constraint lama
+ALTER TABLE riwayatPenyakit DROP CONSTRAINT CK_Riwayat_TanggalSelesai;
+
+-- Buat constraint baru: tanggal selesai tidak boleh melebihi hari ini
+ALTER TABLE riwayatPenyakit ADD CONSTRAINT CK_Riwayat_TanggalSelesai
+    CHECK (tanggalSelesai IS NULL OR 
+          (tanggalSelesai >= '2000-01-01' AND tanggalSelesai <= GETDATE()));
+
+-- Example: Set future dates to NULL or today's date
+UPDATE dbo.riwayatPenyakit
+SET tanggalSelesai = GETDATE()
+WHERE tanggalSelesai > GETDATE();
+
+--=====================================================
+IF OBJECT_ID('v_ListStatus', 'V') IS NOT NULL DROP VIEW v_ListStatus
+GO
+CREATE VIEW v_ListStatus AS
+SELECT DISTINCT statusAktif FROM petani
+GO
+
+IF OBJECT_ID('v_ListLahan', 'V') IS NOT NULL DROP VIEW v_ListLahan
+GO
+CREATE VIEW v_ListLahan AS
+SELECT DISTINCT lokasiLahan FROM padi
+GO
+
+IF OBJECT_ID('v_ListPetaniCombo', 'V') IS NOT NULL DROP VIEW v_ListPetaniCombo
+GO
+CREATE VIEW v_ListPetaniCombo AS
+SELECT idPetani, namaPetani FROM petani
+GO
+
+IF OBJECT_ID('v_ListBibit', 'V') IS NOT NULL DROP VIEW v_ListBibit
+GO
+CREATE VIEW v_ListBibit AS
+SELECT DISTINCT jenisBibit FROM padi
+GO
+
+IF OBJECT_ID('v_ListKategori', 'V') IS NOT NULL DROP VIEW v_ListKategori
+GO
+CREATE VIEW v_ListKategori AS
+SELECT DISTINCT Kategori FROM penyakit
+GO
+
+IF OBJECT_ID('v_ListTingkatKerusakan', 'V') IS NOT NULL DROP VIEW v_ListTingkatKerusakan
+GO
+CREATE VIEW v_ListTingkatKerusakan AS
+SELECT DISTINCT tingkatKerusakan FROM penyakit
+GO

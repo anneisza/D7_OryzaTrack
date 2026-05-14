@@ -59,6 +59,25 @@ namespace OryzaTrackDAL
             }
         }
 
+        /*==========================================================
+  Metode Tambahan untuk Binding ComboBox (Tanpa Duplikat)
+============================================================*/
+
+        public DataTable GetHasilPerawatanUnik()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                string query = "SELECT DISTINCT hasilPerawatan FROM perawatanPadi WHERE hasilPerawatan IS NOT NULL";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+
         /*=============================
                 Search Perawatan 
         ==============================*/
@@ -70,7 +89,7 @@ namespace OryzaTrackDAL
                 using (SqlCommand cmd = new SqlCommand("sp_SearchPerawatan", conn))
                 {//sp
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    cmd.Parameters.AddWithValue("@keyword", keyword);
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();

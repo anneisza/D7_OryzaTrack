@@ -26,6 +26,20 @@ namespace OryzaTrack
 
         private void FormPadi_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.Padi' table. You can move, or remove it, as needed.
+            this.padiTableAdapter.Fill(this.oryzaTrackDataSet1.Padi);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.petani' table. You can move, or remove it, as needed.
+            this.petaniTableAdapter.Fill(this.oryzaTrackDataSet1.petani);
+            // TODO: This line of code loads data into the 'view_combo.v_ListLahan' table. You can move, or remove it, as needed.
+            this.v_ListLahanTableAdapter.Fill(this.view_combo.v_ListLahan);
+            // TODO: This line of code loads data into the 'view_combo.v_ListBibit' table. You can move, or remove it, as needed.
+            this.v_ListBibitTableAdapter.Fill(this.view_combo.v_ListBibit);
+            // TODO: This line of code loads data into the 'view_combo.v_ListPetaniCombo' table. You can move, or remove it, as needed.
+            this.v_ListPetaniComboTableAdapter.Fill(this.view_combo.v_ListPetaniCombo);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Padi' table. You can move, or remove it, as needed.
+            this.vw_PadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Padi);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Petani' table. You can move, or remove it, as needed.
+            this.vw_PetaniTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Petani);
             // Setting DataGridView saat form dibuka
             dgvPadi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPadi.MultiSelect = false;
@@ -36,6 +50,7 @@ namespace OryzaTrack
             dgvPadi.CellClick += dgvPadi_CellClick;
 
             LoadPetani();
+            BersihkanForm();
 
             //matiin tombol sampai koneksi berhasil
             SetButtonsEnabled(false);
@@ -177,10 +192,8 @@ namespace OryzaTrack
                     MessageBox.Show("Masukkan kata kunci pencarian!",
                         "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
                 }
-                else
-                {
-                    dgvPadi.DataSource = bll.Cari(txtCari.Text.Trim());
-                }
+                bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
+                dgvPadi.DataSource = bindingSource;
             }
             catch (Exception ex)
             {
@@ -287,7 +300,7 @@ namespace OryzaTrack
             }
 
             DialogResult konfirmasi = MessageBox.Show(
-                "Yakin ingin menghapus data penyakit ini?",
+                "Yakin ingin menghapus data padi ini?",
                 "Konfirmasi Hapus",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);

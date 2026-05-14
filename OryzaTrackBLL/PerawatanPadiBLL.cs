@@ -10,7 +10,9 @@ namespace OryzaTrackBLL
 {
     public class PerawatanPadiBLL
     {
-        PerawatanPadiDAL dal = new PerawatanPadiDAL();
+        private PerawatanPadiDAL dal = new PerawatanPadiDAL();
+
+        public DataTable GetListHasil() => dal.GetHasilPerawatanUnik();
 
         /*=============================
           View Perawatan | GetAll()

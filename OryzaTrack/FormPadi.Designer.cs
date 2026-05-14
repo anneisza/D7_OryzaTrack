@@ -41,7 +41,16 @@
             this.btnTambahData = new System.Windows.Forms.Button();
             this.btnCariData = new System.Windows.Forms.Button();
             this.txtCari = new System.Windows.Forms.TextBox();
+            this.vwPetaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.oryzaTrackDataSet1 = new OryzaTrack.OryzaTrackDataSet1();
             this.dgvPadi = new System.Windows.Forms.DataGridView();
+            this.idPadiDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.namaPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.jenisBibitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lokasiLahanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tanggalTanamDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.vwPadiBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblLokasiLahan = new System.Windows.Forms.Label();
             this.lblJenisBibit = new System.Windows.Forms.Label();
             this.lblIdPetani = new System.Windows.Forms.Label();
@@ -51,6 +60,7 @@
             this.cmbLokasiLahan = new System.Windows.Forms.ComboBox();
             this.cmbJB = new System.Windows.Forms.ComboBox();
             this.cmbIdPetani = new System.Windows.Forms.ComboBox();
+            this.vwPetaniBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -63,11 +73,34 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.vw_PetaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter();
+            this.vw_PadiTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PadiTableAdapter();
+            this.view_combo = new OryzaTrack.view_combo();
+            this.vListPetaniComboBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.v_ListPetaniComboTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListPetaniComboTableAdapter();
+            this.vListBibitBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.v_ListBibitTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListBibitTableAdapter();
+            this.vListLahanBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.v_ListLahanTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListLahanTableAdapter();
+            this.petaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.petaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.petaniTableAdapter();
+            this.padiBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.padiTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.PadiTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPadi)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPadiBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListPetaniComboBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListBibitBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListLahanBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.petaniBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.padiBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadData
@@ -175,6 +208,7 @@
             // 
             // txtCari
             // 
+            this.txtCari.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.vwPetaniBindingSource, "namaPetani", true));
             this.txtCari.Location = new System.Drawing.Point(216, 28);
             this.txtCari.Multiline = true;
             this.txtCari.Name = "txtCari";
@@ -182,14 +216,33 @@
             this.txtCari.TabIndex = 68;
             this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
             // 
+            // vwPetaniBindingSource
+            // 
+            this.vwPetaniBindingSource.DataMember = "vw_Petani";
+            this.vwPetaniBindingSource.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // oryzaTrackDataSet1
+            // 
+            this.oryzaTrackDataSet1.DataSetName = "OryzaTrackDataSet1";
+            this.oryzaTrackDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // dgvPadi
             // 
             this.dgvPadi.AllowUserToAddRows = false;
             this.dgvPadi.AllowUserToDeleteRows = false;
+            this.dgvPadi.AutoGenerateColumns = false;
             this.dgvPadi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPadi.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPadi.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPadi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPadi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idPadiDataGridViewTextBoxColumn,
+            this.idPetaniDataGridViewTextBoxColumn,
+            this.namaPetaniDataGridViewTextBoxColumn,
+            this.jenisBibitDataGridViewTextBoxColumn,
+            this.lokasiLahanDataGridViewTextBoxColumn,
+            this.tanggalTanamDataGridViewTextBoxColumn});
+            this.dgvPadi.DataSource = this.vwPadiBindingSource;
             this.dgvPadi.Location = new System.Drawing.Point(53, 426);
             this.dgvPadi.Name = "dgvPadi";
             this.dgvPadi.ReadOnly = true;
@@ -198,6 +251,65 @@
             this.dgvPadi.Size = new System.Drawing.Size(1086, 281);
             this.dgvPadi.TabIndex = 67;
             this.dgvPadi.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPadi_CellClick);
+            // 
+            // idPadiDataGridViewTextBoxColumn
+            // 
+            this.idPadiDataGridViewTextBoxColumn.DataPropertyName = "idPadi";
+            this.idPadiDataGridViewTextBoxColumn.HeaderText = "idPadi";
+            this.idPadiDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idPadiDataGridViewTextBoxColumn.Name = "idPadiDataGridViewTextBoxColumn";
+            this.idPadiDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idPadiDataGridViewTextBoxColumn.Width = 75;
+            // 
+            // idPetaniDataGridViewTextBoxColumn
+            // 
+            this.idPetaniDataGridViewTextBoxColumn.DataPropertyName = "idPetani";
+            this.idPetaniDataGridViewTextBoxColumn.HeaderText = "idPetani";
+            this.idPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idPetaniDataGridViewTextBoxColumn.Name = "idPetaniDataGridViewTextBoxColumn";
+            this.idPetaniDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idPetaniDataGridViewTextBoxColumn.Width = 85;
+            // 
+            // namaPetaniDataGridViewTextBoxColumn
+            // 
+            this.namaPetaniDataGridViewTextBoxColumn.DataPropertyName = "namaPetani";
+            this.namaPetaniDataGridViewTextBoxColumn.HeaderText = "namaPetani";
+            this.namaPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.namaPetaniDataGridViewTextBoxColumn.Name = "namaPetaniDataGridViewTextBoxColumn";
+            this.namaPetaniDataGridViewTextBoxColumn.ReadOnly = true;
+            this.namaPetaniDataGridViewTextBoxColumn.Width = 108;
+            // 
+            // jenisBibitDataGridViewTextBoxColumn
+            // 
+            this.jenisBibitDataGridViewTextBoxColumn.DataPropertyName = "jenisBibit";
+            this.jenisBibitDataGridViewTextBoxColumn.HeaderText = "jenisBibit";
+            this.jenisBibitDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.jenisBibitDataGridViewTextBoxColumn.Name = "jenisBibitDataGridViewTextBoxColumn";
+            this.jenisBibitDataGridViewTextBoxColumn.ReadOnly = true;
+            this.jenisBibitDataGridViewTextBoxColumn.Width = 90;
+            // 
+            // lokasiLahanDataGridViewTextBoxColumn
+            // 
+            this.lokasiLahanDataGridViewTextBoxColumn.DataPropertyName = "lokasiLahan";
+            this.lokasiLahanDataGridViewTextBoxColumn.HeaderText = "lokasiLahan";
+            this.lokasiLahanDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.lokasiLahanDataGridViewTextBoxColumn.Name = "lokasiLahanDataGridViewTextBoxColumn";
+            this.lokasiLahanDataGridViewTextBoxColumn.ReadOnly = true;
+            this.lokasiLahanDataGridViewTextBoxColumn.Width = 109;
+            // 
+            // tanggalTanamDataGridViewTextBoxColumn
+            // 
+            this.tanggalTanamDataGridViewTextBoxColumn.DataPropertyName = "tanggalTanam";
+            this.tanggalTanamDataGridViewTextBoxColumn.HeaderText = "tanggalTanam";
+            this.tanggalTanamDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.tanggalTanamDataGridViewTextBoxColumn.Name = "tanggalTanamDataGridViewTextBoxColumn";
+            this.tanggalTanamDataGridViewTextBoxColumn.ReadOnly = true;
+            this.tanggalTanamDataGridViewTextBoxColumn.Width = 124;
+            // 
+            // vwPadiBindingSource
+            // 
+            this.vwPadiBindingSource.DataMember = "vw_Padi";
+            this.vwPadiBindingSource.DataSource = this.oryzaTrackDataSet1;
             // 
             // lblLokasiLahan
             // 
@@ -258,6 +370,7 @@
             // 
             // dtpTanggalTanam
             // 
+            this.dtpTanggalTanam.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.padiBindingSource, "tanggalTanam", true));
             this.dtpTanggalTanam.Location = new System.Drawing.Point(233, 194);
             this.dtpTanggalTanam.Name = "dtpTanggalTanam";
             this.dtpTanggalTanam.Size = new System.Drawing.Size(220, 22);
@@ -265,37 +378,41 @@
             // 
             // cmbLokasiLahan
             // 
+            this.cmbLokasiLahan.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.padiBindingSource, "lokasiLahan", true));
+            this.cmbLokasiLahan.DataSource = this.padiBindingSource;
             this.cmbLokasiLahan.FormattingEnabled = true;
-            this.cmbLokasiLahan.Items.AddRange(new object[] {
-            "Lahan Utara",
-            "Lahan Selatan",
-            "Lahan Barat",
-            "Lahan Timur"});
             this.cmbLokasiLahan.Location = new System.Drawing.Point(233, 147);
             this.cmbLokasiLahan.Name = "cmbLokasiLahan";
             this.cmbLokasiLahan.Size = new System.Drawing.Size(220, 24);
             this.cmbLokasiLahan.TabIndex = 72;
+            this.cmbLokasiLahan.ValueMember = "lokasiLahan";
             // 
             // cmbJB
             // 
+            this.cmbJB.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.padiBindingSource, "jenisBibit", true));
+            this.cmbJB.DataSource = this.padiBindingSource;
             this.cmbJB.FormattingEnabled = true;
-            this.cmbJB.Items.AddRange(new object[] {
-            "IR64",
-            "Ciherang",
-            "Inpari 32",
-            "Mekongga"});
             this.cmbJB.Location = new System.Drawing.Point(233, 95);
             this.cmbJB.Name = "cmbJB";
             this.cmbJB.Size = new System.Drawing.Size(220, 24);
             this.cmbJB.TabIndex = 71;
+            this.cmbJB.ValueMember = "jenisBibit";
             // 
             // cmbIdPetani
             // 
+            this.cmbIdPetani.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.petaniBindingSource, "namaPetani", true));
+            this.cmbIdPetani.DataSource = this.petaniBindingSource;
             this.cmbIdPetani.FormattingEnabled = true;
             this.cmbIdPetani.Location = new System.Drawing.Point(233, 44);
             this.cmbIdPetani.Name = "cmbIdPetani";
             this.cmbIdPetani.Size = new System.Drawing.Size(220, 24);
             this.cmbIdPetani.TabIndex = 70;
+            this.cmbIdPetani.ValueMember = "namaPetani";
+            // 
+            // vwPetaniBindingSource1
+            // 
+            this.vwPetaniBindingSource1.DataMember = "vw_Petani";
+            this.vwPetaniBindingSource1.DataSource = this.oryzaTrackDataSet1;
             // 
             // bindingNavigator1
             // 
@@ -413,6 +530,64 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(50, 6);
             // 
+            // vw_PetaniTableAdapter
+            // 
+            this.vw_PetaniTableAdapter.ClearBeforeFill = true;
+            // 
+            // vw_PadiTableAdapter
+            // 
+            this.vw_PadiTableAdapter.ClearBeforeFill = true;
+            // 
+            // view_combo
+            // 
+            this.view_combo.DataSetName = "view_combo";
+            this.view_combo.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // vListPetaniComboBindingSource
+            // 
+            this.vListPetaniComboBindingSource.DataMember = "v_ListPetaniCombo";
+            this.vListPetaniComboBindingSource.DataSource = this.view_combo;
+            // 
+            // v_ListPetaniComboTableAdapter
+            // 
+            this.v_ListPetaniComboTableAdapter.ClearBeforeFill = true;
+            // 
+            // vListBibitBindingSource
+            // 
+            this.vListBibitBindingSource.DataMember = "v_ListBibit";
+            this.vListBibitBindingSource.DataSource = this.view_combo;
+            // 
+            // v_ListBibitTableAdapter
+            // 
+            this.v_ListBibitTableAdapter.ClearBeforeFill = true;
+            // 
+            // vListLahanBindingSource
+            // 
+            this.vListLahanBindingSource.DataMember = "v_ListLahan";
+            this.vListLahanBindingSource.DataSource = this.view_combo;
+            // 
+            // v_ListLahanTableAdapter
+            // 
+            this.v_ListLahanTableAdapter.ClearBeforeFill = true;
+            // 
+            // petaniBindingSource
+            // 
+            this.petaniBindingSource.DataMember = "petani";
+            this.petaniBindingSource.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // petaniTableAdapter
+            // 
+            this.petaniTableAdapter.ClearBeforeFill = true;
+            // 
+            // padiBindingSource
+            // 
+            this.padiBindingSource.DataMember = "Padi";
+            this.padiBindingSource.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // padiTableAdapter
+            // 
+            this.padiTableAdapter.ClearBeforeFill = true;
+            // 
             // FormPadi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -436,12 +611,22 @@
             this.Text = "FormPadi";
             this.Load += new System.EventHandler(this.FormPadi_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPadi)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPadiBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListPetaniComboBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListBibitBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListLahanBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.petaniBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.padiBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -482,5 +667,28 @@
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
+        private OryzaTrackDataSet1 oryzaTrackDataSet1;
+        private System.Windows.Forms.BindingSource vwPetaniBindingSource;
+        private OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter vw_PetaniTableAdapter;
+        private System.Windows.Forms.BindingSource vwPetaniBindingSource1;
+        private System.Windows.Forms.BindingSource vwPadiBindingSource;
+        private OryzaTrackDataSet1TableAdapters.vw_PadiTableAdapter vw_PadiTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idPadiDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idPetaniDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn namaPetaniDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn jenisBibitDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lokasiLahanDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tanggalTanamDataGridViewTextBoxColumn;
+        private view_combo view_combo;
+        private System.Windows.Forms.BindingSource vListPetaniComboBindingSource;
+        private view_comboTableAdapters.v_ListPetaniComboTableAdapter v_ListPetaniComboTableAdapter;
+        private System.Windows.Forms.BindingSource vListBibitBindingSource;
+        private view_comboTableAdapters.v_ListBibitTableAdapter v_ListBibitTableAdapter;
+        private System.Windows.Forms.BindingSource vListLahanBindingSource;
+        private view_comboTableAdapters.v_ListLahanTableAdapter v_ListLahanTableAdapter;
+        private System.Windows.Forms.BindingSource petaniBindingSource;
+        private OryzaTrackDataSet1TableAdapters.petaniTableAdapter petaniTableAdapter;
+        private System.Windows.Forms.BindingSource padiBindingSource;
+        private OryzaTrackDataSet1TableAdapters.PadiTableAdapter padiTableAdapter;
     }
 }

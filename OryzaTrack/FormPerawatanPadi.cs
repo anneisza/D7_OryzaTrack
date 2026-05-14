@@ -30,6 +30,20 @@ namespace OryzaTrack
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet2.v_ListHasil' table. You can move, or remove it, as needed.
+            this.v_ListHasilTableAdapter.Fill(this.oryzaTrackDataSet2.v_ListHasil);
+            // TODO: This line of code loads data into the 'viewpestisida.v_ListPestisida' table. You can move, or remove it, as needed.
+            this.v_ListPestisidaTableAdapter.Fill(this.viewpestisida.v_ListPestisida);
+            // TODO: This line of code loads data into the 'view_combo.v_ListKategori' table. You can move, or remove it, as needed.
+            this.v_ListKategoriTableAdapter.Fill(this.view_combo.v_ListKategori);
+            // TODO: This line of code loads data into the 'view_combo.v_ListBibit' table. You can move, or remove it, as needed.
+            this.v_ListBibitTableAdapter.Fill(this.view_combo.v_ListBibit);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Penyakit' table. You can move, or remove it, as needed.
+            this.vw_PenyakitTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Penyakit);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Padi' table. You can move, or remove it, as needed.
+            this.vw_PadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Padi);
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_PerawatanPadi' table. You can move, or remove it, as needed.
+            this.vw_PerawatanPadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_PerawatanPadi);
             // Setting DataGridView saat form dibuka
             dgvPerawatanPadi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPerawatanPadi.MultiSelect = false;
@@ -37,11 +51,26 @@ namespace OryzaTrack
             dgvPerawatanPadi.AllowUserToAddRows = false;
             dgvPerawatanPadi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            DataTable dtPestisida = this.viewpestisida.v_ListPestisida;
+            DataView dv = new DataView(dtPestisida);
+            dv.RowFilter = "namaPestisida IS NOT NULL AND namaPestisida <> ''";
+            cmbJenisPestisida.DataSource = dv;
+            cmbJenisPestisida.DisplayMember = "namaPestisida";
+            // Jika ada kolom ID (misal idPestisida), set ValueMember juga
+            // cmbJenisPestisida.ValueMember = "idPestisida";
+            cmbJenisPestisida.SelectedIndex = -1;
+
             //Daftarkan event cell click untuk DataGridView
             dgvPerawatanPadi.CellClick += dgvPerawatanPadi_CellClick;
 
+            // Isi Dropdown Hasil Perawatan
+            cmbHasil.DataSource = bllPerawatan.GetListHasil();
+            cmbHasil.DisplayMember = "hasilPerawatan";
+            cmbHasil.ValueMember = "hasilPerawatan";
+
             LoadPadi();
             LoadPenyakit();
+            Bersihkan();
 
             //matiin tombol dulu, nanti diaktifkan setelah koneksi berhasil
             SetButtonsEnabled(false);
@@ -60,8 +89,7 @@ namespace OryzaTrack
                 bindingSource.DataSource = dt;
                 dgvPerawatanPadi.DataSource = bindingSource;
                 bindingNavigator1.BindingSource = bindingSource;
-                dgvPerawatanPadi.DataSource = bllPerawatan.GetAll();
-                
+
                 TampilkanTotal();
             }
             catch (Exception ex) { 
@@ -133,26 +161,42 @@ namespace OryzaTrack
             try
             {
                 DataTable dt = bllPadi.GetAll();
+                // Filter data unik berdasarkan jenisBibit, buang baris kosong/null
+                var listBibit = dt.AsEnumerable()
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("jenisBibit")))
+                    .GroupBy(row => row.Field<string>("jenisBibit").Trim())
+                    .Select(g => new {
+                        idPadi = g.First().Field<int>("idPadi"),
+                        jenisBibit = g.Key
+                    })
+                    .ToList();
 
-                cmbIdPadi.ValueMember = "idPadi";
-                cmbIdPadi.DisplayMember = "idPadi"; // Sesuaikan nama kolom di DB
-
-                cmbIdPadi.DataSource = dt;
+                cmbIdPadi.DataSource = listBibit;
+                cmbIdPadi.DisplayMember = "jenisBibit";
+                cmbIdPadi.ValueMember = "idPadi";   // ← harus idPadi, bukan string
                 cmbIdPadi.SelectedIndex = -1;
             }
             catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
         }
+ 
 
         private void LoadPenyakit()
         {
             try
             {
                 DataTable dt = bllPenyakit.GetAll();
+                var listKategori = dt.AsEnumerable()
+                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Kategori")))
+                    .GroupBy(row => row.Field<string>("Kategori").Trim())
+                    .Select(g => new {
+                        idPenyakit = g.First().Field<int>("idPenyakit"),
+                        Kategori = g.Key
+                    })
+                    .ToList();
 
+                cmbIdPenyakit.DataSource = listKategori;
+                cmbIdPenyakit.DisplayMember = "Kategori";
                 cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.DisplayMember = "kategori"; // Sesuaikan nama kolom di DB
-
-                cmbIdPenyakit.DataSource = dt;
                 cmbIdPenyakit.SelectedIndex = -1;
             }
             catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
@@ -213,10 +257,8 @@ namespace OryzaTrack
                 {
                     MessageBox.Show("Masukkan data yang ingin dicari!"); return;
                 }
-                else
-                {
-                    dgvPerawatanPadi.DataSource = bllPerawatan.Cari(txtCari.Text.Trim());
-                }
+                bindingSource.DataSource = bllPerawatan.Cari(txtCari.Text.Trim());
+                dgvPerawatanPadi.DataSource = bindingSource;
             }
             catch (Exception ex)
             {

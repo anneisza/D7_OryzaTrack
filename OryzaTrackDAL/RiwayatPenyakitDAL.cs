@@ -71,7 +71,7 @@ namespace OryzaTrackDAL
                 {
                     //sp
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                    cmd.Parameters.AddWithValue("@keyword", keyword);
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -212,9 +212,11 @@ namespace OryzaTrackDAL
 
             using (SqlConnection conn = db.GetConnection())
             {
-                SqlCommand cmd = new SqlCommand(query, conn);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(dt);
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
             }
             return dt;
         }

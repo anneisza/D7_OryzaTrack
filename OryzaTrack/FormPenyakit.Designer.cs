@@ -41,8 +41,11 @@
             this.btnTambahData = new System.Windows.Forms.Button();
             this.btnCariData = new System.Windows.Forms.Button();
             this.txtCari = new System.Windows.Forms.TextBox();
+            this.vwPenyakitBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.oryzaTrackDataSet1 = new OryzaTrack.OryzaTrackDataSet1();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dtpTanggalSerangan = new System.Windows.Forms.DateTimePicker();
+            this.vwPenyakitBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.cmbKategori = new System.Windows.Forms.ComboBox();
             this.cmbTingkatKerusakan = new System.Windows.Forms.ComboBox();
             this.lblTanggalSerangan = new System.Windows.Forms.Label();
@@ -51,6 +54,11 @@
             this.lblTingkatKerusakan = new System.Windows.Forms.Label();
             this.txtGejalaPenyakit = new System.Windows.Forms.TextBox();
             this.dgvPenyakit = new System.Windows.Forms.DataGridView();
+            this.idPenyakitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.kategoriDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gejalaPenyakitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tingkatKerusakanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tanggalSeranganDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -63,11 +71,23 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.vw_PenyakitTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PenyakitTableAdapter();
+            this.view_combo = new OryzaTrack.view_combo();
+            this.vListKategoriBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.v_ListKategoriTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListKategoriTableAdapter();
+            this.vListTingkatKerusakanBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.v_ListTingkatKerusakanTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListTingkatKerusakanTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPenyakit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListKategoriBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListTingkatKerusakanBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadData
@@ -183,6 +203,16 @@
             this.txtCari.TabIndex = 81;
             this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
             // 
+            // vwPenyakitBindingSource
+            // 
+            this.vwPenyakitBindingSource.DataMember = "vw_Penyakit";
+            this.vwPenyakitBindingSource.DataSource = this.oryzaTrackDataSet1;
+            // 
+            // oryzaTrackDataSet1
+            // 
+            this.oryzaTrackDataSet1.DataSetName = "OryzaTrackDataSet1";
+            this.oryzaTrackDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Teal;
@@ -207,28 +237,32 @@
             this.dtpTanggalSerangan.Size = new System.Drawing.Size(236, 22);
             this.dtpTanggalSerangan.TabIndex = 71;
             // 
+            // vwPenyakitBindingSource1
+            // 
+            this.vwPenyakitBindingSource1.DataMember = "vw_Penyakit";
+            this.vwPenyakitBindingSource1.DataSource = this.oryzaTrackDataSet1;
+            // 
             // cmbKategori
             // 
             this.cmbKategori.FormattingEnabled = true;
-            this.cmbKategori.Items.AddRange(new object[] {
-            "Penyakit",
-            "Hama"});
             this.cmbKategori.Location = new System.Drawing.Point(256, 44);
             this.cmbKategori.Name = "cmbKategori";
             this.cmbKategori.Size = new System.Drawing.Size(220, 24);
             this.cmbKategori.TabIndex = 70;
+            this.cmbKategori.ValueMember = "Kategori";
+            this.cmbKategori.SelectedIndexChanged += new System.EventHandler(this.cmbKategori_SelectedIndexChanged);
             // 
             // cmbTingkatKerusakan
             // 
+            this.cmbTingkatKerusakan.DataSource = this.vListTingkatKerusakanBindingSource;
+            this.cmbTingkatKerusakan.DisplayMember = "tingkatKerusakan";
             this.cmbTingkatKerusakan.FormattingEnabled = true;
-            this.cmbTingkatKerusakan.Items.AddRange(new object[] {
-            "Ringan ",
-            "Sedang",
-            "Berat"});
             this.cmbTingkatKerusakan.Location = new System.Drawing.Point(256, 131);
             this.cmbTingkatKerusakan.Name = "cmbTingkatKerusakan";
             this.cmbTingkatKerusakan.Size = new System.Drawing.Size(220, 24);
             this.cmbTingkatKerusakan.TabIndex = 69;
+            this.cmbTingkatKerusakan.ValueMember = "tingkatKerusakan";
+            this.cmbTingkatKerusakan.SelectedIndexChanged += new System.EventHandler(this.cmbTingkatKerusakan_SelectedIndexChanged);
             // 
             // lblTanggalSerangan
             // 
@@ -282,10 +316,18 @@
             // 
             this.dgvPenyakit.AllowUserToAddRows = false;
             this.dgvPenyakit.AllowUserToDeleteRows = false;
+            this.dgvPenyakit.AutoGenerateColumns = false;
             this.dgvPenyakit.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPenyakit.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPenyakit.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPenyakit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPenyakit.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idPenyakitDataGridViewTextBoxColumn,
+            this.kategoriDataGridViewTextBoxColumn,
+            this.gejalaPenyakitDataGridViewTextBoxColumn,
+            this.tingkatKerusakanDataGridViewTextBoxColumn,
+            this.tanggalSeranganDataGridViewTextBoxColumn});
+            this.dgvPenyakit.DataSource = this.vwPenyakitBindingSource1;
             this.dgvPenyakit.Location = new System.Drawing.Point(77, 427);
             this.dgvPenyakit.Name = "dgvPenyakit";
             this.dgvPenyakit.ReadOnly = true;
@@ -294,6 +336,51 @@
             this.dgvPenyakit.Size = new System.Drawing.Size(1086, 281);
             this.dgvPenyakit.TabIndex = 93;
             this.dgvPenyakit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPenyakit_CellClick);
+            // 
+            // idPenyakitDataGridViewTextBoxColumn
+            // 
+            this.idPenyakitDataGridViewTextBoxColumn.DataPropertyName = "idPenyakit";
+            this.idPenyakitDataGridViewTextBoxColumn.HeaderText = "idPenyakit";
+            this.idPenyakitDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idPenyakitDataGridViewTextBoxColumn.Name = "idPenyakitDataGridViewTextBoxColumn";
+            this.idPenyakitDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idPenyakitDataGridViewTextBoxColumn.Width = 99;
+            // 
+            // kategoriDataGridViewTextBoxColumn
+            // 
+            this.kategoriDataGridViewTextBoxColumn.DataPropertyName = "Kategori";
+            this.kategoriDataGridViewTextBoxColumn.HeaderText = "Kategori";
+            this.kategoriDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.kategoriDataGridViewTextBoxColumn.Name = "kategoriDataGridViewTextBoxColumn";
+            this.kategoriDataGridViewTextBoxColumn.ReadOnly = true;
+            this.kategoriDataGridViewTextBoxColumn.Width = 86;
+            // 
+            // gejalaPenyakitDataGridViewTextBoxColumn
+            // 
+            this.gejalaPenyakitDataGridViewTextBoxColumn.DataPropertyName = "gejalaPenyakit";
+            this.gejalaPenyakitDataGridViewTextBoxColumn.HeaderText = "gejalaPenyakit";
+            this.gejalaPenyakitDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.gejalaPenyakitDataGridViewTextBoxColumn.Name = "gejalaPenyakitDataGridViewTextBoxColumn";
+            this.gejalaPenyakitDataGridViewTextBoxColumn.ReadOnly = true;
+            this.gejalaPenyakitDataGridViewTextBoxColumn.Width = 126;
+            // 
+            // tingkatKerusakanDataGridViewTextBoxColumn
+            // 
+            this.tingkatKerusakanDataGridViewTextBoxColumn.DataPropertyName = "tingkatKerusakan";
+            this.tingkatKerusakanDataGridViewTextBoxColumn.HeaderText = "tingkatKerusakan";
+            this.tingkatKerusakanDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.tingkatKerusakanDataGridViewTextBoxColumn.Name = "tingkatKerusakanDataGridViewTextBoxColumn";
+            this.tingkatKerusakanDataGridViewTextBoxColumn.ReadOnly = true;
+            this.tingkatKerusakanDataGridViewTextBoxColumn.Width = 139;
+            // 
+            // tanggalSeranganDataGridViewTextBoxColumn
+            // 
+            this.tanggalSeranganDataGridViewTextBoxColumn.DataPropertyName = "tanggalSerangan";
+            this.tanggalSeranganDataGridViewTextBoxColumn.HeaderText = "tanggalSerangan";
+            this.tanggalSeranganDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.tanggalSeranganDataGridViewTextBoxColumn.Name = "tanggalSeranganDataGridViewTextBoxColumn";
+            this.tanggalSeranganDataGridViewTextBoxColumn.ReadOnly = true;
+            this.tanggalSeranganDataGridViewTextBoxColumn.Width = 140;
             // 
             // bindingNavigator1
             // 
@@ -411,6 +498,33 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(50, 6);
             // 
+            // vw_PenyakitTableAdapter
+            // 
+            this.vw_PenyakitTableAdapter.ClearBeforeFill = true;
+            // 
+            // view_combo
+            // 
+            this.view_combo.DataSetName = "view_combo";
+            this.view_combo.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // vListKategoriBindingSource
+            // 
+            this.vListKategoriBindingSource.DataMember = "v_ListKategori";
+            this.vListKategoriBindingSource.DataSource = this.view_combo;
+            // 
+            // v_ListKategoriTableAdapter
+            // 
+            this.v_ListKategoriTableAdapter.ClearBeforeFill = true;
+            // 
+            // vListTingkatKerusakanBindingSource
+            // 
+            this.vListTingkatKerusakanBindingSource.DataMember = "v_ListTingkatKerusakan";
+            this.vListTingkatKerusakanBindingSource.DataSource = this.view_combo;
+            // 
+            // v_ListTingkatKerusakanTableAdapter
+            // 
+            this.v_ListTingkatKerusakanTableAdapter.ClearBeforeFill = true;
+            // 
             // FormPenyakit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -434,12 +548,18 @@
             this.Text = "Penyakit";
             this.Load += new System.EventHandler(this.FormPenyakit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPenyakit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListKategoriBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vListTingkatKerusakanBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -480,5 +600,19 @@
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
+        private OryzaTrackDataSet1 oryzaTrackDataSet1;
+        private System.Windows.Forms.BindingSource vwPenyakitBindingSource;
+        private OryzaTrackDataSet1TableAdapters.vw_PenyakitTableAdapter vw_PenyakitTableAdapter;
+        private System.Windows.Forms.BindingSource vwPenyakitBindingSource1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idPenyakitDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn kategoriDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn gejalaPenyakitDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tingkatKerusakanDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tanggalSeranganDataGridViewTextBoxColumn;
+        private view_combo view_combo;
+        private System.Windows.Forms.BindingSource vListKategoriBindingSource;
+        private view_comboTableAdapters.v_ListKategoriTableAdapter v_ListKategoriTableAdapter;
+        private System.Windows.Forms.BindingSource vListTingkatKerusakanBindingSource;
+        private view_comboTableAdapters.v_ListTingkatKerusakanTableAdapter v_ListTingkatKerusakanTableAdapter;
     }
 }

@@ -23,7 +23,7 @@ namespace OryzaTrackDAL
                 string query = "SELECT * FROM vw_Padi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    SqlDataAdapter da = new SqlDataAdapter();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     return dt;
@@ -142,6 +142,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
+                conn.Open();
                 using (SqlCommand cmd = new SqlCommand("sp_DeletePadi", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;

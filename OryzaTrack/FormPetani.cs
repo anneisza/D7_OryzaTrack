@@ -30,12 +30,11 @@ namespace OryzaTrack
 
         private void FormPetani_Load(object sender, EventArgs e)
         {
-            // isi combobox status
+            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Petani' table. You can move, or remove it, as needed.
+            this.vw_PetaniTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Petani);
             cmbStatusAktif.Items.Clear();
             cmbStatusAktif.Items.Add("Aktif");
             cmbStatusAktif.Items.Add("Tidak Aktif");
-
-            cmbStatusAktif.SelectedIndex = 0;
             // Setting DataGridView saat form dibuka
             dgvPetani.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPetani.MultiSelect = false;
@@ -49,6 +48,8 @@ namespace OryzaTrack
             //matiin tombol dulu sampai koneksi berhasil
             SetButtonsEnabled(false);
             Application.DoEvents();
+
+            BersihkanForm();
 
         }
 
@@ -92,6 +93,7 @@ namespace OryzaTrack
             txtAlamat.Clear();
             txtNoTelepon.Clear();
             txtCari.Clear();
+            cmbStatusAktif.SelectedIndex = 0;
         }
 
         private bool ValidasiInput()
@@ -457,10 +459,8 @@ namespace OryzaTrack
                         "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
                     return;
                 }
-                else
-                {
-                    dgvPetani.DataSource = bll.Cari(txtCari.Text.Trim());
-                }
+                bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
+                dgvPetani.DataSource = bindingSource;
             }
             catch (Exception ex)
             {
@@ -492,17 +492,29 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataRowView row = (DataRowView)bindingSource.Current;
-                selectedIdPetani = Convert.ToInt32(row  ["idPetani"]);
+                // Ambil row langsung dari DataGridView
+                DataGridViewRow selectedRow = dgvPetani.Rows[e.RowIndex];
 
-                // Simpan ke TextBox
-                txtNamaPetani.Text = oldNama = row["namaPetani"].ToString();
-                txtNIK.Text = oldNIK = row["NIK"].ToString();
-                txtAlamat.Text = oldAlamat = row["alamat"].ToString();
-                txtNoTelepon.Text = oldNoTelp = row["noTelepon"]    .ToString();
+                selectedIdPetani = Convert.ToInt32(selectedRow.Cells["idPetani"].Value);
 
-                // statusAktif sekarang "Aktif"/"Tidak Aktif" (dari VIEW)
-                cmbStatusAktif.SelectedIndex = row["statusAktif"].ToString() == "Aktif" ? 0 : 1;
+                // Isi textbox
+                txtNamaPetani.Text = oldNama =
+                    selectedRow.Cells["namaPetani"].Value.ToString();
+
+                txtNIK.Text = oldNIK =
+                    selectedRow.Cells["NIK"].Value.ToString();
+
+                txtAlamat.Text = oldAlamat =
+                    selectedRow.Cells["alamat"].Value.ToString();
+
+                txtNoTelepon.Text = oldNoTelp =
+                    selectedRow.Cells["noTelepon"].Value.ToString();
+
+                // Status aktif
+                cmbStatusAktif.SelectedIndex =
+                    selectedRow.Cells["statusAktif"].Value.ToString() == "Aktif"
+                    ? 0 : 1;
+
                 oldStatus = cmbStatusAktif.SelectedIndex == 0;
             }
 

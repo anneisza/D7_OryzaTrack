@@ -10,7 +10,11 @@ namespace OryzaTrackBLL
 {
      public class PenyakitBLL
      {
-            PenyakitDAL dal = new PenyakitDAL();
+
+        private PenyakitDAL dal = new PenyakitDAL();
+
+        public DataTable GetListKategori() => dal.GetKategoriUnik();
+        public DataTable GetListKerusakan() => dal.GetTingkatKerusakanUnik();
 
         /*=============================
           View Penyakit | GetAll()
