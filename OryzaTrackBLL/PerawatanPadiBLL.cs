@@ -46,10 +46,10 @@ namespace OryzaTrackBLL
         public bool Tambah(int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             // 1. Validasi Jenis Pestisida (Sesuai constraint CK_Perawatan_JenisPestisida)
-            string[] pestisidaValid = { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" };
+            string[] pestisidaValid = { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate", "Tanpa Pestisida" };
             if (!pestisidaValid.Contains(jenisPestisida))
             {
-                throw new Exception("Jenis pestisida tidak valid! Pilih: Insektisida Furadan, Fungisida Dithane, atau Herbisida Glyphosate.");
+                throw new Exception("Jenis pestisida tidak valid! Pilih: Insektisida Furadan, Fungisida Dithane, Herbisida Glyphosate, atau Tanpa Pestisida.");
             }
 
             // 2. Validasi Hasil Perawatan (Sesuai constraint CK_Perawatan_HasilPerawatan)

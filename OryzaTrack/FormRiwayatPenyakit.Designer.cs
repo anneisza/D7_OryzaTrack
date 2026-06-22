@@ -265,7 +265,7 @@
             this.cmbIdPenyakit.FormattingEnabled = true;
             this.cmbIdPenyakit.Location = new System.Drawing.Point(230, 77);
             this.cmbIdPenyakit.Name = "cmbIdPenyakit";
-            this.cmbIdPenyakit.Size = new System.Drawing.Size(220, 24);
+            this.cmbIdPenyakit.Size = new System.Drawing.Size(579, 24);
             this.cmbIdPenyakit.TabIndex = 75;
             this.cmbIdPenyakit.ValueMember = "Kategori";
             // 

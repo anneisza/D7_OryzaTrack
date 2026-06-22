@@ -32,6 +32,7 @@ namespace OryzaTrack
             if(berhasil)
             {
                 lblStatus.Text = $"Koneksi berhasil!";
+                MessageBox.Show("Koneksi ke database berhasil!");
                 btnMasuk.Enabled = true;
             }
             else

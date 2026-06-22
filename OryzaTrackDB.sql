@@ -116,8 +116,6 @@ CREATE TABLE Penyakit (
 
 CREATE TABLE perawatanPadi (
     idPerawatan      INT IDENTITY(1,1) NOT NULL,
-    idPadi           INT NOT NULL,
-    idPenyakit       INT NOT NULL,
     jenisPerawatan   VARCHAR(100) NOT NULL,
     jenisPestisida   VARCHAR(100) NOT NULL,
     tanggalPerawatan DATE NOT NULL,
@@ -126,14 +124,6 @@ CREATE TABLE perawatanPadi (
     --Primary Key
     CONSTRAINT PK_Perawatan PRIMARY KEY (idPerawatan),
 
-    --Foreign Key
-    CONSTRAINT FK_Perawatan_Padi 
-        FOREIGN KEY (idPadi) REFERENCES Padi(idPadi)
-        ON DELETE CASCADE,
-
-    CONSTRAINT FK_Perawatan_Penyakit 
-        FOREIGN KEY (idPenyakit) REFERENCES Penyakit(idPenyakit)
-        ON DELETE CASCADE,
 
     -- CK : Validasi format data
     CONSTRAINT CK_Perawatan_JenisPestisida
@@ -1459,4 +1449,271 @@ FROM
 JOIN 
     sys.views v ON m.object_id = v.object_id;
 
+-- =====================
+-- VIEW PERAWATAN PADI (UPDATED)
+-- =====================
+ALTER VIEW vw_PerawatanPadi AS
+SELECT 
+    pp.idPerawatan,
+    rp.idRiwayat,       -- Menggantikan idPadi & idPenyakit murni di tabel perawatan
+    rp.idPadi,
+    rp.idPenyakit,
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    pn.Kategori         AS kategoriPenyakit,
+    pp.jenisPerawatan,
+    pp.jenisPestisida,
+    CONVERT(VARCHAR, pp.tanggalPerawatan, 103) AS tanggalPerawatan,
+    pp.hasilPerawatan
+FROM perawatanPadi pp
+JOIN RiwayatPenyakit rp ON pp.idRiwayat = rp.idRiwayat  -- Jalur berantai baru
+JOIN Padi p            ON rp.idPadi     = p.idPadi
+JOIN petani pt         ON p.idPetani    = pt.idPetani
+JOIN Penyakit pn       ON rp.idPenyakit = pn.idPenyakit;
+GO
 
+-- =====================
+-- SP INSERT PERAWATAN (UPDATED)
+-- =====================
+ALTER PROCEDURE sp_InsertPerawatan
+    @idRiwayat        INT, -- Menggantikan idPadi & idPenyakit
+    @jenisPerawatan   VARCHAR(100),
+    @jenisPestisida   VARCHAR(100),
+    @tanggalPerawatan DATE,
+    @hasilPerawatan   VARCHAR(100),
+    @hasilMsg         VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek kasus riwayat penyakit ada
+    IF NOT EXISTS (SELECT 1 FROM RiwayatPenyakit WHERE idRiwayat = @idRiwayat)
+    BEGIN
+        SET @hasilMsg = 'Data kasus riwayat penyakit tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek apakah kasus ini sudah pernah dirawat di tanggal yang sama
+    IF EXISTS (
+        SELECT 1 FROM perawatanPadi
+        WHERE idRiwayat        = @idRiwayat
+          AND tanggalPerawatan = @tanggalPerawatan
+    )
+    BEGIN
+        SET @hasilMsg = 'Perawatan untuk kasus penyakit ini pada tanggal tersebut sudah dicatat!';
+        RETURN;
+    END
+
+    -- Logika 3: Validasi konsistensi pestisida dengan kategori penyakit (Dilacak lewat idRiwayat)
+    DECLARE @kategori VARCHAR(50);
+    SELECT @kategori = pn.Kategori 
+    FROM RiwayatPenyakit rp
+    JOIN Penyakit pn ON rp.idPenyakit = pn.idPenyakit
+    WHERE rp.idRiwayat = @idRiwayat;
+
+    IF @kategori = 'Hama' AND @jenisPestisida = 'Fungisida Dithane'
+    BEGIN
+        SET @hasilMsg = 'Fungisida Dithane tidak cocok untuk kategori Hama!';
+        RETURN;
+    END
+
+    IF @kategori = 'Penyakit' AND @jenisPestisida = 'Insektisida Furadan'
+    BEGIN
+        SET @hasilMsg = 'Insektisida Furadan tidak cocok untuk kategori Penyakit (jamur/bakteri)!';
+        RETURN;
+    END
+
+    -- Insert ke tabel baru yang sudah memuat idRiwayat
+    INSERT INTO perawatanPadi 
+        (idRiwayat, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan)
+    VALUES 
+        (@idRiwayat, @jenisPerawatan, @jenisPestisida, @tanggalPerawatan, @hasilPerawatan);
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP UPDATE PERAWATAN (UPDATED)
+-- =====================
+ALTER PROCEDURE sp_UpdatePerawatan
+    @idPerawatan      INT,
+    @idRiwayat        INT, -- Menggantikan idPadi & idPenyakit
+    @jenisPerawatan   VARCHAR(100),
+    @jenisPestisida   VARCHAR(100),
+    @tanggalPerawatan DATE,
+    @hasilPerawatan   VARCHAR(100),
+    @hasilMsg         VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Logika 1: Cek data perawatan ada
+    IF NOT EXISTS (SELECT 1 FROM perawatanPadi WHERE idPerawatan = @idPerawatan)
+    BEGIN
+        SET @hasilMsg = 'Data perawatan tidak ditemukan!';
+        RETURN;
+    END
+
+    -- Logika 2: Cek duplikasi perawatan serupa pada tanggal yang sama (kecuali dirinya sendiri)
+    IF EXISTS (
+        SELECT 1 FROM perawatanPadi
+        WHERE idRiwayat        = @idRiwayat
+          AND tanggalPerawatan = @tanggalPerawatan
+          AND idPerawatan     != @idPerawatan
+    )
+    BEGIN
+        SET @hasilMsg = 'Perawatan serupa untuk kasus ini pada tanggal tersebut sudah ada!';
+        RETURN;
+    END
+
+    -- Logika 3: Validasi konsistensi pestisida vs kategori penyakit
+    DECLARE @kategori VARCHAR(50);
+    SELECT @kategori = pn.Kategori 
+    FROM RiwayatPenyakit rp
+    JOIN Penyakit pn ON rp.idPenyakit = pn.idPenyakit
+    WHERE rp.idRiwayat = @idRiwayat;
+
+    IF @kategori = 'Hama' AND @jenisPestisida = 'Fungisida Dithane'
+    BEGIN
+        SET @hasilMsg = 'Fungisida Dithane tidak cocok untuk kategori Hama!';
+        RETURN;
+    END
+
+    IF @kategori = 'Penyakit' AND @jenisPestisida = 'Insektisida Furadan'
+    BEGIN
+        SET @hasilMsg = 'Insektisida Furadan tidak cocok untuk kategori Penyakit!';
+        RETURN;
+    END
+
+    -- Logika 4: Proteksi status 'Berhasil'
+    DECLARE @hasilLama VARCHAR(100);
+    SELECT @hasilLama = hasilPerawatan FROM perawatanPadi WHERE idPerawatan = @idPerawatan;
+
+    IF @hasilLama = 'Berhasil' AND @hasilPerawatan = 'Gagal'
+    BEGIN
+        SET @hasilMsg = 'Perawatan yang sudah Berhasil tidak bisa diubah menjadi Gagal!';
+        RETURN;
+    END
+
+    UPDATE perawatanPadi
+    SET idRiwayat        = @idRiwayat,
+        jenisPerawatan   = @jenisPerawatan,
+        jenisPestisida   = @jenisPestisida,
+        tanggalPerawatan = @tanggalPerawatan,
+        hasilPerawatan   = @hasilPerawatan
+    WHERE idPerawatan = @idPerawatan;
+
+    SET @hasilMsg = 'OK';
+END;
+GO
+
+-- =====================
+-- SP SEARCH PERAWATAN (UPDATED)
+-- =====================
+ALTER PROCEDURE sp_SearchPerawatan
+    @keyword VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET @keyword = LTRIM(RTRIM(@keyword));
+
+    SELECT 
+        pp.idPerawatan,
+        rp.idRiwayat,
+        rp.idPadi,
+        rp.idPenyakit,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori         AS kategoriPenyakit,
+        pp.jenisPerawatan,
+        pp.jenisPestisida,
+        CONVERT(VARCHAR, pp.tanggalPerawatan, 103) AS tanggalPerawatan,
+        pp.hasilPerawatan
+    FROM perawatanPadi pp
+    JOIN RiwayatPenyakit rp ON pp.idRiwayat = rp.idRiwayat
+    JOIN Padi p            ON rp.idPadi     = p.idPadi
+    JOIN petani pt         ON p.idPetani    = pt.idPetani
+    JOIN Penyakit pn       ON rp.idPenyakit = pn.idPenyakit
+    WHERE 
+        CAST(pp.idPerawatan AS VARCHAR)              LIKE '%' + @keyword + '%'
+        OR pt.namaPetani                             LIKE '%' + @keyword + '%'
+        OR p.jenisBibit                              LIKE '%' + @keyword + '%'
+        OR pn.Kategori                               LIKE '%' + @keyword + '%'
+        OR pp.jenisPerawatan                         LIKE '%' + @keyword + '%'
+        OR pp.jenisPestisida                         LIKE '%' + @keyword + '%'
+        OR pp.hasilPerawatan                         LIKE '%' + @keyword + '%'
+        OR CONVERT(VARCHAR, pp.tanggalPerawatan,103) LIKE '%' + @keyword + '%';
+END;
+GO
+
+
+--Perbaikan constarint perawatan padi
+DECLARE @ConstraintName NVARCHAR(200);
+
+-- 1. Mencari nama acak constraint jenisPestisida secara otomatis
+SELECT @ConstraintName = dc.name
+FROM sys.check_constraints dc
+WHERE dc.parent_object_id = OBJECT_ID('perawatanPadi')
+  AND dc.definition LIKE '%jenisPestisida%';
+
+-- 2. Jika ketemu, hapus constraint acak tersebut
+IF @ConstraintName IS NOT NULL
+BEGIN
+    EXEC('ALTER TABLE perawatanPadi DROP CONSTRAINT ' + @ConstraintName);
+END
+
+-- 3. Buat baru dengan nama yang konsisten dan tambahkan opsi 'Tanpa Pestisida'
+ALTER TABLE perawatanPadi 
+ADD CONSTRAINT CK_Perawatan_JenisPestisida 
+CHECK (jenisPestisida IN ('Insektisida Furadan', 'Fungisida Dithane', 'Herbisida Glyphosate', 'Tanpa Pestisida'));
+
+
+SELECT name, definition 
+FROM sys.check_constraints 
+WHERE parent_object_id = OBJECT_ID('perawatanPadi');
+
+--PERBAIAK SP GET LAPORAN 
+ALTER PROCEDURE sp_GetLaporan
+    @tanggalAwal    DATE,
+    @tanggalAkhir   DATE,
+    @jenisBibit     VARCHAR(100) = NULL,
+    @kategori       VARCHAR(50)  = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Menyelaraskan string 'Semua' dari C# agar dibaca sebagai NULL (Semua Data) oleh SQL
+    IF @jenisBibit = 'Semua' SET @jenisBibit = NULL;
+    IF @kategori = 'Semua'   SET @kategori = NULL;
+
+    SELECT 
+        r.idRiwayat,
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori                             AS kategoriPenyakit,
+        pn.tingkatKerusakan,
+        CONVERT(VARCHAR, r.tanggalTerdeteksi, 103) AS tanggalTerdeteksi,
+        CASE 
+            WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+            ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+        END AS tanggalSelesai,
+        r.keterangan,
+        pp.jenisPerawatan,
+        pp.jenisPestisida,
+        pp.hasilPerawatan
+    FROM riwayatPenyakit r
+    JOIN Padi p         ON r.idPadi     = p.idPadi
+    JOIN petani pt      ON p.idPetani   = pt.idPetani
+    JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit
+    -- FIX JALUR BERANTAI: Hubungkan menggunakan idRiwayat yang baru
+    LEFT JOIN perawatanPadi pp ON pp.idRiwayat = r.idRiwayat
+    WHERE 
+        r.tanggalTerdeteksi BETWEEN @tanggalAwal AND @tanggalAkhir
+        AND (@jenisBibit IS NULL OR p.jenisBibit = @jenisBibit)
+        AND (@kategori   IS NULL OR pn.Kategori  = @kategori);
+END;
+GO

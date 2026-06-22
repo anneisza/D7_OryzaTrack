@@ -172,6 +172,11 @@ namespace OryzaTrack
         {
 
             MuatSemuaData();
+
+            if (dgvLaporan.Rows.Count == 0)
+            {
+                MessageBox.Show("Tidak ada data laporan yang cocok dengan filter saat ini.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /*==============================
@@ -179,11 +184,14 @@ namespace OryzaTrack
         ================================*/
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            cmbJenisBibit.SelectedIndex = 0;
-            cmbJenisPenyakit.SelectedIndex = 0;
+            // Kembalikan semua combobox ke pilihan paling atas ("Semua")
+            if (cmbJenisBibit.Items.Count > 0) cmbJenisBibit.SelectedIndex = 0;
+            if (cmbJenisPenyakit.Items.Count > 0) cmbJenisPenyakit.SelectedIndex = 0;
             dtpTanggalAwal.Value = new DateTime(DateTime.Now.Year, 1, 1);
             dtpTanggalAkhir.Value = DateTime.Now;
             MuatSemuaData();
+
+            MessageBox.Show("Filter laporan berhasil dikosongkan!", "Reset Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AturKolomDgv(DataGridView dgv)

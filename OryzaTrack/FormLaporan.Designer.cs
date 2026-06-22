@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpTanggalAwal = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbJenisBibit = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmbJenisPenyakit = new System.Windows.Forms.ComboBox();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label6 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
@@ -55,10 +59,6 @@
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonTampilkan = new System.Windows.Forms.Button();
             this.dtpTanggalAkhir = new System.Windows.Forms.DateTimePicker();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cmbJenisPenyakit = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbJenisBibit = new System.Windows.Forms.ComboBox();
             this.dgvLaporan = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -72,7 +72,7 @@
             // 
             // dtpTanggalAwal
             // 
-            this.dtpTanggalAwal.Location = new System.Drawing.Point(27, 168);
+            this.dtpTanggalAwal.Location = new System.Drawing.Point(99, 76);
             this.dtpTanggalAwal.Name = "dtpTanggalAwal";
             this.dtpTanggalAwal.Size = new System.Drawing.Size(214, 22);
             this.dtpTanggalAwal.TabIndex = 0;
@@ -100,24 +100,62 @@
             this.groupBox1.Controls.Add(this.dtpTanggalAwal);
             this.groupBox1.Location = new System.Drawing.Point(10, 11);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(994, 357);
+            this.groupBox1.Size = new System.Drawing.Size(1818, 357);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(93, 181);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 18);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Jenis Bibit";
+            // 
+            // cmbJenisBibit
+            // 
+            this.cmbJenisBibit.FormattingEnabled = true;
+            this.cmbJenisBibit.Location = new System.Drawing.Point(99, 202);
+            this.cmbJenisBibit.Name = "cmbJenisBibit";
+            this.cmbJenisBibit.Size = new System.Drawing.Size(213, 24);
+            this.cmbJenisBibit.TabIndex = 25;
+            this.cmbJenisBibit.SelectedIndexChanged += new System.EventHandler(this.cmbJenisBibit_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(93, 239);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(117, 18);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Jenis Penyakit";
+            // 
+            // cmbJenisPenyakit
+            // 
+            this.cmbJenisPenyakit.FormattingEnabled = true;
+            this.cmbJenisPenyakit.Location = new System.Drawing.Point(99, 260);
+            this.cmbJenisPenyakit.Name = "cmbJenisPenyakit";
+            this.cmbJenisPenyakit.Size = new System.Drawing.Size(213, 24);
+            this.cmbJenisPenyakit.TabIndex = 23;
+            this.cmbJenisPenyakit.SelectedIndexChanged += new System.EventHandler(this.cmbJenisPenyakit_SelectedIndexChanged);
+            // 
             // chart1
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart1.Legends.Add(legend5);
-            this.chart1.Location = new System.Drawing.Point(653, 64);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
+            this.chart1.Location = new System.Drawing.Point(1243, 16);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chart1.Series.Add(series5);
-            this.chart1.Size = new System.Drawing.Size(319, 274);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
+            this.chart1.Size = new System.Drawing.Size(539, 325);
             this.chart1.TabIndex = 22;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -126,7 +164,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(273, 0);
+            this.label6.Location = new System.Drawing.Point(672, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(254, 54);
             this.label6.TabIndex = 14;
@@ -137,9 +175,9 @@
             this.panel10.BackColor = System.Drawing.Color.CadetBlue;
             this.panel10.Controls.Add(this.label25);
             this.panel10.Controls.Add(this.labelPerawatan);
-            this.panel10.Location = new System.Drawing.Point(515, 64);
+            this.panel10.Location = new System.Drawing.Point(1059, 77);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(115, 61);
+            this.panel10.Size = new System.Drawing.Size(145, 110);
             this.panel10.TabIndex = 21;
             // 
             // label25
@@ -167,9 +205,9 @@
             this.panel7.BackColor = System.Drawing.Color.Teal;
             this.panel7.Controls.Add(this.label19);
             this.panel7.Controls.Add(this.labelRiwayat);
-            this.panel7.Location = new System.Drawing.Point(379, 64);
+            this.panel7.Location = new System.Drawing.Point(889, 76);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(115, 61);
+            this.panel7.Size = new System.Drawing.Size(145, 110);
             this.panel7.TabIndex = 20;
             // 
             // label19
@@ -197,9 +235,9 @@
             this.panel8.BackColor = System.Drawing.Color.CadetBlue;
             this.panel8.Controls.Add(this.lblPenyakit);
             this.panel8.Controls.Add(this.labelPenyakit);
-            this.panel8.Location = new System.Drawing.Point(247, 64);
+            this.panel8.Location = new System.Drawing.Point(724, 77);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(109, 61);
+            this.panel8.Size = new System.Drawing.Size(139, 110);
             this.panel8.TabIndex = 19;
             // 
             // lblPenyakit
@@ -227,9 +265,9 @@
             this.panel1.BackColor = System.Drawing.Color.Teal;
             this.panel1.Controls.Add(this.lblPadi);
             this.panel1.Controls.Add(this.lblPadii);
-            this.panel1.Location = new System.Drawing.Point(132, 64);
+            this.panel1.Location = new System.Drawing.Point(575, 76);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(93, 61);
+            this.panel1.Size = new System.Drawing.Size(123, 110);
             this.panel1.TabIndex = 18;
             // 
             // lblPadi
@@ -257,9 +295,9 @@
             this.panel4.BackColor = System.Drawing.Color.CadetBlue;
             this.panel4.Controls.Add(this.lblPetani);
             this.panel4.Controls.Add(this.labelPetani);
-            this.panel4.Location = new System.Drawing.Point(19, 64);
+            this.panel4.Location = new System.Drawing.Point(428, 76);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(93, 61);
+            this.panel4.Size = new System.Drawing.Size(123, 110);
             this.panel4.TabIndex = 17;
             // 
             // lblPetani
@@ -286,7 +324,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(256, 167);
+            this.label2.Location = new System.Drawing.Point(96, 102);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 18);
             this.label2.TabIndex = 8;
@@ -296,7 +334,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 141);
+            this.label1.Location = new System.Drawing.Point(96, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 18);
             this.label1.TabIndex = 7;
@@ -305,7 +343,7 @@
             // buttonReset
             // 
             this.buttonReset.BackColor = System.Drawing.Color.Khaki;
-            this.buttonReset.Location = new System.Drawing.Point(132, 311);
+            this.buttonReset.Location = new System.Drawing.Point(203, 311);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(96, 29);
             this.buttonReset.TabIndex = 6;
@@ -316,7 +354,7 @@
             // buttonTampilkan
             // 
             this.buttonTampilkan.BackColor = System.Drawing.Color.PowderBlue;
-            this.buttonTampilkan.Location = new System.Drawing.Point(28, 310);
+            this.buttonTampilkan.Location = new System.Drawing.Point(99, 310);
             this.buttonTampilkan.Name = "buttonTampilkan";
             this.buttonTampilkan.Size = new System.Drawing.Size(98, 31);
             this.buttonTampilkan.TabIndex = 5;
@@ -326,49 +364,11 @@
             // 
             // dtpTanggalAkhir
             // 
-            this.dtpTanggalAkhir.Location = new System.Drawing.Point(302, 167);
+            this.dtpTanggalAkhir.Location = new System.Drawing.Point(96, 131);
             this.dtpTanggalAkhir.Name = "dtpTanggalAkhir";
             this.dtpTanggalAkhir.Size = new System.Drawing.Size(214, 22);
             this.dtpTanggalAkhir.TabIndex = 1;
             this.dtpTanggalAkhir.ValueChanged += new System.EventHandler(this.dtpTanggalAkhir_ValueChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(25, 260);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(117, 18);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "Jenis Penyakit";
-            // 
-            // cmbJenisPenyakit
-            // 
-            this.cmbJenisPenyakit.FormattingEnabled = true;
-            this.cmbJenisPenyakit.Location = new System.Drawing.Point(31, 281);
-            this.cmbJenisPenyakit.Name = "cmbJenisPenyakit";
-            this.cmbJenisPenyakit.Size = new System.Drawing.Size(213, 24);
-            this.cmbJenisPenyakit.TabIndex = 23;
-            this.cmbJenisPenyakit.SelectedIndexChanged += new System.EventHandler(this.cmbJenisPenyakit_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(25, 202);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 18);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "Jenis Bibit";
-            // 
-            // cmbJenisBibit
-            // 
-            this.cmbJenisBibit.FormattingEnabled = true;
-            this.cmbJenisBibit.Location = new System.Drawing.Point(31, 223);
-            this.cmbJenisBibit.Name = "cmbJenisBibit";
-            this.cmbJenisBibit.Size = new System.Drawing.Size(213, 24);
-            this.cmbJenisBibit.TabIndex = 25;
-            this.cmbJenisBibit.SelectedIndexChanged += new System.EventHandler(this.cmbJenisBibit_SelectedIndexChanged);
             // 
             // dgvLaporan
             // 
@@ -380,14 +380,14 @@
             this.dgvLaporan.ReadOnly = true;
             this.dgvLaporan.RowHeadersWidth = 51;
             this.dgvLaporan.RowTemplate.Height = 24;
-            this.dgvLaporan.Size = new System.Drawing.Size(979, 337);
+            this.dgvLaporan.Size = new System.Drawing.Size(1816, 443);
             this.dgvLaporan.TabIndex = 27;
             // 
             // FormLaporan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 753);
+            this.ClientSize = new System.Drawing.Size(1848, 844);
             this.Controls.Add(this.dgvLaporan);
             this.Controls.Add(this.groupBox1);
             this.Name = "FormLaporan";
