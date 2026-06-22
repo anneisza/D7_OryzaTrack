@@ -1,34 +1,28 @@
 ## Skenario SQL Injection
 
-### Form: FormPetani → Tombol "Test Injection"
-### Method rentan: SearchRentan() di PetaniDAL
+## Skenario SQL Injection
 
-Query rentan:
-SELECT idPetani, namaPetani, NIK, alamat, noTelepon 
-FROM petani 
-WHERE namaPetani = '[INPUT_USER]'
+### Form: FormPetani → Tombol Test Injection
 
----
+Input berbahaya:
+' OR '1'='1' --
 
-### Skenario 1 — Tampilkan semua data
-Input: ' OR '1'='1' --
-Query jadi:
+Query yang terbentuk:
+DELETE FROM petani 
 WHERE namaPetani = '' OR '1'='1' --'
-Hasil: Semua data petani bocor
 
----
+Yang terjadi:
+- OR '1'='1' selalu TRUE
+- WHERE berlaku untuk SEMUA baris
+- Seluruh data petani TERHAPUS dari database
+- Popup peringatan "YOU HAVE BEEN HACKED" muncul
 
-### Skenario 2 — UNION Attack
-Input: ' UNION SELECT idPetani, namaPetani, NIK, alamat, noTelepon FROM petani --
-Query jadi:
-WHERE namaPetani = '' UNION SELECT idPetani, namaPetani, NIK, alamat, noTelepon FROM petani --
-Hasil: Data terduplikasi / data sensitif bocor
+Pencegahan:
+Gunakan Stored Procedure dengan parameterized query
+sehingga input user tidak bisa dieksekusi sebagai perintah SQL
 
----
-
-### Pencegahan:
-Gunakan Stored Procedure / parameterized query
-seperti di method Search() → sp_SearchPetani
+Recovery:
+Klik tombol Reset untuk memulihkan data dari tabel petani_backup
 
 
 
