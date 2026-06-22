@@ -65,6 +65,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrystalReport_LaporanCetak.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport_LaporanCetak.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FormCetakLaporan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCetakLaporan.Designer.cs">
+      <DependentUpon>FormCetakLaporan.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormHacked.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,8 +137,16 @@
     <Compile Include="FormRiwayatPenyakit.Designer.cs">
       <DependentUpon>FormRiwayatPenyakit.cs</DependentUpon>
     </Compile>
+    <Compile Include="LaporanData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CrystalReport_LaporanCetak.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport_LaporanCetak.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCetakLaporan.resx">
+      <DependentUpon>FormCetakLaporan.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormKoneksi.resx">
       <DependentUpon>FormKoneksi.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +203,9 @@
       <Project>{9418b977-e284-4923-ab8d-b40aa0238eeb}</Project>
       <Name>OryzaTrackBLL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

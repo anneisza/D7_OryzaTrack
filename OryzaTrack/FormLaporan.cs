@@ -229,5 +229,21 @@ namespace OryzaTrack
         {
 
         }
+
+        private void btnCetak_Click(object sender, EventArgs e)
+        {
+            // Ambil nilai filter yang sedang aktif
+            string jenisBibit = cmbJenisBibit.Text == "Semua" ? null : cmbJenisBibit.Text;
+            string kategori = cmbJenisPenyakit.Text == "Semua" ? null : cmbJenisPenyakit.Text;
+
+            FormCetakLaporan formCetak = new FormCetakLaporan(
+                dtpTanggalAwal.Value,
+                dtpTanggalAkhir.Value,
+                jenisBibit,
+                kategori
+            );
+
+            formCetak.Show();
+        }
     }
 }

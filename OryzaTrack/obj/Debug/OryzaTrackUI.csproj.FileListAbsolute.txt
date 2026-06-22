@@ -5,7 +5,10 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\CrystalDecisions.ReportSource.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\CrystalDecisions.Shared.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\CrystalDecisions.Windows.Forms.dll
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.DataSet.dll
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackBLL.dll
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\System.ValueTuple.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackDAL.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\CrystalDecisions.ReportAppServer.DataDefModel.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\CrystalDecisions.ReportAppServer.ClientDoc.dll
@@ -22,9 +25,15 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\stdole.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackBLL.pdb
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackBLL.dll.config
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.pdb
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.xml
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.DataSet.pdb
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\ExcelDataReader.DataSet.xml
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\System.ValueTuple.xml
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackDAL.pdb
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\bin\Debug\OryzaTrackDAL.dll.config
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrackUI.csproj.AssemblyReference.cache
+E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormCetakLaporan.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormKoneksi.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormLaporan.resources
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrack\obj\Debug\OryzaTrack.FormLogin2.resources
