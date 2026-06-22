@@ -90,6 +90,7 @@ namespace OryzaTrack
 
         private void BersihkanForm()
         {
+            selectedIdRiwayatPenyakit = 0;
             cmbIdPadi.SelectedIndex = -1;
             cmbIdPenyakit.SelectedIndex = -1;
             dtpTanggalTerdeteksi.Value = DateTime.Now;
@@ -258,8 +259,8 @@ namespace OryzaTrack
             {
                 MessageBox.Show("Error: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-
         }
 
         private void btnLoadData_Click(object sender, EventArgs e)

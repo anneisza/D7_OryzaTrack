@@ -41,7 +41,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM perawatanPadi WHERE idPerawatan = @idPerawatan";
+                string query = "SELECT * FROM vw_PerawatanPadi WHERE idPerawatan = @idPerawatan";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPerawatan", idPerawatan);
@@ -67,7 +67,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = "SELECT DISTINCT hasilPerawatan FROM perawatanPadi WHERE hasilPerawatan IS NOT NULL";
+                string query = "SELECT DISTINCT hasilPerawatan FROM vw_PerawatanPadi WHERE hasilPerawatan IS NOT NULL";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -211,11 +211,10 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 // Menggabungkan info kasus agar user mudah memilih di UI Form
-                string query = @"SELECT rp.idRiwayat, 
-                                       p.jenisBibit + ' - ' + pn.Kategori + ' (ID: ' + CAST(rp.idRiwayat AS VARCHAR) + ')' AS TeksTampilan
-                                FROM RiwayatPenyakit rp
-                                JOIN Padi p ON rp.idPadi = p.idPadi
-                                JOIN Penyakit pn ON rp.idPenyakit = pn.idPenyakit";
+                string query = @"SELECT idRiwayat, 
+                         jenisBibit + ' - ' + kategoriPenyakit + 
+                         ' (ID: ' + CAST(idRiwayat AS VARCHAR) + ')' AS TeksTampilan
+                         FROM vw_RiwayatPenyakit";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

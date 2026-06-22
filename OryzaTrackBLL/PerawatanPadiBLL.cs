@@ -88,7 +88,7 @@ namespace OryzaTrackBLL
         public bool Ubah(int idPerawatan, int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             // Re-validasi logika bisnis agar tetap sinkron dengan database
-            if (!new[] { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" }.Contains(jenisPestisida))
+            if (!new[] { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate", "Tanpa Pestisida" }.Contains(jenisPestisida))
                 throw new Exception("Jenis pestisida tidak valid.");
 
             if (!new[] { "Berhasil", "Sebagian Berhasil", "Gagal" }.Contains(hasilPerawatan))

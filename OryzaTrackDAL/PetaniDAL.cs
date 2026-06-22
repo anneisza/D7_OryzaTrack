@@ -40,7 +40,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = "SELECT idPetani, namaPetani FROM petani WHERE statusAktif = 1";
+                string query = "SELECT idPetani, namaPetani FROM vw_PetaniAktif WHERE statusAktif = 1";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -60,7 +60,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM petani WHERE idPetani = @idPetani";
+                string query = "SELECT * FROM vw_Petani WHERE idPetani = @idPetani";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPetani", idPetani);
@@ -104,7 +104,7 @@ namespace OryzaTrackDAL
         /*=======================
                 Insert Petani 
          ========================*/
-        public string Insert(string namaPetani, string nik, string alamat, string noTelepon)
+        public string Insert(string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -261,6 +261,24 @@ namespace OryzaTrackDAL
                 {
                     cmd.ExecuteNonQuery();
                     return true;
+                }
+            }
+        }
+        /// <summary>
+        ///  buat injeksi
+        /// </summary>
+        /// <param name="input"></param>
+        public void DeleteRentan(string input)
+        {
+            // ❌ SENGAJA tidak aman untuk demo
+            string query = "DELETE FROM petani WHERE namaPetani = '" + input + "'";
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

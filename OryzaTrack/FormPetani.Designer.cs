@@ -77,6 +77,8 @@
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.btnTestInjection = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.btnImportExcel = new System.Windows.Forms.Button();
+            this.btnImportDb = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -119,7 +121,7 @@
             // 
             // btnBersihkan
             // 
-            this.btnBersihkan.Location = new System.Drawing.Point(821, 372);
+            this.btnBersihkan.Location = new System.Drawing.Point(718, 374);
             this.btnBersihkan.Name = "btnBersihkan";
             this.btnBersihkan.Size = new System.Drawing.Size(94, 33);
             this.btnBersihkan.TabIndex = 58;
@@ -129,7 +131,7 @@
             // 
             // btnHapusData
             // 
-            this.btnHapusData.Location = new System.Drawing.Point(711, 372);
+            this.btnHapusData.Location = new System.Drawing.Point(608, 374);
             this.btnHapusData.Name = "btnHapusData";
             this.btnHapusData.Size = new System.Drawing.Size(84, 33);
             this.btnHapusData.TabIndex = 57;
@@ -139,7 +141,7 @@
             // 
             // btnUbahData
             // 
-            this.btnUbahData.Location = new System.Drawing.Point(588, 372);
+            this.btnUbahData.Location = new System.Drawing.Point(485, 374);
             this.btnUbahData.Name = "btnUbahData";
             this.btnUbahData.Size = new System.Drawing.Size(84, 33);
             this.btnUbahData.TabIndex = 56;
@@ -149,7 +151,7 @@
             // 
             // btnTambahData
             // 
-            this.btnTambahData.Location = new System.Drawing.Point(452, 372);
+            this.btnTambahData.Location = new System.Drawing.Point(349, 374);
             this.btnTambahData.Name = "btnTambahData";
             this.btnTambahData.Size = new System.Drawing.Size(92, 33);
             this.btnTambahData.TabIndex = 55;
@@ -308,7 +310,7 @@
             // 
             // btnKoneksi
             // 
-            this.btnKoneksi.Location = new System.Drawing.Point(175, 372);
+            this.btnKoneksi.Location = new System.Drawing.Point(72, 374);
             this.btnKoneksi.Name = "btnKoneksi";
             this.btnKoneksi.Size = new System.Drawing.Size(85, 33);
             this.btnKoneksi.TabIndex = 65;
@@ -318,7 +320,7 @@
             // 
             // btnLoadData
             // 
-            this.btnLoadData.Location = new System.Drawing.Point(318, 372);
+            this.btnLoadData.Location = new System.Drawing.Point(215, 374);
             this.btnLoadData.Name = "btnLoadData";
             this.btnLoadData.Size = new System.Drawing.Size(89, 33);
             this.btnLoadData.TabIndex = 66;
@@ -536,29 +538,55 @@
             // 
             // btnTestInjection
             // 
+            this.btnTestInjection.BackColor = System.Drawing.Color.Firebrick;
             this.btnTestInjection.Location = new System.Drawing.Point(943, 324);
             this.btnTestInjection.Name = "btnTestInjection";
             this.btnTestInjection.Size = new System.Drawing.Size(85, 33);
             this.btnTestInjection.TabIndex = 68;
             this.btnTestInjection.Text = "Tes";
-            this.btnTestInjection.UseVisualStyleBackColor = true;
+            this.btnTestInjection.UseVisualStyleBackColor = false;
             this.btnTestInjection.Click += new System.EventHandler(this.btnTestInjection_Click);
             // 
             // btnReset
             // 
+            this.btnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.btnReset.Location = new System.Drawing.Point(1059, 324);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(85, 33);
             this.btnReset.TabIndex = 69;
             this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // btnImportExcel
+            // 
+            this.btnImportExcel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnImportExcel.Location = new System.Drawing.Point(831, 374);
+            this.btnImportExcel.Name = "btnImportExcel";
+            this.btnImportExcel.Size = new System.Drawing.Size(159, 37);
+            this.btnImportExcel.TabIndex = 70;
+            this.btnImportExcel.Text = "Import from Excel";
+            this.btnImportExcel.UseVisualStyleBackColor = false;
+            this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
+            // 
+            // btnImportDb
+            // 
+            this.btnImportDb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.btnImportDb.Location = new System.Drawing.Point(1006, 374);
+            this.btnImportDb.Name = "btnImportDb";
+            this.btnImportDb.Size = new System.Drawing.Size(148, 37);
+            this.btnImportDb.TabIndex = 71;
+            this.btnImportDb.Text = "Import to Database";
+            this.btnImportDb.UseVisualStyleBackColor = false;
+            this.btnImportDb.Click += new System.EventHandler(this.btnImportDb_Click);
             // 
             // FormPetani
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1214, 715);
+            this.Controls.Add(this.btnImportDb);
+            this.Controls.Add(this.btnImportExcel);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnTestInjection);
             this.Controls.Add(this.bindingNavigator1);
@@ -639,5 +667,7 @@
         private System.Windows.Forms.ToolStripButton pasteToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
+        private System.Windows.Forms.Button btnImportExcel;
+        private System.Windows.Forms.Button btnImportDb;
     }
 }

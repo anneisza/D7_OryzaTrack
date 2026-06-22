@@ -41,7 +41,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM padi WHERE idPadi = @idPadi";
+                string query = "SELECT * FROM vw_Padi WHERE idPadi = @idPadi";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPadi", idPadi);

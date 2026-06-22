@@ -272,7 +272,7 @@ namespace OryzaTrack
 
         private void btnUbahData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPerawatanPadi == 0)
+            if (selectedIdPerawatanPadi == -1)
             {
                 MessageBox.Show("Pilih data yang akan diubah!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -312,7 +312,7 @@ namespace OryzaTrack
 
         private void btnHapusData_Click(object sender, EventArgs e)
         {
-            if (selectedIdPerawatanPadi == 0)
+            if (selectedIdPerawatanPadi == -1)
             {
                 MessageBox.Show("Pilih data yang akan dihapus!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

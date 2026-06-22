@@ -43,7 +43,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM penyakit WHERE idPenyakit = @idPenyakit";
+                string query = "SELECT * FROM vw_Penyakit WHERE idPenyakit = @idPenyakit";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
@@ -69,7 +69,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = "SELECT DISTINCT kategori FROM penyakit WHERE kategori IS NOT NULL";
+                string query = "SELECT DISTINCT kategori FROM vw_Penyakit WHERE kategori IS NOT NULL";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -84,7 +84,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = "SELECT DISTINCT tingkatKerusakan FROM penyakit WHERE tingkatKerusakan IS NOT NULL";
+                string query = "SELECT DISTINCT tingkatKerusakan FROM vw_Penyakit WHERE tingkatKerusakan IS NOT NULL";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);

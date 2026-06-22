@@ -61,7 +61,7 @@ namespace OryzaTrackBLL
                 throw new Exception("Format nomor telepon salah!");
 
             // Validasi duplikat sekarang ditangani SP, BLL tinggal cek pesannya
-            string hasil = dal.Insert(namaPetani, nik, alamat, noTelepon);
+            string hasil = dal.Insert(namaPetani, nik, alamat, noTelepon, statusAktif);
 
             if (hasil != "OK")
                 throw new Exception(hasil); // Lempar pesan dari SP ke Form
@@ -117,6 +117,12 @@ namespace OryzaTrackBLL
         public bool ResetData()
         {
             return dal.ResetData();
+        }
+
+        //injection
+        public void HapusRentan(string input)
+        {
+            dal.DeleteRentan(input);
         }
     }
 }

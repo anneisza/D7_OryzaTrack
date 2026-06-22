@@ -88,6 +88,7 @@ namespace OryzaTrack
 
         private void BersihkanForm()
         {
+            selectedIdPadi = 0;
             cmbIdPetani.SelectedIndex = -1;
             cmbJB.SelectedIndex = -1;
             cmbLokasiLahan.SelectedIndex = -1;

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ExcelDataReader;
+using System.IO;
 
 namespace OryzaTrack
 {
@@ -356,62 +358,34 @@ namespace OryzaTrack
             if (string.IsNullOrWhiteSpace(inputBerbahaya))
             {
                 MessageBox.Show(
-                    "Isi txtCari dulu!\n\n" +
-                    "Contoh input berbahaya:\n" +
-                    "' OR '1'='1' --\n" +
-                    "' OR 1=1 --",
+                    "Isi txtCari dulu!\n\nContoh: ' OR '1'='1' --",
                     "Petunjuk", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // Tampilkan query yang terbentuk (untuk edukasi)
+            // Tampilkan query yang akan dijalankan
             string queryInfo =
-                "SELECT idPetani, namaPetani, NIK, alamat, noTelepon " +
-                "FROM petani " +
-                "WHERE namaPetani = '" + inputBerbahaya + "'";
+                "DELETE FROM petani WHERE namaPetani = '" + inputBerbahaya + "'";
 
             MessageBox.Show(
-                "Query yang dijalankan:\n\n" + queryInfo,
-                "⚠️ Query Tidak Aman",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
+                "⚠️ Query berbahaya yang akan dijalankan:\n\n" + queryInfo,
+                "PERINGATAN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             try
             {
-                // Panggil via BLL → DAL (tidak perlu DatabaseConnection di Form)
-                DataTable dt = bll.CariRentan(inputBerbahaya);
-                dgvPetani.DataSource = dt;
+                // Jalankan DELETE rentan
+                bll.HapusRentan(inputBerbahaya);
 
-                if (dt.Rows.Count > 1)
-                {
-                    MessageBox.Show(
-                        $"⚠️ SQL INJECTION BERHASIL!\n\n" +
-                        $"Jumlah data bocor: {dt.Rows.Count} baris\n\n" +
-                        $"Semua data petani berhasil diakses\n" +
-                        $"tanpa mengetahui nama yang benar!",
-                        "Injection Berhasil!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                }
-                else if (dt.Rows.Count == 1)
-                {
-                    MessageBox.Show(
-                        "Query normal — hanya 1 data ditemukan.",
-                        "Normal", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Data tidak ditemukan.",
-                        "Kosong", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
+                // Refresh grid → data kosong
+                LoadData();
+
+                // Tampilkan popup seram
+                FormHacked formHacked = new FormHacked();
+                formHacked.ShowDialog();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -446,6 +420,117 @@ namespace OryzaTrack
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        //Button buat import excel
+        private DataTable dtPreviewImport;
+
+        private void btnImportExcel_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog { Filter = "Excel Workbook|*.xlsx" })
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var stream = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read))
+                        {
+                            using (var reader = ExcelReaderFactory.CreateReader(stream))
+                            {
+                                var result = reader.AsDataSet();
+                                DataTable dtSheet = result.Tables[0];
+
+                                // Buat struktur DataTable baru untuk menampung preview sesuai kolom di modul
+                                dtPreviewImport = new DataTable();
+                                foreach (DataColumn col in dtSheet.Columns)
+                                {
+                                    // Mengambil baris pertama (index 0) sebagai nama kolom
+                                    dtPreviewImport.Columns.Add(dtSheet.Rows[0][col].ToString());
+                                }
+
+                                // Melakukan perulangan untuk memasukkan data baris ke-2 dst (index 1 ke atas)
+                                for (int i = 1; i < dtSheet.Rows.Count; i++)
+                                {
+                                    dtPreviewImport.Rows.Add(dtSheet.Rows[i].ItemArray);
+                                }
+
+                                // Tampilkan ke DataGridView
+                                dgvPetani.DataSource = dtPreviewImport;
+                                dgvPetani.Enabled = false; // preview only, belum masuk DB
+
+                                // Atur status tombol UI sesuai ketentuan
+                                btnImportDb.Enabled = true;
+                                btnTambahData.Enabled = false;
+                                btnUbahData.Enabled = false;
+                                btnHapusData.Enabled = false;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Gagal membaca file Excel: " + ex.Message,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+        }
+
+        private void btnImportDb_Click(object sender, EventArgs e)
+        {
+            if (dtPreviewImport == null || dtPreviewImport.Rows.Count == 0)
+            {
+                MessageBox.Show("Tidak ada data untuk diimport.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 1. Mengikuti variabel penghitung sesuai modul (baris 17)
+            int barisBerhasil = 0;
+
+            // 2. Lakukan perulangan untuk menyimpan data ke database (baris 19)
+            foreach (DataRow row in dtPreviewImport.Rows)
+            {
+                try
+                {
+                    // Ambil data berdasarkan index posisi kolom di Excel secara berurutan
+                    string nama = row[0].ToString().Trim();
+                    string nik = row[1].ToString().Trim();
+                    string alamat = row[2].ToString().Trim();
+                    string telp = row[3].ToString().Trim();
+                    bool statusAktif = true; // Default aktif saat diimport
+
+                    // Validasi dasar agar data kosong di baris terbawah excel tidak ikut masuk
+                    if (string.IsNullOrEmpty(nama) || string.IsNullOrEmpty(nik))
+                        continue;
+
+                    // Panggil method Tambah dari objek bll Petani kamu
+                    bool hasil = bll.Tambah(nama, nik, alamat, telp, statusAktif);
+
+                    if (hasil)
+                    {
+                        barisBerhasil++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Jika ada baris gagal, dilewati (skip) agar proses baris selanjutnya tetap berjalan
+                    continue;
+                }
+            }
+
+            // 3. Pesan Box sukses 
+            MessageBox.Show(barisBerhasil + " data berhasil disimpan ke database.",
+                "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 4. Kembalikan status tombol UI ke kondisi normal
+            btnImportDb.Enabled = false;
+            btnTambahData.Enabled = true;
+            btnUbahData.Enabled = true;
+            btnHapusData.Enabled = true;
+            dgvPetani.Enabled = true;
+
+            // 5. Refresh DataGridView utama menggunakan method LoadData milikmu
+            LoadData();
         }
 
         private void btnCariData_Click(object sender, EventArgs e)

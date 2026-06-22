@@ -41,7 +41,7 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM riwayatPenyakit WHERE idRiwayat = @idRiwayat";
+                string query = "SELECT * FROM vw_RiwayatPenyakit WHERE idRiwayat = @idRiwayat";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
@@ -204,11 +204,7 @@ namespace OryzaTrackDAL
             DataTable dt = new DataTable();
             // Query ini menggabungkan tabel riwayat dengan tabel penyakit 
             // untuk menghitung berapa kali tiap penyakit muncul
-            string query = @"
-        SELECT p.kategori, COUNT(r.idRiwayat) as Total 
-        FROM riwayatPenyakit r
-        JOIN penyakit p ON r.idPenyakit = p.idPenyakit
-        GROUP BY p.kategori";
+            string query = "string query = \"SELECT * FROM vw_StatistikPenyakit\";";
 
             using (SqlConnection conn = db.GetConnection())
             {

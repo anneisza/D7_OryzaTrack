@@ -14,6 +14,7 @@ namespace OryzaTrack
 {
     public partial class FormLaporan : Form
     {
+        private BindingSource bindingSource = new BindingSource();
         // Instance semua BLL
         private PetaniBLL petaniBLL = new PetaniBLL();
         private PadiBLL padiBLL = new PadiBLL();
@@ -102,6 +103,7 @@ namespace OryzaTrack
 
         private void MuatLaporanUtama()
         {
+           
             try
             {
                 string jenisBibit = cmbJenisBibit.Text;
@@ -115,7 +117,9 @@ namespace OryzaTrack
                     kategori
                 );
 
-                dgvLaporan.DataSource = dt; // langsung, tanpa DataView
+                bindingSource.DataSource = dt;
+                dgvLaporan.DataSource = bindingSource;
+                bindingNavigator1.BindingSource = bindingSource;
                 AturKolomDgv(dgvLaporan);
             }
             catch (Exception ex)

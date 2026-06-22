@@ -1354,6 +1354,8 @@ GO
 --===========================================================
 SELECT * INTO petani_backup FROM petani;
 
+select * from petani_backup
+
 --------------------------------------------------------------
 
 -- Hapus constraint lama
@@ -1715,5 +1717,82 @@ BEGIN
         r.tanggalTerdeteksi BETWEEN @tanggalAwal AND @tanggalAkhir
         AND (@jenisBibit IS NULL OR p.jenisBibit = @jenisBibit)
         AND (@kategori   IS NULL OR pn.Kategori  = @kategori);
+END;
+GO
+
+-- buat view getStatistik
+CREATE VIEW vw_StatistikPenyakit AS
+SELECT kategoriPenyakit AS kategori, COUNT(idRiwayat) AS Total
+FROM vw_RiwayatPenyakit
+GROUP BY kategoriPenyakit
+
+/**-------------------------------------------------------------------
+
+                     ====  UCP 3 ====
+
+--------------------------------------------------------------------**/
+-- 1. Tabel log aktivitas (audit trail)
+CREATE TABLE LogAktivitas (
+    idLog     INT IDENTITY(1,1) PRIMARY KEY,
+    aktivitas VARCHAR(200) NOT NULL,
+    tabel     VARCHAR(50)  NOT NULL,
+    waktu     DATETIME     NOT NULL DEFAULT GETDATE()
+);
+GO
+
+-- 2. Trigger INSERT pada petani (catat tiap pendaftaran petani baru,
+--    termasuk yang masuk lewat fitur Import Excel)
+CREATE TRIGGER trg_InsertPetani
+ON petani
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO LogAktivitas (aktivitas, tabel)
+    SELECT 'Tambah petani: ' + namaPetani, 'petani'
+    FROM inserted;
+END;
+GO
+
+-- 3. Trigger DELETE pada petani (data petani dihapus = cascade ke Padi dst,
+--    penting untuk dicatat karena dampaknya besar)
+CREATE TRIGGER trg_DeletePetani
+ON petani
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO LogAktivitas (aktivitas, tabel)
+    SELECT 'Hapus petani: ' + namaPetani, 'petani'
+    FROM deleted;
+END;
+GO
+
+-- 4. Trigger pencegahan update massal di tabel petani
+--    (proteksi dari bug aplikasi / query liar yang update banyak baris sekaligus)
+CREATE TABLE LogKeamanan (
+    idLog       INT IDENTITY(1,1) PRIMARY KEY,
+    aktivitas   VARCHAR(200),
+    jumlah_data INT,
+    waktu       DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TRIGGER trg_PreventMassUpdatePetani
+ON petani
+AFTER UPDATE
+AS
+BEGIN
+    DECLARE @jumlah INT;
+    SELECT @jumlah = COUNT(*) FROM inserted;
+
+    IF @jumlah > 5
+    BEGIN
+        INSERT INTO LogKeamanan (aktivitas, jumlah_data)
+        VALUES ('WARNING: Update massal terdeteksi pada petani', @jumlah);
+
+        ROLLBACK TRANSACTION;
+        RAISERROR('Update dibatalkan! Terlalu banyak data petani diubah sekaligus.', 16, 1);
+    END
 END;
 GO

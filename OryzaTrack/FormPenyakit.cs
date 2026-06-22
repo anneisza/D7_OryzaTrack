@@ -31,6 +31,9 @@ namespace OryzaTrack
             cmbKategori.Items.Add("Hama");
             cmbKategori.Items.Add("Penyakit");
 
+            //mengunci user agar tidak mengetik manual
+            cmbKategori.DropDownStyle = ComboBoxStyle.DropDownList;
+
             // 2. Mengisi pilihan Tingkat Kerusakan
             cmbTingkatKerusakan.Items.Clear();
             cmbTingkatKerusakan.Items.Add("Ringan");

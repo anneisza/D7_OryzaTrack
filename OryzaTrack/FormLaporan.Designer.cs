@@ -28,11 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLaporan));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpTanggalAwal = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
+            this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
+            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
+            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbJenisBibit = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -60,7 +74,10 @@
             this.buttonTampilkan = new System.Windows.Forms.Button();
             this.dtpTanggalAkhir = new System.Windows.Forms.DateTimePicker();
             this.dgvLaporan = new System.Windows.Forms.DataGridView();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
+            this.bindingNavigator1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.panel10.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -68,11 +85,12 @@
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLaporan)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpTanggalAwal
             // 
-            this.dtpTanggalAwal.Location = new System.Drawing.Point(99, 76);
+            this.dtpTanggalAwal.Location = new System.Drawing.Point(77, 111);
             this.dtpTanggalAwal.Name = "dtpTanggalAwal";
             this.dtpTanggalAwal.Size = new System.Drawing.Size(214, 22);
             this.dtpTanggalAwal.TabIndex = 0;
@@ -81,6 +99,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.MintCream;
+            this.groupBox1.Controls.Add(this.bindingNavigator1);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.cmbJenisBibit);
             this.groupBox1.Controls.Add(this.label5);
@@ -100,15 +119,130 @@
             this.groupBox1.Controls.Add(this.dtpTanggalAwal);
             this.groupBox1.Location = new System.Drawing.Point(10, 11);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1818, 357);
+            this.groupBox1.Size = new System.Drawing.Size(1818, 405);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
+            // 
+            // bindingNavigator1
+            // 
+            this.bindingNavigator1.AddNewItem = this.bindingNavigatorAddNewItem;
+            this.bindingNavigator1.CountItem = this.bindingNavigatorCountItem;
+            this.bindingNavigator1.DeleteItem = this.bindingNavigatorDeleteItem;
+            this.bindingNavigator1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.bindingNavigator1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bindingNavigatorMoveFirstItem,
+            this.bindingNavigatorMovePreviousItem,
+            this.bindingNavigatorSeparator,
+            this.bindingNavigatorPositionItem,
+            this.bindingNavigatorCountItem,
+            this.bindingNavigatorSeparator1,
+            this.bindingNavigatorMoveNextItem,
+            this.bindingNavigatorMoveLastItem,
+            this.bindingNavigatorSeparator2,
+            this.bindingNavigatorAddNewItem,
+            this.bindingNavigatorDeleteItem});
+            this.bindingNavigator1.Location = new System.Drawing.Point(3, 18);
+            this.bindingNavigator1.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
+            this.bindingNavigator1.MoveLastItem = this.bindingNavigatorMoveLastItem;
+            this.bindingNavigator1.MoveNextItem = this.bindingNavigatorMoveNextItem;
+            this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
+            this.bindingNavigator1.Name = "bindingNavigator1";
+            this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
+            this.bindingNavigator1.Size = new System.Drawing.Size(1812, 31);
+            this.bindingNavigator1.TabIndex = 27;
+            this.bindingNavigator1.Text = "bindingNavigator1";
+            // 
+            // bindingNavigatorAddNewItem
+            // 
+            this.bindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
+            this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
+            this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorAddNewItem.Text = "Add new";
+            // 
+            // bindingNavigatorCountItem
+            // 
+            this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(45, 28);
+            this.bindingNavigatorCountItem.Text = "of {0}";
+            this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
+            // 
+            // bindingNavigatorDeleteItem
+            // 
+            this.bindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
+            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
+            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorDeleteItem.Text = "Delete";
+            // 
+            // bindingNavigatorMoveFirstItem
+            // 
+            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
+            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
+            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorMoveFirstItem.Text = "Move first";
+            // 
+            // bindingNavigatorMovePreviousItem
+            // 
+            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
+            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
+            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorMovePreviousItem.Text = "Move previous";
+            // 
+            // bindingNavigatorSeparator
+            // 
+            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 31);
+            // 
+            // bindingNavigatorPositionItem
+            // 
+            this.bindingNavigatorPositionItem.AccessibleName = "Position";
+            this.bindingNavigatorPositionItem.AutoSize = false;
+            this.bindingNavigatorPositionItem.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
+            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 27);
+            this.bindingNavigatorPositionItem.Text = "0";
+            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
+            // 
+            // bindingNavigatorSeparator1
+            // 
+            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 31);
+            // 
+            // bindingNavigatorMoveNextItem
+            // 
+            this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
+            this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
+            this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorMoveNextItem.Text = "Move next";
+            // 
+            // bindingNavigatorMoveLastItem
+            // 
+            this.bindingNavigatorMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
+            this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
+            this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(29, 28);
+            this.bindingNavigatorMoveLastItem.Text = "Move last";
+            // 
+            // bindingNavigatorSeparator2
+            // 
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(93, 181);
+            this.label4.Location = new System.Drawing.Point(71, 216);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 18);
             this.label4.TabIndex = 26;
@@ -117,7 +251,7 @@
             // cmbJenisBibit
             // 
             this.cmbJenisBibit.FormattingEnabled = true;
-            this.cmbJenisBibit.Location = new System.Drawing.Point(99, 202);
+            this.cmbJenisBibit.Location = new System.Drawing.Point(77, 237);
             this.cmbJenisBibit.Name = "cmbJenisBibit";
             this.cmbJenisBibit.Size = new System.Drawing.Size(213, 24);
             this.cmbJenisBibit.TabIndex = 25;
@@ -127,7 +261,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(93, 239);
+            this.label5.Location = new System.Drawing.Point(71, 274);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(117, 18);
             this.label5.TabIndex = 24;
@@ -136,7 +270,7 @@
             // cmbJenisPenyakit
             // 
             this.cmbJenisPenyakit.FormattingEnabled = true;
-            this.cmbJenisPenyakit.Location = new System.Drawing.Point(99, 260);
+            this.cmbJenisPenyakit.Location = new System.Drawing.Point(77, 295);
             this.cmbJenisPenyakit.Name = "cmbJenisPenyakit";
             this.cmbJenisPenyakit.Size = new System.Drawing.Size(213, 24);
             this.cmbJenisPenyakit.TabIndex = 23;
@@ -144,17 +278,17 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(1243, 16);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(1226, 50);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(539, 325);
             this.chart1.TabIndex = 22;
             this.chart1.Text = "chart1";
@@ -164,7 +298,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(672, 13);
+            this.label6.Location = new System.Drawing.Point(650, 48);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(254, 54);
             this.label6.TabIndex = 14;
@@ -175,7 +309,7 @@
             this.panel10.BackColor = System.Drawing.Color.CadetBlue;
             this.panel10.Controls.Add(this.label25);
             this.panel10.Controls.Add(this.labelPerawatan);
-            this.panel10.Location = new System.Drawing.Point(1059, 77);
+            this.panel10.Location = new System.Drawing.Point(1042, 111);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(145, 110);
             this.panel10.TabIndex = 21;
@@ -205,7 +339,7 @@
             this.panel7.BackColor = System.Drawing.Color.Teal;
             this.panel7.Controls.Add(this.label19);
             this.panel7.Controls.Add(this.labelRiwayat);
-            this.panel7.Location = new System.Drawing.Point(889, 76);
+            this.panel7.Location = new System.Drawing.Point(872, 110);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(145, 110);
             this.panel7.TabIndex = 20;
@@ -235,7 +369,7 @@
             this.panel8.BackColor = System.Drawing.Color.CadetBlue;
             this.panel8.Controls.Add(this.lblPenyakit);
             this.panel8.Controls.Add(this.labelPenyakit);
-            this.panel8.Location = new System.Drawing.Point(724, 77);
+            this.panel8.Location = new System.Drawing.Point(707, 111);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(139, 110);
             this.panel8.TabIndex = 19;
@@ -265,9 +399,9 @@
             this.panel1.BackColor = System.Drawing.Color.Teal;
             this.panel1.Controls.Add(this.lblPadi);
             this.panel1.Controls.Add(this.lblPadii);
-            this.panel1.Location = new System.Drawing.Point(575, 76);
+            this.panel1.Location = new System.Drawing.Point(540, 110);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(123, 110);
+            this.panel1.Size = new System.Drawing.Size(140, 110);
             this.panel1.TabIndex = 18;
             // 
             // lblPadi
@@ -295,9 +429,9 @@
             this.panel4.BackColor = System.Drawing.Color.CadetBlue;
             this.panel4.Controls.Add(this.lblPetani);
             this.panel4.Controls.Add(this.labelPetani);
-            this.panel4.Location = new System.Drawing.Point(428, 76);
+            this.panel4.Location = new System.Drawing.Point(366, 110);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(123, 110);
+            this.panel4.Size = new System.Drawing.Size(144, 110);
             this.panel4.TabIndex = 17;
             // 
             // lblPetani
@@ -324,7 +458,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(96, 102);
+            this.label2.Location = new System.Drawing.Point(74, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 18);
             this.label2.TabIndex = 8;
@@ -334,7 +468,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(96, 49);
+            this.label1.Location = new System.Drawing.Point(74, 84);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 18);
             this.label1.TabIndex = 7;
@@ -343,7 +477,7 @@
             // buttonReset
             // 
             this.buttonReset.BackColor = System.Drawing.Color.Khaki;
-            this.buttonReset.Location = new System.Drawing.Point(203, 311);
+            this.buttonReset.Location = new System.Drawing.Point(181, 346);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(96, 29);
             this.buttonReset.TabIndex = 6;
@@ -354,7 +488,7 @@
             // buttonTampilkan
             // 
             this.buttonTampilkan.BackColor = System.Drawing.Color.PowderBlue;
-            this.buttonTampilkan.Location = new System.Drawing.Point(99, 310);
+            this.buttonTampilkan.Location = new System.Drawing.Point(77, 345);
             this.buttonTampilkan.Name = "buttonTampilkan";
             this.buttonTampilkan.Size = new System.Drawing.Size(98, 31);
             this.buttonTampilkan.TabIndex = 5;
@@ -364,7 +498,7 @@
             // 
             // dtpTanggalAkhir
             // 
-            this.dtpTanggalAkhir.Location = new System.Drawing.Point(96, 131);
+            this.dtpTanggalAkhir.Location = new System.Drawing.Point(74, 166);
             this.dtpTanggalAkhir.Name = "dtpTanggalAkhir";
             this.dtpTanggalAkhir.Size = new System.Drawing.Size(214, 22);
             this.dtpTanggalAkhir.TabIndex = 1;
@@ -375,12 +509,12 @@
             this.dgvLaporan.AllowUserToAddRows = false;
             this.dgvLaporan.AllowUserToDeleteRows = false;
             this.dgvLaporan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLaporan.Location = new System.Drawing.Point(12, 374);
+            this.dgvLaporan.Location = new System.Drawing.Point(12, 422);
             this.dgvLaporan.Name = "dgvLaporan";
             this.dgvLaporan.ReadOnly = true;
             this.dgvLaporan.RowHeadersWidth = 51;
             this.dgvLaporan.RowTemplate.Height = 24;
-            this.dgvLaporan.Size = new System.Drawing.Size(1816, 443);
+            this.dgvLaporan.Size = new System.Drawing.Size(1816, 395);
             this.dgvLaporan.TabIndex = 27;
             // 
             // FormLaporan
@@ -395,6 +529,9 @@
             this.Load += new System.EventHandler(this.FormLaporan_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
+            this.bindingNavigator1.ResumeLayout(false);
+            this.bindingNavigator1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.panel10.ResumeLayout(false);
             this.panel10.PerformLayout();
@@ -407,6 +544,7 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLaporan)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -442,5 +580,18 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmbJenisPenyakit;
         private System.Windows.Forms.DataGridView dgvLaporan;
+        private System.Windows.Forms.BindingNavigator bindingNavigator1;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
+        private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorMovePreviousItem;
+        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
+        private System.Windows.Forms.ToolStripTextBox bindingNavigatorPositionItem;
+        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator1;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
+        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
+        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }
