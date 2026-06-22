@@ -26,6 +26,20 @@ namespace OryzaTrack
             dgvPenyakit.AllowUserToAddRows = false;
             dgvPenyakit.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvPenyakit.CellClick += dgvPenyakit_CellClick;
+            // 1. Mengisi pilihan Kategori Penyakit
+            cmbKategori.Items.Clear();
+            cmbKategori.Items.Add("Hama");
+            cmbKategori.Items.Add("Penyakit");
+
+            // 2. Mengisi pilihan Tingkat Kerusakan
+            cmbTingkatKerusakan.Items.Clear();
+            cmbTingkatKerusakan.Items.Add("Ringan");
+            cmbTingkatKerusakan.Items.Add("Sedang");
+            cmbTingkatKerusakan.Items.Add("Berat");
+            cmbTingkatKerusakan.DropDownStyle = ComboBoxStyle.DropDownList; // Mengunci inputan hanya dari list
+
+
+            BersihkanForm();
 
             SetButtonsEnabled(false);
             Application.DoEvents();

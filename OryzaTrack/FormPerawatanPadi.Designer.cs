@@ -31,19 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPerawatanPadi));
             this.dgvPerawatanPadi = new System.Windows.Forms.DataGridView();
-            this.idPerawatanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idPadiDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idPenyakitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.namaPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.jenisBibitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lokasiLahanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.kategoriPenyakitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.jenisPerawatanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.jenisPestisidaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tanggalPerawatanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hasilPerawatanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.vwPerawatanPadiBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.oryzaTrackDataSet1 = new OryzaTrack.OryzaTrackDataSet1();
             this.btnLoadData = new System.Windows.Forms.Button();
             this.btnKoneksi = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -58,16 +45,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmbHasil = new System.Windows.Forms.ComboBox();
             this.lblHasilPerawatan = new System.Windows.Forms.Label();
-            this.cmbIdPadi = new System.Windows.Forms.ComboBox();
-            this.vwPadiBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.cmbIdRiwayat = new System.Windows.Forms.ComboBox();
             this.lblJenisPsetisida = new System.Windows.Forms.Label();
             this.dtpTanggalPerawatan = new System.Windows.Forms.DateTimePicker();
-            this.cmbIdPenyakit = new System.Windows.Forms.ComboBox();
-            this.vwPenyakitBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cmbJenisPestisida = new System.Windows.Forms.ComboBox();
             this.lblTanggalPerawatan = new System.Windows.Forms.Label();
-            this.lblIdPenyakit = new System.Windows.Forms.Label();
-            this.liblIdPadi = new System.Windows.Forms.Label();
+            this.lblIdRiwayat = new System.Windows.Forms.Label();
             this.lblJenisPerawatan = new System.Windows.Forms.Label();
             this.txtJenisPerawatan = new System.Windows.Forms.TextBox();
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
@@ -82,60 +65,21 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.vw_PerawatanPadiTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PerawatanPadiTableAdapter();
-            this.vw_PadiTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PadiTableAdapter();
-            this.vw_PenyakitTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PenyakitTableAdapter();
-            this.view_combo = new OryzaTrack.view_combo();
-            this.vListBibitBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.v_ListBibitTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListBibitTableAdapter();
-            this.vListKategoriBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.v_ListKategoriTableAdapter = new OryzaTrack.view_comboTableAdapters.v_ListKategoriTableAdapter();
-            this.viewpestisida = new OryzaTrack.viewpestisida();
-            this.vListPestisidaBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.v_ListPestisidaTableAdapter = new OryzaTrack.viewpestisidaTableAdapters.v_ListPestisidaTableAdapter();
-            this.oryzaTrackDataSet2 = new OryzaTrack.OryzaTrackDataSet2();
-            this.vListHasilBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.v_ListHasilTableAdapter = new OryzaTrack.OryzaTrackDataSet2TableAdapters.v_ListHasilTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatanPadi)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPerawatanPadiBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPadiBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListBibitBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListKategoriBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewpestisida)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListPestisidaBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListHasilBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvPerawatanPadi
             // 
             this.dgvPerawatanPadi.AllowUserToAddRows = false;
             this.dgvPerawatanPadi.AllowUserToDeleteRows = false;
-            this.dgvPerawatanPadi.AutoGenerateColumns = false;
             this.dgvPerawatanPadi.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPerawatanPadi.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPerawatanPadi.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPerawatanPadi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPerawatanPadi.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idPerawatanDataGridViewTextBoxColumn,
-            this.idPadiDataGridViewTextBoxColumn,
-            this.idPenyakitDataGridViewTextBoxColumn,
-            this.namaPetaniDataGridViewTextBoxColumn,
-            this.jenisBibitDataGridViewTextBoxColumn,
-            this.lokasiLahanDataGridViewTextBoxColumn,
-            this.kategoriPenyakitDataGridViewTextBoxColumn,
-            this.jenisPerawatanDataGridViewTextBoxColumn,
-            this.jenisPestisidaDataGridViewTextBoxColumn,
-            this.tanggalPerawatanDataGridViewTextBoxColumn,
-            this.hasilPerawatanDataGridViewTextBoxColumn});
-            this.dgvPerawatanPadi.DataSource = this.vwPerawatanPadiBindingSource;
             this.dgvPerawatanPadi.Location = new System.Drawing.Point(51, 434);
             this.dgvPerawatanPadi.Name = "dgvPerawatanPadi";
             this.dgvPerawatanPadi.ReadOnly = true;
@@ -144,115 +88,6 @@
             this.dgvPerawatanPadi.Size = new System.Drawing.Size(1086, 281);
             this.dgvPerawatanPadi.TabIndex = 106;
             this.dgvPerawatanPadi.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPerawatanPadi_CellClick);
-            // 
-            // idPerawatanDataGridViewTextBoxColumn
-            // 
-            this.idPerawatanDataGridViewTextBoxColumn.DataPropertyName = "idPerawatan";
-            this.idPerawatanDataGridViewTextBoxColumn.HeaderText = "idPerawatan";
-            this.idPerawatanDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idPerawatanDataGridViewTextBoxColumn.Name = "idPerawatanDataGridViewTextBoxColumn";
-            this.idPerawatanDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idPerawatanDataGridViewTextBoxColumn.Width = 111;
-            // 
-            // idPadiDataGridViewTextBoxColumn
-            // 
-            this.idPadiDataGridViewTextBoxColumn.DataPropertyName = "idPadi";
-            this.idPadiDataGridViewTextBoxColumn.HeaderText = "idPadi";
-            this.idPadiDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idPadiDataGridViewTextBoxColumn.Name = "idPadiDataGridViewTextBoxColumn";
-            this.idPadiDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idPadiDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // idPenyakitDataGridViewTextBoxColumn
-            // 
-            this.idPenyakitDataGridViewTextBoxColumn.DataPropertyName = "idPenyakit";
-            this.idPenyakitDataGridViewTextBoxColumn.HeaderText = "idPenyakit";
-            this.idPenyakitDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idPenyakitDataGridViewTextBoxColumn.Name = "idPenyakitDataGridViewTextBoxColumn";
-            this.idPenyakitDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idPenyakitDataGridViewTextBoxColumn.Width = 99;
-            // 
-            // namaPetaniDataGridViewTextBoxColumn
-            // 
-            this.namaPetaniDataGridViewTextBoxColumn.DataPropertyName = "namaPetani";
-            this.namaPetaniDataGridViewTextBoxColumn.HeaderText = "namaPetani";
-            this.namaPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.namaPetaniDataGridViewTextBoxColumn.Name = "namaPetaniDataGridViewTextBoxColumn";
-            this.namaPetaniDataGridViewTextBoxColumn.ReadOnly = true;
-            this.namaPetaniDataGridViewTextBoxColumn.Width = 108;
-            // 
-            // jenisBibitDataGridViewTextBoxColumn
-            // 
-            this.jenisBibitDataGridViewTextBoxColumn.DataPropertyName = "jenisBibit";
-            this.jenisBibitDataGridViewTextBoxColumn.HeaderText = "jenisBibit";
-            this.jenisBibitDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.jenisBibitDataGridViewTextBoxColumn.Name = "jenisBibitDataGridViewTextBoxColumn";
-            this.jenisBibitDataGridViewTextBoxColumn.ReadOnly = true;
-            this.jenisBibitDataGridViewTextBoxColumn.Width = 90;
-            // 
-            // lokasiLahanDataGridViewTextBoxColumn
-            // 
-            this.lokasiLahanDataGridViewTextBoxColumn.DataPropertyName = "lokasiLahan";
-            this.lokasiLahanDataGridViewTextBoxColumn.HeaderText = "lokasiLahan";
-            this.lokasiLahanDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.lokasiLahanDataGridViewTextBoxColumn.Name = "lokasiLahanDataGridViewTextBoxColumn";
-            this.lokasiLahanDataGridViewTextBoxColumn.ReadOnly = true;
-            this.lokasiLahanDataGridViewTextBoxColumn.Width = 109;
-            // 
-            // kategoriPenyakitDataGridViewTextBoxColumn
-            // 
-            this.kategoriPenyakitDataGridViewTextBoxColumn.DataPropertyName = "kategoriPenyakit";
-            this.kategoriPenyakitDataGridViewTextBoxColumn.HeaderText = "kategoriPenyakit";
-            this.kategoriPenyakitDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.kategoriPenyakitDataGridViewTextBoxColumn.Name = "kategoriPenyakitDataGridViewTextBoxColumn";
-            this.kategoriPenyakitDataGridViewTextBoxColumn.ReadOnly = true;
-            this.kategoriPenyakitDataGridViewTextBoxColumn.Width = 137;
-            // 
-            // jenisPerawatanDataGridViewTextBoxColumn
-            // 
-            this.jenisPerawatanDataGridViewTextBoxColumn.DataPropertyName = "jenisPerawatan";
-            this.jenisPerawatanDataGridViewTextBoxColumn.HeaderText = "jenisPerawatan";
-            this.jenisPerawatanDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.jenisPerawatanDataGridViewTextBoxColumn.Name = "jenisPerawatanDataGridViewTextBoxColumn";
-            this.jenisPerawatanDataGridViewTextBoxColumn.ReadOnly = true;
-            this.jenisPerawatanDataGridViewTextBoxColumn.Width = 128;
-            // 
-            // jenisPestisidaDataGridViewTextBoxColumn
-            // 
-            this.jenisPestisidaDataGridViewTextBoxColumn.DataPropertyName = "jenisPestisida";
-            this.jenisPestisidaDataGridViewTextBoxColumn.HeaderText = "jenisPestisida";
-            this.jenisPestisidaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.jenisPestisidaDataGridViewTextBoxColumn.Name = "jenisPestisidaDataGridViewTextBoxColumn";
-            this.jenisPestisidaDataGridViewTextBoxColumn.ReadOnly = true;
-            this.jenisPestisidaDataGridViewTextBoxColumn.Width = 120;
-            // 
-            // tanggalPerawatanDataGridViewTextBoxColumn
-            // 
-            this.tanggalPerawatanDataGridViewTextBoxColumn.DataPropertyName = "tanggalPerawatan";
-            this.tanggalPerawatanDataGridViewTextBoxColumn.HeaderText = "tanggalPerawatan";
-            this.tanggalPerawatanDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.tanggalPerawatanDataGridViewTextBoxColumn.Name = "tanggalPerawatanDataGridViewTextBoxColumn";
-            this.tanggalPerawatanDataGridViewTextBoxColumn.ReadOnly = true;
-            this.tanggalPerawatanDataGridViewTextBoxColumn.Width = 145;
-            // 
-            // hasilPerawatanDataGridViewTextBoxColumn
-            // 
-            this.hasilPerawatanDataGridViewTextBoxColumn.DataPropertyName = "hasilPerawatan";
-            this.hasilPerawatanDataGridViewTextBoxColumn.HeaderText = "hasilPerawatan";
-            this.hasilPerawatanDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.hasilPerawatanDataGridViewTextBoxColumn.Name = "hasilPerawatanDataGridViewTextBoxColumn";
-            this.hasilPerawatanDataGridViewTextBoxColumn.ReadOnly = true;
-            this.hasilPerawatanDataGridViewTextBoxColumn.Width = 128;
-            // 
-            // vwPerawatanPadiBindingSource
-            // 
-            this.vwPerawatanPadiBindingSource.DataMember = "vw_PerawatanPadi";
-            this.vwPerawatanPadiBindingSource.DataSource = this.oryzaTrackDataSet1;
-            // 
-            // oryzaTrackDataSet1
-            // 
-            this.oryzaTrackDataSet1.DataSetName = "OryzaTrackDataSet1";
-            this.oryzaTrackDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // btnLoadData
             // 
@@ -371,14 +206,12 @@
             this.groupBox1.BackColor = System.Drawing.Color.Teal;
             this.groupBox1.Controls.Add(this.cmbHasil);
             this.groupBox1.Controls.Add(this.lblHasilPerawatan);
-            this.groupBox1.Controls.Add(this.cmbIdPadi);
+            this.groupBox1.Controls.Add(this.cmbIdRiwayat);
             this.groupBox1.Controls.Add(this.lblJenisPsetisida);
             this.groupBox1.Controls.Add(this.dtpTanggalPerawatan);
-            this.groupBox1.Controls.Add(this.cmbIdPenyakit);
             this.groupBox1.Controls.Add(this.cmbJenisPestisida);
             this.groupBox1.Controls.Add(this.lblTanggalPerawatan);
-            this.groupBox1.Controls.Add(this.lblIdPenyakit);
-            this.groupBox1.Controls.Add(this.liblIdPadi);
+            this.groupBox1.Controls.Add(this.lblIdRiwayat);
             this.groupBox1.Controls.Add(this.lblJenisPerawatan);
             this.groupBox1.Controls.Add(this.txtJenisPerawatan);
             this.groupBox1.Location = new System.Drawing.Point(51, 76);
@@ -389,8 +222,9 @@
             // 
             // cmbHasil
             // 
+            this.cmbHasil.DisplayMember = "hasilPerawatan";
             this.cmbHasil.FormattingEnabled = true;
-            this.cmbHasil.Location = new System.Drawing.Point(256, 217);
+            this.cmbHasil.Location = new System.Drawing.Point(256, 190);
             this.cmbHasil.Name = "cmbHasil";
             this.cmbHasil.Size = new System.Drawing.Size(236, 24);
             this.cmbHasil.TabIndex = 76;
@@ -400,31 +234,26 @@
             // 
             this.lblHasilPerawatan.AutoSize = true;
             this.lblHasilPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHasilPerawatan.Location = new System.Drawing.Point(77, 221);
+            this.lblHasilPerawatan.Location = new System.Drawing.Point(77, 194);
             this.lblHasilPerawatan.Name = "lblHasilPerawatan";
             this.lblHasilPerawatan.Size = new System.Drawing.Size(142, 20);
             this.lblHasilPerawatan.TabIndex = 74;
             this.lblHasilPerawatan.Text = "Hasil Perawatan: ";
             // 
-            // cmbIdPadi
+            // cmbIdRiwayat
             // 
-            this.cmbIdPadi.FormattingEnabled = true;
-            this.cmbIdPadi.Location = new System.Drawing.Point(256, 18);
-            this.cmbIdPadi.Name = "cmbIdPadi";
-            this.cmbIdPadi.Size = new System.Drawing.Size(236, 24);
-            this.cmbIdPadi.TabIndex = 73;
-            this.cmbIdPadi.ValueMember = "jenisBibit";
-            // 
-            // vwPadiBindingSource
-            // 
-            this.vwPadiBindingSource.DataMember = "vw_Padi";
-            this.vwPadiBindingSource.DataSource = this.oryzaTrackDataSet1;
+            this.cmbIdRiwayat.FormattingEnabled = true;
+            this.cmbIdRiwayat.Location = new System.Drawing.Point(256, 18);
+            this.cmbIdRiwayat.Name = "cmbIdRiwayat";
+            this.cmbIdRiwayat.Size = new System.Drawing.Size(236, 24);
+            this.cmbIdRiwayat.TabIndex = 73;
+            this.cmbIdRiwayat.SelectedIndexChanged += new System.EventHandler(this.cmbIdRiwayat_SelectedIndexChanged);
             // 
             // lblJenisPsetisida
             // 
             this.lblJenisPsetisida.AutoSize = true;
             this.lblJenisPsetisida.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblJenisPsetisida.Location = new System.Drawing.Point(77, 135);
+            this.lblJenisPsetisida.Location = new System.Drawing.Point(77, 108);
             this.lblJenisPsetisida.Name = "lblJenisPsetisida";
             this.lblJenisPsetisida.Size = new System.Drawing.Size(133, 20);
             this.lblJenisPsetisida.TabIndex = 72;
@@ -432,30 +261,16 @@
             // 
             // dtpTanggalPerawatan
             // 
-            this.dtpTanggalPerawatan.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.vwPerawatanPadiBindingSource, "tanggalPerawatan", true));
-            this.dtpTanggalPerawatan.Location = new System.Drawing.Point(256, 179);
+            this.dtpTanggalPerawatan.Location = new System.Drawing.Point(256, 152);
             this.dtpTanggalPerawatan.Name = "dtpTanggalPerawatan";
             this.dtpTanggalPerawatan.Size = new System.Drawing.Size(236, 22);
             this.dtpTanggalPerawatan.TabIndex = 71;
             // 
-            // cmbIdPenyakit
-            // 
-            this.cmbIdPenyakit.FormattingEnabled = true;
-            this.cmbIdPenyakit.Location = new System.Drawing.Point(256, 55);
-            this.cmbIdPenyakit.Name = "cmbIdPenyakit";
-            this.cmbIdPenyakit.Size = new System.Drawing.Size(236, 24);
-            this.cmbIdPenyakit.TabIndex = 70;
-            this.cmbIdPenyakit.ValueMember = "Kategori";
-            // 
-            // vwPenyakitBindingSource
-            // 
-            this.vwPenyakitBindingSource.DataMember = "vw_Penyakit";
-            this.vwPenyakitBindingSource.DataSource = this.oryzaTrackDataSet1;
-            // 
             // cmbJenisPestisida
             // 
+            this.cmbJenisPestisida.DisplayMember = "jenisPestisida";
             this.cmbJenisPestisida.FormattingEnabled = true;
-            this.cmbJenisPestisida.Location = new System.Drawing.Point(256, 131);
+            this.cmbJenisPestisida.Location = new System.Drawing.Point(256, 104);
             this.cmbJenisPestisida.Name = "cmbJenisPestisida";
             this.cmbJenisPestisida.Size = new System.Drawing.Size(236, 24);
             this.cmbJenisPestisida.TabIndex = 69;
@@ -465,37 +280,28 @@
             // 
             this.lblTanggalPerawatan.AutoSize = true;
             this.lblTanggalPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTanggalPerawatan.Location = new System.Drawing.Point(77, 179);
+            this.lblTanggalPerawatan.Location = new System.Drawing.Point(77, 152);
             this.lblTanggalPerawatan.Name = "lblTanggalPerawatan";
             this.lblTanggalPerawatan.Size = new System.Drawing.Size(167, 20);
             this.lblTanggalPerawatan.TabIndex = 68;
             this.lblTanggalPerawatan.Text = "Tanggal Perawatan : ";
             // 
-            // lblIdPenyakit
+            // lblIdRiwayat
             // 
-            this.lblIdPenyakit.AutoSize = true;
-            this.lblIdPenyakit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIdPenyakit.Location = new System.Drawing.Point(77, 59);
-            this.lblIdPenyakit.Name = "lblIdPenyakit";
-            this.lblIdPenyakit.Size = new System.Drawing.Size(154, 20);
-            this.lblIdPenyakit.TabIndex = 35;
-            this.lblIdPenyakit.Text = "Kategori Penyakit  :";
-            // 
-            // liblIdPadi
-            // 
-            this.liblIdPadi.AutoSize = true;
-            this.liblIdPadi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.liblIdPadi.Location = new System.Drawing.Point(77, 18);
-            this.liblIdPadi.Name = "liblIdPadi";
-            this.liblIdPadi.Size = new System.Drawing.Size(98, 20);
-            this.liblIdPadi.TabIndex = 36;
-            this.liblIdPadi.Text = "Jenis Bibit :";
+            this.lblIdRiwayat.AutoSize = true;
+            this.lblIdRiwayat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIdRiwayat.Location = new System.Drawing.Point(77, 18);
+            this.lblIdRiwayat.Name = "lblIdRiwayat";
+            this.lblIdRiwayat.Size = new System.Drawing.Size(100, 20);
+            this.lblIdRiwayat.TabIndex = 36;
+            this.lblIdRiwayat.Text = "ID Riwayat :";
+            this.lblIdRiwayat.Click += new System.EventHandler(this.liblIdPadi_Click);
             // 
             // lblJenisPerawatan
             // 
             this.lblJenisPerawatan.AutoSize = true;
             this.lblJenisPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblJenisPerawatan.Location = new System.Drawing.Point(77, 97);
+            this.lblJenisPerawatan.Location = new System.Drawing.Point(77, 70);
             this.lblJenisPerawatan.Name = "lblJenisPerawatan";
             this.lblJenisPerawatan.Size = new System.Drawing.Size(143, 20);
             this.lblJenisPerawatan.TabIndex = 39;
@@ -503,7 +309,7 @@
             // 
             // txtJenisPerawatan
             // 
-            this.txtJenisPerawatan.Location = new System.Drawing.Point(256, 95);
+            this.txtJenisPerawatan.Location = new System.Drawing.Point(256, 68);
             this.txtJenisPerawatan.Multiline = true;
             this.txtJenisPerawatan.Name = "txtJenisPerawatan";
             this.txtJenisPerawatan.Size = new System.Drawing.Size(236, 22);
@@ -625,69 +431,6 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(50, 6);
             // 
-            // vw_PerawatanPadiTableAdapter
-            // 
-            this.vw_PerawatanPadiTableAdapter.ClearBeforeFill = true;
-            // 
-            // vw_PadiTableAdapter
-            // 
-            this.vw_PadiTableAdapter.ClearBeforeFill = true;
-            // 
-            // vw_PenyakitTableAdapter
-            // 
-            this.vw_PenyakitTableAdapter.ClearBeforeFill = true;
-            // 
-            // view_combo
-            // 
-            this.view_combo.DataSetName = "view_combo";
-            this.view_combo.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // vListBibitBindingSource
-            // 
-            this.vListBibitBindingSource.DataMember = "v_ListBibit";
-            this.vListBibitBindingSource.DataSource = this.view_combo;
-            // 
-            // v_ListBibitTableAdapter
-            // 
-            this.v_ListBibitTableAdapter.ClearBeforeFill = true;
-            // 
-            // vListKategoriBindingSource
-            // 
-            this.vListKategoriBindingSource.DataMember = "v_ListKategori";
-            this.vListKategoriBindingSource.DataSource = this.view_combo;
-            // 
-            // v_ListKategoriTableAdapter
-            // 
-            this.v_ListKategoriTableAdapter.ClearBeforeFill = true;
-            // 
-            // viewpestisida
-            // 
-            this.viewpestisida.DataSetName = "viewpestisida";
-            this.viewpestisida.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // vListPestisidaBindingSource
-            // 
-            this.vListPestisidaBindingSource.DataMember = "v_ListPestisida";
-            this.vListPestisidaBindingSource.DataSource = this.viewpestisida;
-            // 
-            // v_ListPestisidaTableAdapter
-            // 
-            this.v_ListPestisidaTableAdapter.ClearBeforeFill = true;
-            // 
-            // oryzaTrackDataSet2
-            // 
-            this.oryzaTrackDataSet2.DataSetName = "OryzaTrackDataSet2";
-            this.oryzaTrackDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // vListHasilBindingSource
-            // 
-            this.vListHasilBindingSource.DataMember = "v_ListHasil";
-            this.vListHasilBindingSource.DataSource = this.oryzaTrackDataSet2;
-            // 
-            // v_ListHasilTableAdapter
-            // 
-            this.v_ListHasilTableAdapter.ClearBeforeFill = true;
-            // 
             // FormPerawatanPadi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -711,23 +454,12 @@
             this.Text = "Perawatan Padi";
             this.Load += new System.EventHandler(this.FormPerawatanPadi_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerawatanPadi)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPerawatanPadiBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPadiBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPenyakitBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.view_combo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListBibitBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListKategoriBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewpestisida)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListPestisidaBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vListHasilBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -749,15 +481,13 @@
         private System.Windows.Forms.TextBox txtCari;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DateTimePicker dtpTanggalPerawatan;
-        private System.Windows.Forms.ComboBox cmbIdPenyakit;
         private System.Windows.Forms.ComboBox cmbJenisPestisida;
         private System.Windows.Forms.Label lblTanggalPerawatan;
-        private System.Windows.Forms.Label lblIdPenyakit;
-        private System.Windows.Forms.Label liblIdPadi;
+        private System.Windows.Forms.Label lblIdRiwayat;
         private System.Windows.Forms.Label lblJenisPerawatan;
         private System.Windows.Forms.TextBox txtJenisPerawatan;
         private System.Windows.Forms.Label lblJenisPsetisida;
-        private System.Windows.Forms.ComboBox cmbIdPadi;
+        private System.Windows.Forms.ComboBox cmbIdRiwayat;
         private System.Windows.Forms.Label lblHasilPerawatan;
         private System.Windows.Forms.ComboBox cmbHasil;
         private System.Windows.Forms.BindingNavigator bindingNavigator1;
@@ -772,13 +502,7 @@
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
-        private OryzaTrackDataSet1 oryzaTrackDataSet1;
-        private System.Windows.Forms.BindingSource vwPerawatanPadiBindingSource;
-        private OryzaTrackDataSet1TableAdapters.vw_PerawatanPadiTableAdapter vw_PerawatanPadiTableAdapter;
-        private System.Windows.Forms.BindingSource vwPadiBindingSource;
-        private OryzaTrackDataSet1TableAdapters.vw_PadiTableAdapter vw_PadiTableAdapter;
-        private System.Windows.Forms.BindingSource vwPenyakitBindingSource;
-        private OryzaTrackDataSet1TableAdapters.vw_PenyakitTableAdapter vw_PenyakitTableAdapter;
+
         private System.Windows.Forms.DataGridViewTextBoxColumn idPerawatanDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idPadiDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idPenyakitDataGridViewTextBoxColumn;
@@ -790,16 +514,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn jenisPestisidaDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn tanggalPerawatanDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn hasilPerawatanDataGridViewTextBoxColumn;
-        private view_combo view_combo;
-        private System.Windows.Forms.BindingSource vListBibitBindingSource;
-        private view_comboTableAdapters.v_ListBibitTableAdapter v_ListBibitTableAdapter;
-        private System.Windows.Forms.BindingSource vListKategoriBindingSource;
-        private view_comboTableAdapters.v_ListKategoriTableAdapter v_ListKategoriTableAdapter;
-        private viewpestisida viewpestisida;
-        private System.Windows.Forms.BindingSource vListPestisidaBindingSource;
-        private viewpestisidaTableAdapters.v_ListPestisidaTableAdapter v_ListPestisidaTableAdapter;
-        private OryzaTrackDataSet2 oryzaTrackDataSet2;
-        private System.Windows.Forms.BindingSource vListHasilBindingSource;
-        private OryzaTrackDataSet2TableAdapters.v_ListHasilTableAdapter v_ListHasilTableAdapter;
+
     }
 }

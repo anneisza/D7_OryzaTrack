@@ -146,6 +146,21 @@ CREATE TABLE perawatanPadi (
         CHECK (hasilPerawatan IN ('Berhasil', 'Sebagian Berhasil', 'Gagal'))
 );
 
+--EDIT
+ALTER TABLE perawatanPadi DROP CONSTRAINT FK_Perawatan_Padi;
+ALTER TABLE perawatanPadi DROP CONSTRAINT FK_Perawatan_Penyakit;
+
+ALTER TABLE perawatanPadi DROP COLUMN idPadi;
+ALTER TABLE perawatanPadi DROP COLUMN idPenyakit;
+
+-- Tambahkan kolom baru yang menyambung ke tabel Riwayat
+ALTER TABLE perawatanPadi ADD idRiwayat INT NOT NULL;
+
+-- Beri Foreign Key baru
+ALTER TABLE perawatanPadi 
+ADD CONSTRAINT FK_Perawatan_RiwayatPenyakit 
+FOREIGN KEY (idRiwayat) REFERENCES RiwayatPenyakit(idRiwayat) ON DELETE CASCADE;
+
 CREATE TABLE riwayatPenyakit (
     idRiwayat       INT IDENTITY(1,1) NOT NULL,
     idPadi           INT NOT NULL,
@@ -1400,3 +1415,48 @@ GO
 CREATE VIEW v_ListTingkatKerusakan AS
 SELECT DISTINCT tingkatKerusakan FROM penyakit
 GO
+
+IF OBJECT_ID('v_ListPestisida', 'V') IS NOT NULL DROP VIEW v_ListPestisida
+GO
+CREATE VIEW v_ListPestisida AS
+SELECT DISTINCT jenisPestisida FROM perawatanPadi
+GO
+
+IF OBJECT_ID('v_ListHasil', 'V') IS NOT NULL DROP VIEW v_ListHasil
+GO
+CREATE VIEW v_ListHasil AS
+SELECT DISTINCT hasilPerawatan FROM perawatanPadi
+GO
+
+
+SELECT name FROM sys.tables;
+
+select * from admin
+select * from petani
+select * from Padi
+select * from Penyakit
+select * from perawatanPadi
+select * from riwayatPenyakit
+select * from petani_backup
+
+--cek sp nya apa aja
+SELECT name, type_desc, create_date, modify_date 
+FROM sys.procedures;
+
+-- lihat kode sp semua
+SELECT 
+    name AS ProcedureName,
+    OBJECT_DEFINITION(object_id) AS ProcedureBody
+FROM 
+    sys.procedures;
+
+-- cek isi view
+SELECT 
+    v.name AS ViewName,
+    m.definition AS ViewDefinition
+FROM 
+    sys.sql_modules m
+JOIN 
+    sys.views v ON m.object_id = v.object_id;
+
+

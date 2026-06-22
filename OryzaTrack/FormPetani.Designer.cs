@@ -38,19 +38,10 @@
             this.btnUbahData = new System.Windows.Forms.Button();
             this.btnTambahData = new System.Windows.Forms.Button();
             this.btnCariData = new System.Windows.Forms.Button();
-            this.spSearchPetaniBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.oryzaTrackDataSet1 = new OryzaTrack.OryzaTrackDataSet1();
             this.txtCari = new System.Windows.Forms.TextBox();
-            this.vwPetaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.txtNIK = new System.Windows.Forms.TextBox();
             this.txtNamaPetani = new System.Windows.Forms.TextBox();
             this.dgvPetani = new System.Windows.Forms.DataGridView();
-            this.idPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.namaPetaniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nIKDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.alamatDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.noTeleponDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.statusAktifDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtNoTelepon = new System.Windows.Forms.TextBox();
             this.lblNoTelepon = new System.Windows.Forms.Label();
@@ -86,20 +77,11 @@
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.btnTestInjection = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
-            this.spSearchPetaniBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sp_SearchPetaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.sp_SearchPetaniTableAdapter();
-            this.spSearchPetaniBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.vw_PetaniTableAdapter = new OryzaTrack.OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -177,7 +159,6 @@
             // 
             // btnCariData
             // 
-            this.btnCariData.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.spSearchPetaniBindingSource1, "namaPetani", true));
             this.btnCariData.Location = new System.Drawing.Point(914, 24);
             this.btnCariData.Name = "btnCariData";
             this.btnCariData.Size = new System.Drawing.Size(105, 33);
@@ -185,16 +166,6 @@
             this.btnCariData.Text = "Cari";
             this.btnCariData.UseVisualStyleBackColor = true;
             this.btnCariData.Click += new System.EventHandler(this.btnCariData_Click);
-            // 
-            // spSearchPetaniBindingSource1
-            // 
-            this.spSearchPetaniBindingSource1.DataMember = "sp_SearchPetani";
-            this.spSearchPetaniBindingSource1.DataSource = this.oryzaTrackDataSet1;
-            // 
-            // oryzaTrackDataSet1
-            // 
-            this.oryzaTrackDataSet1.DataSetName = "OryzaTrackDataSet1";
-            this.oryzaTrackDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // txtCari
             // 
@@ -204,11 +175,6 @@
             this.txtCari.Size = new System.Drawing.Size(667, 33);
             this.txtCari.TabIndex = 53;
             this.txtCari.TextChanged += new System.EventHandler(this.txtCari_TextChanged);
-            // 
-            // vwPetaniBindingSource
-            // 
-            this.vwPetaniBindingSource.DataMember = "vw_Petani";
-            this.vwPetaniBindingSource.DataSource = this.oryzaTrackDataSet1;
             // 
             // txtNIK
             // 
@@ -231,20 +197,11 @@
             // 
             this.dgvPetani.AllowUserToAddRows = false;
             this.dgvPetani.AllowUserToDeleteRows = false;
-            this.dgvPetani.AutoGenerateColumns = false;
             this.dgvPetani.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPetani.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPetani.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvPetani.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPetani.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idPetaniDataGridViewTextBoxColumn,
-            this.namaPetaniDataGridViewTextBoxColumn,
-            this.nIKDataGridViewTextBoxColumn,
-            this.alamatDataGridViewTextBoxColumn,
-            this.noTeleponDataGridViewTextBoxColumn,
-            this.statusAktifDataGridViewTextBoxColumn});
             this.dgvPetani.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.dgvPetani.DataSource = this.vwPetaniBindingSource;
             this.dgvPetani.Location = new System.Drawing.Point(68, 422);
             this.dgvPetani.Name = "dgvPetani";
             this.dgvPetani.ReadOnly = true;
@@ -253,60 +210,6 @@
             this.dgvPetani.Size = new System.Drawing.Size(1086, 281);
             this.dgvPetani.TabIndex = 49;
             this.dgvPetani.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPetani_CellClick);
-            // 
-            // idPetaniDataGridViewTextBoxColumn
-            // 
-            this.idPetaniDataGridViewTextBoxColumn.DataPropertyName = "idPetani";
-            this.idPetaniDataGridViewTextBoxColumn.HeaderText = "idPetani";
-            this.idPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idPetaniDataGridViewTextBoxColumn.Name = "idPetaniDataGridViewTextBoxColumn";
-            this.idPetaniDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idPetaniDataGridViewTextBoxColumn.Width = 85;
-            // 
-            // namaPetaniDataGridViewTextBoxColumn
-            // 
-            this.namaPetaniDataGridViewTextBoxColumn.DataPropertyName = "namaPetani";
-            this.namaPetaniDataGridViewTextBoxColumn.HeaderText = "namaPetani";
-            this.namaPetaniDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.namaPetaniDataGridViewTextBoxColumn.Name = "namaPetaniDataGridViewTextBoxColumn";
-            this.namaPetaniDataGridViewTextBoxColumn.ReadOnly = true;
-            this.namaPetaniDataGridViewTextBoxColumn.Width = 108;
-            // 
-            // nIKDataGridViewTextBoxColumn
-            // 
-            this.nIKDataGridViewTextBoxColumn.DataPropertyName = "NIK";
-            this.nIKDataGridViewTextBoxColumn.HeaderText = "NIK";
-            this.nIKDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nIKDataGridViewTextBoxColumn.Name = "nIKDataGridViewTextBoxColumn";
-            this.nIKDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nIKDataGridViewTextBoxColumn.Width = 57;
-            // 
-            // alamatDataGridViewTextBoxColumn
-            // 
-            this.alamatDataGridViewTextBoxColumn.DataPropertyName = "alamat";
-            this.alamatDataGridViewTextBoxColumn.HeaderText = "alamat";
-            this.alamatDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.alamatDataGridViewTextBoxColumn.Name = "alamatDataGridViewTextBoxColumn";
-            this.alamatDataGridViewTextBoxColumn.ReadOnly = true;
-            this.alamatDataGridViewTextBoxColumn.Width = 77;
-            // 
-            // noTeleponDataGridViewTextBoxColumn
-            // 
-            this.noTeleponDataGridViewTextBoxColumn.DataPropertyName = "noTelepon";
-            this.noTeleponDataGridViewTextBoxColumn.HeaderText = "noTelepon";
-            this.noTeleponDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.noTeleponDataGridViewTextBoxColumn.Name = "noTeleponDataGridViewTextBoxColumn";
-            this.noTeleponDataGridViewTextBoxColumn.ReadOnly = true;
-            this.noTeleponDataGridViewTextBoxColumn.Width = 102;
-            // 
-            // statusAktifDataGridViewTextBoxColumn
-            // 
-            this.statusAktifDataGridViewTextBoxColumn.DataPropertyName = "statusAktif";
-            this.statusAktifDataGridViewTextBoxColumn.HeaderText = "statusAktif";
-            this.statusAktifDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.statusAktifDataGridViewTextBoxColumn.Name = "statusAktifDataGridViewTextBoxColumn";
-            this.statusAktifDataGridViewTextBoxColumn.ReadOnly = true;
-            this.statusAktifDataGridViewTextBoxColumn.Width = 96;
             // 
             // groupBox1
             // 
@@ -365,6 +268,7 @@
             // 
             // cmbStatusAktif
             // 
+            this.cmbStatusAktif.DisplayMember = "statusAktif";
             this.cmbStatusAktif.FormattingEnabled = true;
             this.cmbStatusAktif.Location = new System.Drawing.Point(213, 237);
             this.cmbStatusAktif.Name = "cmbStatusAktif";
@@ -650,24 +554,6 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // spSearchPetaniBindingSource
-            // 
-            this.spSearchPetaniBindingSource.DataMember = "sp_SearchPetani";
-            this.spSearchPetaniBindingSource.DataSource = this.oryzaTrackDataSet1;
-            // 
-            // sp_SearchPetaniTableAdapter
-            // 
-            this.sp_SearchPetaniTableAdapter.ClearBeforeFill = true;
-            // 
-            // spSearchPetaniBindingSource2
-            // 
-            this.spSearchPetaniBindingSource2.DataMember = "sp_SearchPetani";
-            this.spSearchPetaniBindingSource2.DataSource = this.oryzaTrackDataSet1;
-            // 
-            // vw_PetaniTableAdapter
-            // 
-            this.vw_PetaniTableAdapter.ClearBeforeFill = true;
-            // 
             // FormPetani
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -693,17 +579,12 @@
             this.Text = "FormPetani";
             this.Load += new System.EventHandler(this.FormPetani_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.oryzaTrackDataSet1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vwPetaniBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spSearchPetaniBindingSource2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -758,18 +639,5 @@
         private System.Windows.Forms.ToolStripButton pasteToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
-        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource;
-        private OryzaTrackDataSet1 oryzaTrackDataSet1;
-        private OryzaTrackDataSet1TableAdapters.sp_SearchPetaniTableAdapter sp_SearchPetaniTableAdapter;
-        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource2;
-        private System.Windows.Forms.BindingSource spSearchPetaniBindingSource1;
-        private System.Windows.Forms.BindingSource vwPetaniBindingSource;
-        private OryzaTrackDataSet1TableAdapters.vw_PetaniTableAdapter vw_PetaniTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idPetaniDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn namaPetaniDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nIKDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn alamatDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn noTeleponDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn statusAktifDataGridViewTextBoxColumn;
     }
 }

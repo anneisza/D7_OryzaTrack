@@ -101,38 +101,8 @@
     <Compile Include="FormRiwayatPenyakit.Designer.cs">
       <DependentUpon>FormRiwayatPenyakit.cs</DependentUpon>
     </Compile>
-    <Compile Include="OryzaTrackDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OryzaTrackDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="OryzaTrackDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OryzaTrackDataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="OryzaTrackDataSet2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OryzaTrackDataSet2.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sp.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sp.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="viewpestisida.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>viewpestisida.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="view_combo.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>view_combo.xsd</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FormKoneksi.resx">
       <DependentUpon>FormKoneksi.cs</DependentUpon>
     </EmbeddedResource>
@@ -170,39 +140,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="OryzaTrackDataSet.xsc">
-      <DependentUpon>OryzaTrackDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="OryzaTrackDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>OryzaTrackDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="OryzaTrackDataSet.xss">
-      <DependentUpon>OryzaTrackDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="OryzaTrackDataSet1.xsc">
-      <DependentUpon>OryzaTrackDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="OryzaTrackDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>OryzaTrackDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="OryzaTrackDataSet1.xss">
-      <DependentUpon>OryzaTrackDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="OryzaTrackDataSet2.xsc">
-      <DependentUpon>OryzaTrackDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="OryzaTrackDataSet2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>OryzaTrackDataSet2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="OryzaTrackDataSet2.xss">
-      <DependentUpon>OryzaTrackDataSet2.xsd</DependentUpon>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -212,39 +149,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="sp.xsc">
-      <DependentUpon>sp.xsd</DependentUpon>
-    </None>
-    <None Include="sp.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>sp.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="sp.xss">
-      <DependentUpon>sp.xsd</DependentUpon>
-    </None>
-    <None Include="viewpestisida.xsc">
-      <DependentUpon>viewpestisida.xsd</DependentUpon>
-    </None>
-    <None Include="viewpestisida.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>viewpestisida.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="viewpestisida.xss">
-      <DependentUpon>viewpestisida.xsd</DependentUpon>
-    </None>
-    <None Include="view_combo.xsc">
-      <DependentUpon>view_combo.xsd</DependentUpon>
-    </None>
-    <None Include="view_combo.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>view_combo.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="view_combo.xss">
-      <DependentUpon>view_combo.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

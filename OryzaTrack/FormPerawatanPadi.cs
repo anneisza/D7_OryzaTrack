@@ -18,10 +18,8 @@ namespace OryzaTrack
         private BindingSource bindingSource = new BindingSource();
 
         private int IDAdmin;
-        private int selectedIdPerawatanPadi;
+        private int selectedIdPerawatanPadi = -1;
         private PerawatanPadiBLL bllPerawatan = new PerawatanPadiBLL();
-        private PadiBLL bllPadi = new PadiBLL();
-        private PenyakitBLL bllPenyakit = new PenyakitBLL();
         public FormPerawatanPadi(int idAdmin)
         {
             InitializeComponent();
@@ -30,20 +28,8 @@ namespace OryzaTrack
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet2.v_ListHasil' table. You can move, or remove it, as needed.
-            this.v_ListHasilTableAdapter.Fill(this.oryzaTrackDataSet2.v_ListHasil);
-            // TODO: This line of code loads data into the 'viewpestisida.v_ListPestisida' table. You can move, or remove it, as needed.
-            this.v_ListPestisidaTableAdapter.Fill(this.viewpestisida.v_ListPestisida);
-            // TODO: This line of code loads data into the 'view_combo.v_ListKategori' table. You can move, or remove it, as needed.
-            this.v_ListKategoriTableAdapter.Fill(this.view_combo.v_ListKategori);
-            // TODO: This line of code loads data into the 'view_combo.v_ListBibit' table. You can move, or remove it, as needed.
-            this.v_ListBibitTableAdapter.Fill(this.view_combo.v_ListBibit);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Penyakit' table. You can move, or remove it, as needed.
-            this.vw_PenyakitTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Penyakit);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Padi' table. You can move, or remove it, as needed.
-            this.vw_PadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Padi);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_PerawatanPadi' table. You can move, or remove it, as needed.
-            this.vw_PerawatanPadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_PerawatanPadi);
+
+   
             // Setting DataGridView saat form dibuka
             dgvPerawatanPadi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPerawatanPadi.MultiSelect = false;
@@ -51,13 +37,9 @@ namespace OryzaTrack
             dgvPerawatanPadi.AllowUserToAddRows = false;
             dgvPerawatanPadi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            DataTable dtPestisida = this.viewpestisida.v_ListPestisida;
-            DataView dv = new DataView(dtPestisida);
-            dv.RowFilter = "namaPestisida IS NOT NULL AND namaPestisida <> ''";
-            cmbJenisPestisida.DataSource = dv;
-            cmbJenisPestisida.DisplayMember = "namaPestisida";
             // Jika ada kolom ID (misal idPestisida), set ValueMember juga
             // cmbJenisPestisida.ValueMember = "idPestisida";
+            cmbJenisPestisida.DataSource = bllPerawatan.GetListPestisida();
             cmbJenisPestisida.SelectedIndex = -1;
 
             //Daftarkan event cell click untuk DataGridView
@@ -68,13 +50,32 @@ namespace OryzaTrack
             cmbHasil.DisplayMember = "hasilPerawatan";
             cmbHasil.ValueMember = "hasilPerawatan";
 
-            LoadPadi();
-            LoadPenyakit();
+            LoadComboBoxSources();
             Bersihkan();
 
             //matiin tombol dulu, nanti diaktifkan setelah koneksi berhasil
             SetButtonsEnabled(false);
             Application.DoEvents();
+        }
+
+        //method baru untuk load combo box dengan data dari BLL
+        private void LoadComboBoxSources()
+        {
+            try
+            {
+                // Mengikat ke data gabungan baru dari BLL
+                cmbIdRiwayat.DataSource = bllPerawatan.GetLookupRiwayat();
+                cmbIdRiwayat.DisplayMember = "TeksTampilan";
+                cmbIdRiwayat.ValueMember = "idRiwayat"; // <-- Menyimpan ID Riwayat berantai
+                cmbIdRiwayat.SelectedIndex = -1;
+
+                cmbJenisPestisida.DataSource = bllPerawatan.GetListPestisida();
+                cmbJenisPestisida.SelectedIndex = -1;
+
+                cmbHasil.DataSource = bllPerawatan.GetListHasil();
+                cmbHasil.SelectedIndex = -1;
+            }
+            catch (Exception ex) { MessageBox.Show("Gagal memuat pilihan: " + ex.Message); }
         }
 
 
@@ -104,8 +105,7 @@ namespace OryzaTrack
 
         private void Bersihkan()
         {
-            cmbIdPadi.SelectedIndex = -1;
-            cmbIdPenyakit.SelectedIndex = -1;
+            cmbIdRiwayat.SelectedIndex = -1;
             txtJenisPerawatan.Clear();
             cmbJenisPestisida.SelectedIndex = -1;
             dtpTanggalPerawatan.Value = DateTime.Now;
@@ -115,15 +115,9 @@ namespace OryzaTrack
 
         private bool ValidasiInput()
         {
-            if (cmbIdPadi.SelectedIndex == -1)
+            if (cmbIdRiwayat.SelectedIndex == -1)
             {
                 MessageBox.Show("Pilih ID padi!");
-                return false;
-            }
-
-            if (cmbIdPenyakit.SelectedIndex == -1)
-            {
-                MessageBox.Show("Pilih ID penyakit!");
                 return false;
             }
 
@@ -154,53 +148,6 @@ namespace OryzaTrack
             return true;
         }
 
-
-
-        private void LoadPadi()
-        {
-            try
-            {
-                DataTable dt = bllPadi.GetAll();
-                // Filter data unik berdasarkan jenisBibit, buang baris kosong/null
-                var listBibit = dt.AsEnumerable()
-                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("jenisBibit")))
-                    .GroupBy(row => row.Field<string>("jenisBibit").Trim())
-                    .Select(g => new {
-                        idPadi = g.First().Field<int>("idPadi"),
-                        jenisBibit = g.Key
-                    })
-                    .ToList();
-
-                cmbIdPadi.DataSource = listBibit;
-                cmbIdPadi.DisplayMember = "jenisBibit";
-                cmbIdPadi.ValueMember = "idPadi";   // ← harus idPadi, bukan string
-                cmbIdPadi.SelectedIndex = -1;
-            }
-            catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
-        }
- 
-
-        private void LoadPenyakit()
-        {
-            try
-            {
-                DataTable dt = bllPenyakit.GetAll();
-                var listKategori = dt.AsEnumerable()
-                    .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Kategori")))
-                    .GroupBy(row => row.Field<string>("Kategori").Trim())
-                    .Select(g => new {
-                        idPenyakit = g.First().Field<int>("idPenyakit"),
-                        Kategori = g.Key
-                    })
-                    .ToList();
-
-                cmbIdPenyakit.DataSource = listKategori;
-                cmbIdPenyakit.DisplayMember = "Kategori";
-                cmbIdPenyakit.ValueMember = "idPenyakit";
-                cmbIdPenyakit.SelectedIndex = -1;
-            }
-            catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
-        }
 
 
         //matiin tombol
@@ -281,8 +228,7 @@ namespace OryzaTrack
             try
             {
                 bool hasil = bllPerawatan.Tambah(
-                    Convert.ToInt32(cmbIdPadi.SelectedValue),
-                    Convert.ToInt32(cmbIdPenyakit.SelectedValue),
+                    Convert.ToInt32(cmbIdRiwayat.SelectedValue),
                     txtJenisPerawatan.Text,
                     cmbJenisPestisida.Text,
                     dtpTanggalPerawatan.Value,
@@ -326,8 +272,7 @@ namespace OryzaTrack
                 {
                     bool hasil = bllPerawatan.Ubah(
                         selectedIdPerawatanPadi,
-                    Convert.ToInt32(cmbIdPadi.SelectedValue),
-                    Convert.ToInt32(cmbIdPenyakit.SelectedValue),
+                    Convert.ToInt32(cmbIdRiwayat.SelectedValue),
                     txtJenisPerawatan.Text.Trim(),
                     cmbJenisPestisida.Text,
                     dtpTanggalPerawatan.Value,
@@ -395,8 +340,7 @@ namespace OryzaTrack
                 selectedIdPerawatanPadi = Convert.ToInt32(row["idPerawatan"]);
 
                 // Set nilai pada form berdasarkan data yang dipilih
-                cmbIdPadi.SelectedValue = row["idPadi"];
-                cmbIdPenyakit.SelectedValue = row["idPenyakit"];
+                cmbIdRiwayat.SelectedValue = row["idRiwayat"];
                 // Pastikan nama kolom di DataGridView sesuai dengan yang digunakan di sini
                 txtJenisPerawatan.Text = row["jenisPerawatan"].ToString();
                 cmbJenisPestisida.Text = row["jenisPestisida"].ToString();
@@ -406,6 +350,16 @@ namespace OryzaTrack
 
                 cmbHasil.Text = row["hasilPerawatan"].ToString();
             }
+
+        }
+
+        private void liblIdPadi_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbIdRiwayat_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

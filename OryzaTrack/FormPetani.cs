@@ -30,8 +30,7 @@ namespace OryzaTrack
 
         private void FormPetani_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Petani' table. You can move, or remove it, as needed.
-            this.vw_PetaniTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Petani);
+
             cmbStatusAktif.Items.Clear();
             cmbStatusAktif.Items.Add("Aktif");
             cmbStatusAktif.Items.Add("Tidak Aktif");

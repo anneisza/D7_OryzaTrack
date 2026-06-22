@@ -103,7 +103,7 @@ namespace OryzaTrackDAL
         /*=============================
                 Insert Perawatan 
         ==============================*/
-        public string Insert(int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public string Insert(int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -113,8 +113,7 @@ namespace OryzaTrackDAL
                 {
                     //sp
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
-                    cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
+                    cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
                     cmd.Parameters.AddWithValue("@jenisPerawatan", jenisPerawatan);
                     cmd.Parameters.AddWithValue("@jenisPestisida", jenisPestisida);
                     cmd.Parameters.AddWithValue("@tanggalPerawatan", tanggalPerawatan);
@@ -133,7 +132,7 @@ namespace OryzaTrackDAL
         /*=============================
                Update Perawatan 
         ==============================*/
-        public string Update(int idPerawatan, int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public string Update(int idPerawatan, int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             using (SqlConnection conn = db.GetConnection())
             {
@@ -143,8 +142,7 @@ namespace OryzaTrackDAL
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPerawatan", idPerawatan);
-                    cmd.Parameters.AddWithValue("@idPadi", idPadi);
-                    cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
+                    cmd.Parameters.AddWithValue("@idRiwayat", idRiwayat);
                     cmd.Parameters.AddWithValue("@jenisPerawatan", jenisPerawatan);
                     cmd.Parameters.AddWithValue("@jenisPestisida", jenisPestisida);
                     cmd.Parameters.AddWithValue("@tanggalPerawatan", tanggalPerawatan);
@@ -203,6 +201,28 @@ namespace OryzaTrackDAL
 
                     cmd.ExecuteNonQuery();
                     return (int)outputTotal.Value;
+                }
+            }
+        }
+
+        //perbaikan
+        public DataTable GetLookupRiwayatPenyakit()
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                // Menggabungkan info kasus agar user mudah memilih di UI Form
+                string query = @"SELECT rp.idRiwayat, 
+                                       p.jenisBibit + ' - ' + pn.Kategori + ' (ID: ' + CAST(rp.idRiwayat AS VARCHAR) + ')' AS TeksTampilan
+                                FROM RiwayatPenyakit rp
+                                JOIN Padi p ON rp.idPadi = p.idPadi
+                                JOIN Penyakit pn ON rp.idPenyakit = pn.idPenyakit";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
                 }
             }
         }

@@ -33,7 +33,7 @@ namespace OryzaTrackBLL
         public bool Tambah(int idPadi, int idPenyakit, DateTime tanggalTerdeteksi, DateTime? tanggalSelesai, string keterangan)
         {
             // 1. Validasi Tanggal Terdeteksi
-            if (tanggalTerdeteksi > DateTime.Now || tanggalTerdeteksi.Year < 2000)
+            if (tanggalTerdeteksi > DateTime.Now || tanggalTerdeteksi.Year < 2025)
             {
                 throw new Exception("Tanggal terdeteksi tidak valid!");
             }

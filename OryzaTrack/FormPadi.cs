@@ -26,20 +26,7 @@ namespace OryzaTrack
 
         private void FormPadi_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.Padi' table. You can move, or remove it, as needed.
-            this.padiTableAdapter.Fill(this.oryzaTrackDataSet1.Padi);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.petani' table. You can move, or remove it, as needed.
-            this.petaniTableAdapter.Fill(this.oryzaTrackDataSet1.petani);
-            // TODO: This line of code loads data into the 'view_combo.v_ListLahan' table. You can move, or remove it, as needed.
-            this.v_ListLahanTableAdapter.Fill(this.view_combo.v_ListLahan);
-            // TODO: This line of code loads data into the 'view_combo.v_ListBibit' table. You can move, or remove it, as needed.
-            this.v_ListBibitTableAdapter.Fill(this.view_combo.v_ListBibit);
-            // TODO: This line of code loads data into the 'view_combo.v_ListPetaniCombo' table. You can move, or remove it, as needed.
-            this.v_ListPetaniComboTableAdapter.Fill(this.view_combo.v_ListPetaniCombo);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Padi' table. You can move, or remove it, as needed.
-            this.vw_PadiTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Padi);
-            // TODO: This line of code loads data into the 'oryzaTrackDataSet1.vw_Petani' table. You can move, or remove it, as needed.
-            this.vw_PetaniTableAdapter.Fill(this.oryzaTrackDataSet1.vw_Petani);
+
             // Setting DataGridView saat form dibuka
             dgvPadi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPadi.MultiSelect = false;
@@ -48,6 +35,22 @@ namespace OryzaTrack
             dgvPadi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             // Daftarkan event CellClick
             dgvPadi.CellClick += dgvPadi_CellClick;
+
+            // 1. Mengisi pilihan Jenis Bibit Padi (Sesuai CK_Padi_JenisBibit)
+            cmbJB.Items.Clear();
+            cmbJB.Items.Add("IR64");
+            cmbJB.Items.Add("Ciherang");
+            cmbJB.Items.Add("Inpari 32");
+            cmbJB.Items.Add("Mekongga");
+            cmbJB.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // 2. Mengisi pilihan Lokasi Lahan (Sesuai CK_Padi_LokasiLahan)
+            cmbLokasiLahan.Items.Clear();
+            cmbLokasiLahan.Items.Add("Lahan Utara");
+            cmbLokasiLahan.Items.Add("Lahan Selatan");
+            cmbLokasiLahan.Items.Add("Lahan Barat");
+            cmbLokasiLahan.Items.Add("Lahan Timur");
+            cmbLokasiLahan.DropDownStyle = ComboBoxStyle.DropDownList;
 
             LoadPetani();
             BersihkanForm();

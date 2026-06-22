@@ -12,7 +12,18 @@ namespace OryzaTrackBLL
     {
         private PerawatanPadiDAL dal = new PerawatanPadiDAL();
 
-        public DataTable GetListHasil() => dal.GetHasilPerawatanUnik();
+        public DataTable GetLookupRiwayat() => dal.GetLookupRiwayatPenyakit();
+
+
+        public List<string> GetListHasil()
+        {
+            return new List<string> { "Berhasil", "Sebagian Berhasil", "Gagal" };
+        }
+
+        public List<string> GetListPestisida()
+        {
+            return new List<string> { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" };
+        }
 
         /*=============================
           View Perawatan | GetAll()
@@ -32,7 +43,7 @@ namespace OryzaTrackBLL
         /*=============================
                 Tambah 
         ==============================*/
-        public bool Tambah(int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public bool Tambah(int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             // 1. Validasi Jenis Pestisida (Sesuai constraint CK_Perawatan_JenisPestisida)
             string[] pestisidaValid = { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" };
@@ -66,8 +77,7 @@ namespace OryzaTrackBLL
             }
 
             // Logika konsistensi pestisida vs penyakit → ditangani SP
-            string hasil = dal.Insert(idPadi, idPenyakit, jenisPerawatan,
-                                      jenisPestisida, tanggalPerawatan, hasilPerawatan);
+            string hasil = dal.Insert(idRiwayat, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan);
             if (hasil != "OK") throw new Exception(hasil);
             return true;
         }
@@ -75,7 +85,7 @@ namespace OryzaTrackBLL
         /*=============================
                 Ubah 
         ==============================*/
-        public bool Ubah(int idPerawatan, int idPadi, int idPenyakit, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
+        public bool Ubah(int idPerawatan, int idRiwayat, string jenisPerawatan, string jenisPestisida, DateTime tanggalPerawatan, string hasilPerawatan)
         {
             // Re-validasi logika bisnis agar tetap sinkron dengan database
             if (!new[] { "Insektisida Furadan", "Fungisida Dithane", "Herbisida Glyphosate" }.Contains(jenisPestisida))
@@ -88,7 +98,7 @@ namespace OryzaTrackBLL
                 throw new Exception("Tanggal perawatan tidak boleh di masa depan.");
 
             //sp
-            string hasil = dal.Update(idPerawatan, idPadi, idPenyakit, jenisPerawatan,
+            string hasil = dal.Update(idPerawatan, idRiwayat, jenisPerawatan,
                                       jenisPestisida, tanggalPerawatan, hasilPerawatan);
             if (hasil != "OK") throw new Exception(hasil);
             return true;
@@ -108,5 +118,6 @@ namespace OryzaTrackBLL
                 Total 
         ==============================*/
         public int Total() => dal.Count();
+
     }
 }
