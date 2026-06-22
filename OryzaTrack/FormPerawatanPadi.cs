@@ -69,7 +69,14 @@ namespace OryzaTrack
                 cmbIdRiwayat.ValueMember = "idRiwayat"; // <-- Menyimpan ID Riwayat berantai
                 cmbIdRiwayat.SelectedIndex = -1;
 
-                cmbJenisPestisida.DataSource = bllPerawatan.GetListPestisida();
+                // FIX SINKRONISASI DATABASE: Mengisi item pestisida secara manual
+                cmbJenisPestisida.DataSource = null; // Lepas datasource lama jika ada
+                cmbJenisPestisida.Items.Clear();
+                cmbJenisPestisida.Items.Add("Tanpa Pestisida");
+                cmbJenisPestisida.Items.Add("Insektisida Furadan");
+                cmbJenisPestisida.Items.Add("Fungisida Dithane");
+                cmbJenisPestisida.Items.Add("Herbisida Glyphosate");
+                cmbJenisPestisida.DropDownStyle = ComboBoxStyle.DropDownList;
                 cmbJenisPestisida.SelectedIndex = -1;
 
                 cmbHasil.DataSource = bllPerawatan.GetListHasil();
@@ -78,7 +85,19 @@ namespace OryzaTrack
             catch (Exception ex) { MessageBox.Show("Gagal memuat pilihan: " + ex.Message); }
         }
 
+        //otamatisasi text jenis perawatan
+        private void txtJenisPerawatan_TextChanged(object sender, EventArgs e)
+        {
+            string perawatan = txtJenisPerawatan.Text.ToLower();
 
+            // FITUR PINTAR: Jika mendeteksi kata kunci perawatan manual, arahkan ke Tanpa Pestisida
+            if (perawatan.Contains("manual") || perawatan.Contains("cabut") ||
+                perawatan.Contains("potong") || perawatan.Contains("fisik") ||
+                perawatan.Contains("jaring") || perawatan.Contains("bersih"))
+            {
+                cmbJenisPestisida.Text = "Tanpa Pestisida";
+            }
+        }
         //Handler
 
         private void LoadData()
@@ -359,6 +378,11 @@ namespace OryzaTrack
         }
 
         private void cmbIdRiwayat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvPerawatanPadi_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

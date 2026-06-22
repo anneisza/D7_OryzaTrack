@@ -88,6 +88,7 @@
             this.dgvPerawatanPadi.Size = new System.Drawing.Size(1086, 281);
             this.dgvPerawatanPadi.TabIndex = 106;
             this.dgvPerawatanPadi.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPerawatanPadi_CellClick);
+            this.dgvPerawatanPadi.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPerawatanPadi_CellContentClick);
             // 
             // btnLoadData
             // 
