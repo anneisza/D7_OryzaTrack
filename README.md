@@ -1,16 +1,28 @@
-## Skenario Injeksi SQL pada FormPadi
+## Skenario SQL Injection
 
-1. **Tampilkan semua data**  
-   Masukkan: `' OR '1'='1`  
-   Query jadi: `SELECT * FROM vw_Padi WHERE namaPetani LIKE '%' OR '1'='1%'`
+## Skenario SQL Injection
 
-2. **Ambil data admin (Union)**  
-   Masukkan: `' UNION SELECT idAdmin, username, password, null, null FROM Admin --`
+### Form: FormPetani → Tombol Test Injection
 
-3. **Hapus semua data (jika multi-statement aktif)**  
-   Masukkan: `'; DELETE FROM Padi; --`
+Input berbahaya:
+' OR '1'='1' --
 
-> Penyebab: parameter `txtCari.Text` digabung langsung ke query SQL tanpa parameterized query.
+Query yang terbentuk:
+DELETE FROM petani 
+WHERE namaPetani = '' OR '1'='1' --'
+
+Yang terjadi:
+- OR '1'='1' selalu TRUE
+- WHERE berlaku untuk SEMUA baris
+- Seluruh data petani TERHAPUS dari database
+- Popup peringatan "YOU HAVE BEEN HACKED" muncul
+
+Pencegahan:
+Gunakan Stored Procedure dengan parameterized query
+sehingga input user tidak bisa dieksekusi sebagai perintah SQL
+
+Recovery:
+Klik tombol Reset untuk memulihkan data dari tabel petani_backup
 
 
 
