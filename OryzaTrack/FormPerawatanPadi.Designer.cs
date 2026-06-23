@@ -225,7 +225,7 @@
             // 
             this.cmbHasil.DisplayMember = "hasilPerawatan";
             this.cmbHasil.FormattingEnabled = true;
-            this.cmbHasil.Location = new System.Drawing.Point(256, 190);
+            this.cmbHasil.Location = new System.Drawing.Point(272, 190);
             this.cmbHasil.Name = "cmbHasil";
             this.cmbHasil.Size = new System.Drawing.Size(236, 24);
             this.cmbHasil.TabIndex = 76;
@@ -244,9 +244,9 @@
             // cmbIdRiwayat
             // 
             this.cmbIdRiwayat.FormattingEnabled = true;
-            this.cmbIdRiwayat.Location = new System.Drawing.Point(256, 18);
+            this.cmbIdRiwayat.Location = new System.Drawing.Point(272, 18);
             this.cmbIdRiwayat.Name = "cmbIdRiwayat";
-            this.cmbIdRiwayat.Size = new System.Drawing.Size(236, 24);
+            this.cmbIdRiwayat.Size = new System.Drawing.Size(327, 24);
             this.cmbIdRiwayat.TabIndex = 73;
             this.cmbIdRiwayat.SelectedIndexChanged += new System.EventHandler(this.cmbIdRiwayat_SelectedIndexChanged);
             // 
@@ -262,7 +262,7 @@
             // 
             // dtpTanggalPerawatan
             // 
-            this.dtpTanggalPerawatan.Location = new System.Drawing.Point(256, 152);
+            this.dtpTanggalPerawatan.Location = new System.Drawing.Point(272, 152);
             this.dtpTanggalPerawatan.Name = "dtpTanggalPerawatan";
             this.dtpTanggalPerawatan.Size = new System.Drawing.Size(236, 22);
             this.dtpTanggalPerawatan.TabIndex = 71;
@@ -271,7 +271,7 @@
             // 
             this.cmbJenisPestisida.DisplayMember = "jenisPestisida";
             this.cmbJenisPestisida.FormattingEnabled = true;
-            this.cmbJenisPestisida.Location = new System.Drawing.Point(256, 104);
+            this.cmbJenisPestisida.Location = new System.Drawing.Point(272, 104);
             this.cmbJenisPestisida.Name = "cmbJenisPestisida";
             this.cmbJenisPestisida.Size = new System.Drawing.Size(236, 24);
             this.cmbJenisPestisida.TabIndex = 69;
@@ -293,9 +293,9 @@
             this.lblIdRiwayat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdRiwayat.Location = new System.Drawing.Point(77, 18);
             this.lblIdRiwayat.Name = "lblIdRiwayat";
-            this.lblIdRiwayat.Size = new System.Drawing.Size(100, 20);
+            this.lblIdRiwayat.Size = new System.Drawing.Size(170, 20);
             this.lblIdRiwayat.TabIndex = 36;
-            this.lblIdRiwayat.Text = "ID Riwayat :";
+            this.lblIdRiwayat.Text = " Petani/padi/Penyakit:\r\n";
             this.lblIdRiwayat.Click += new System.EventHandler(this.liblIdPadi_Click);
             // 
             // lblJenisPerawatan
@@ -310,7 +310,7 @@
             // 
             // txtJenisPerawatan
             // 
-            this.txtJenisPerawatan.Location = new System.Drawing.Point(256, 68);
+            this.txtJenisPerawatan.Location = new System.Drawing.Point(272, 68);
             this.txtJenisPerawatan.Multiline = true;
             this.txtJenisPerawatan.Name = "txtJenisPerawatan";
             this.txtJenisPerawatan.Size = new System.Drawing.Size(236, 22);

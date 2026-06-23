@@ -82,7 +82,14 @@ namespace OryzaTrack
                 cmbJenisPestisida.DropDownStyle = ComboBoxStyle.DropDownList;
                 cmbJenisPestisida.SelectedIndex = -1;
 
-                cmbHasil.DataSource = bllPerawatan.GetListHasil();
+                // Ganti bagian cmbHasil
+                cmbHasil.DataSource = null;
+                cmbHasil.Items.Clear();
+                cmbHasil.Items.Add("Proses");           // ← tambahan
+                cmbHasil.Items.Add("Berhasil");
+                cmbHasil.Items.Add("Sebagian Berhasil");
+                cmbHasil.Items.Add("Gagal");
+                cmbHasil.DropDownStyle = ComboBoxStyle.DropDownList;
                 cmbHasil.SelectedIndex = -1;
             }
             catch (Exception ex) { MessageBox.Show("Gagal memuat pilihan: " + ex.Message); }
@@ -90,6 +97,32 @@ namespace OryzaTrack
             {
                 sedangMuat = false;
 
+            }
+        }
+
+        private void cmbHasil_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sedangMuat) return;
+
+            if (cmbHasil.Text == "Berhasil" && cmbIdRiwayat.SelectedValue != null)
+            {
+                try
+                {
+                    int idRiwayat = Convert.ToInt32(cmbIdRiwayat.SelectedValue);
+                    RiwayatPenyakitBLL riwayatBLL = new RiwayatPenyakitBLL();
+                    DataRow row = riwayatBLL.GetById(idRiwayat);
+
+                    if (row != null && row["tanggalSelesai"] == DBNull.Value)
+                    {
+                        MessageBox.Show(
+                            "Riwayat penyakit ini masih berlangsung!\n" +
+                            "Tutup riwayat di Form Riwayat Penyakit terlebih dahulu.",
+                            "Riwayat Masih Aktif",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        cmbHasil.SelectedIndex = -1;
+                    }
+                }
+                catch { }
             }
         }
 

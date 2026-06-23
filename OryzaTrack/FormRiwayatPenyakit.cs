@@ -108,7 +108,7 @@ namespace OryzaTrack
             }
             if (cmbIdPenyakit.SelectedIndex == -1)
             {
-                MessageBox.Show("Pilih ID Penyakit terlebih dahulu.",
+                MessageBox.Show("Gejala penyakit belum dipilih!",
                     "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -137,6 +137,19 @@ namespace OryzaTrack
                 MessageBox.Show("Keterangan minimal harus 5 karakter!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            // Setelah cek panjang keterangan yang sudah ada...
+            string ket = txtKeterangan.Text.Trim();
+            char[] simbolDilarang = { '@', '#', '$', '%', '^', '*', '=', '<', '>', '|', '\\', '/' };
+            foreach (char c in simbolDilarang)
+            {
+                if (ket.Contains(c))
+                {
+                    MessageBox.Show("Keterangan tidak boleh mengandung simbol khusus!",
+                        "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtKeterangan.Focus();
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -161,8 +174,8 @@ namespace OryzaTrack
                                     .Where(row => row["idPadi"] != DBNull.Value && !string.IsNullOrWhiteSpace(row["jenisBibit"].ToString()))
                                     .Select(row => new {
                                         idPadi = Convert.ToInt32(row["idPadi"]),
-                                        // Menampilkan format: "IR64 (ID: 1)" supaya informatif dan menghindari bug duplikasi nama
-                                        DisplayTeks = $"{row["jenisBibit"].ToString().Trim()} (ID: {row["idPadi"]})"
+                                        // ✅ Tampilkan namaPetani | jenisBibit | lokasiLahan
+                                        DisplayTeks = $"{row["namaPetani"]} | {row["jenisBibit"]} | {row["lokasiLahan"]} (ID: {row["idPadi"]})"
                                     })
                                     .ToList();
 
@@ -251,6 +264,7 @@ namespace OryzaTrack
                 {
                     MessageBox.Show("Masukkan kata kunci pencarian terlebih dahulu.",
                         "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
                 bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
                 dgvRiwayat.DataSource = bindingSource;

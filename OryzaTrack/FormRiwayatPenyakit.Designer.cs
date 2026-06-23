@@ -275,9 +275,9 @@
             this.lblIdPadi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdPadi.Location = new System.Drawing.Point(42, 33);
             this.lblIdPadi.Name = "lblIdPadi";
-            this.lblIdPadi.Size = new System.Drawing.Size(52, 20);
+            this.lblIdPadi.Size = new System.Drawing.Size(167, 20);
             this.lblIdPadi.TabIndex = 74;
-            this.lblIdPadi.Text = "Padi :";
+            this.lblIdPadi.Text = "Petani/Padi/Penyakit:\r\n";
             // 
             // dtpTanggalTerdeteksi
             // 
@@ -291,7 +291,7 @@
             this.cmbIdPadi.FormattingEnabled = true;
             this.cmbIdPadi.Location = new System.Drawing.Point(230, 33);
             this.cmbIdPadi.Name = "cmbIdPadi";
-            this.cmbIdPadi.Size = new System.Drawing.Size(220, 24);
+            this.cmbIdPadi.Size = new System.Drawing.Size(306, 24);
             this.cmbIdPadi.TabIndex = 70;
             // 
             // lblTanggalTerdeteksi
