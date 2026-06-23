@@ -1260,10 +1260,46 @@ LEFT JOIN perawatanPadi pp
     ON pp.idPadi = r.idPadi AND pp.idPenyakit = r.idPenyakit;
 GO
 
+DROP PROCEDURE IF EXISTS sp_GetLaporan;
+GO
+
+
+
 -- =====================
 -- SP LAPORAN DENGAN FILTER
 -- =====================
 CREATE PROCEDURE sp_GetLaporan
+    @tanggalAwal  DATE,
+    @tanggalAkhir DATE,
+    @jenisBibit   NVARCHAR(50) = NULL,
+    @kategori     NVARCHAR(50) = NULL
+AS
+BEGIN
+    SELECT 
+        pt.namaPetani,
+        p.jenisBibit,
+        p.lokasiLahan,
+        pn.Kategori         AS kategoriPenyakit,
+        pn.tingkatKerusakan,
+        r.tanggalTerdeteksi,
+        CASE 
+            WHEN r.tanggalSelesai IS NULL THEN 'Belum Selesai'
+            ELSE CONVERT(VARCHAR, r.tanggalSelesai, 103)
+        END AS tanggalSelesai,
+        r.keterangan,
+        pp.jenisPerawatan,
+        pp.jenisPestisida,
+        pp.hasilPerawatan
+    FROM riwayatPenyakit r
+    JOIN Padi p         ON r.idPadi     = p.idPadi
+    JOIN petani pt      ON p.idPetani   = pt.idPetani
+    JOIN Penyakit pn    ON r.idPenyakit = pn.idPenyakit
+    LEFT JOIN perawatanPadi pp ON pp.idRiwayat = r.idRiwayat
+    WHERE r.tanggalTerdeteksi BETWEEN @tanggalAwal AND @tanggalAkhir
+      AND (@jenisBibit IS NULL OR p.jenisBibit = @jenisBibit)
+      AND (@kategori   IS NULL OR pn.Kategori  = @kategori)
+END
+/**CREATE PROCEDURE sp_GetLaporan
     @tanggalAwal    DATE,
     @tanggalAkhir   DATE,
     @jenisBibit     VARCHAR(100) = NULL,  -- NULL = Semua
@@ -1299,7 +1335,7 @@ BEGIN
         AND (@jenisBibit IS NULL OR p.jenisBibit = @jenisBibit)
         AND (@kategori   IS NULL OR pn.Kategori  = @kategori);
 END;
-GO
+GO**/
 
 --================================================================================
 -- SP COUNT dengan OUTPUT Parameter
@@ -1796,3 +1832,25 @@ BEGIN
     END
 END;
 GO
+
+
+-- view petani aktif
+CREATE VIEW vw_PetaniAktif AS
+SELECT idPetani, namaPetani, NIK, alamat, noTelepon, statusAktif
+FROM petani
+WHERE statusAktif = 1
+
+
+-- Backup semua tabel yang terdampak CASCADE sqlInjection
+SELECT * INTO padi_backup FROM Padi;
+SELECT * INTO riwayat_backup FROM riwayatPenyakit;
+SELECT * INTO perawatan_backup FROM perawatanPadi;
+SELECT * INTO petani_backup FROM petani;
+
+SELECT * FROM padi_backup
+SELECT * FROM riwayat_backup  
+SELECT * FROM perawatan_backup
+
+
+
+
