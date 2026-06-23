@@ -40,7 +40,7 @@ namespace OryzaTrackDAL
         {
             using (SqlConnection conn = db.GetConnection())
             {
-                string query = "SELECT idPetani, namaPetani FROM vw_PetaniAktif WHERE statusAktif = 1";
+                string query = "SELECT idPetani, namaPetani FROM vw_PetaniAktif";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -251,11 +251,46 @@ namespace OryzaTrackDAL
             {
                 conn.Open();
                 string resetQuery = @"
+            -- Matikan FK constraint dulu
+            ALTER TABLE perawatanPadi NOCHECK CONSTRAINT ALL;
+            ALTER TABLE riwayatPenyakit NOCHECK CONSTRAINT ALL;
+            ALTER TABLE Padi NOCHECK CONSTRAINT ALL;
+            ALTER TABLE petani NOCHECK CONSTRAINT ALL;
+
+            DELETE FROM perawatanPadi;
+            DELETE FROM riwayatPenyakit;
+            DELETE FROM Padi;
             DELETE FROM petani;
-            DBCC CHECKIDENT ('petani', RESEED, 0);
-            INSERT INTO petani (namaPetani, NIK, alamat, noTelepon, statusAktif)
-            SELECT namaPetani, NIK, alamat, noTelepon, statusAktif
-            FROM petani_backup;";
+
+            SET IDENTITY_INSERT petani ON;
+            INSERT INTO petani (idPetani, namaPetani, NIK, alamat, noTelepon, statusAktif)
+            SELECT idPetani, namaPetani, NIK, alamat, noTelepon, statusAktif
+            FROM petani_backup;
+            SET IDENTITY_INSERT petani OFF;
+
+            SET IDENTITY_INSERT Padi ON;
+            INSERT INTO Padi (idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam)
+            SELECT idPadi, idPetani, jenisBibit, lokasiLahan, tanggalTanam
+            FROM padi_backup;
+            SET IDENTITY_INSERT Padi OFF;
+
+            SET IDENTITY_INSERT riwayatPenyakit ON;
+            INSERT INTO riwayatPenyakit (idRiwayat, idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan)
+            SELECT idRiwayat, idPadi, idPenyakit, tanggalTerdeteksi, tanggalSelesai, keterangan
+            FROM riwayat_backup;
+            SET IDENTITY_INSERT riwayatPenyakit OFF;
+
+            SET IDENTITY_INSERT perawatanPadi ON;
+            INSERT INTO perawatanPadi (idPerawatan, idRiwayat, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan)
+            SELECT idPerawatan, idRiwayat, jenisPerawatan, jenisPestisida, tanggalPerawatan, hasilPerawatan
+            FROM perawatan_backup;
+            SET IDENTITY_INSERT perawatanPadi OFF;
+
+            -- Aktifkan kembali FK constraint TANPA validasi data lama
+            ALTER TABLE Padi NOCHECK CONSTRAINT ALL;
+            ALTER TABLE riwayatPenyakit NOCHECK CONSTRAINT ALL;
+            ALTER TABLE perawatanPadi NOCHECK CONSTRAINT ALL;
+            ALTER TABLE petani NOCHECK CONSTRAINT ALL;";
 
                 using (SqlCommand cmd = new SqlCommand(resetQuery, conn))
                 {

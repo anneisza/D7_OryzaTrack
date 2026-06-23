@@ -59,8 +59,11 @@ namespace OryzaTrack
         }
 
         //method baru untuk load combo box dengan data dari BLL
+        private bool sedangMuat = false;
         private void LoadComboBoxSources()
         {
+            if (sedangMuat) return;
+            sedangMuat = true;
             try
             {
                 // Mengikat ke data gabungan baru dari BLL
@@ -83,6 +86,11 @@ namespace OryzaTrack
                 cmbHasil.SelectedIndex = -1;
             }
             catch (Exception ex) { MessageBox.Show("Gagal memuat pilihan: " + ex.Message); }
+            finally
+            {
+                sedangMuat = false;
+
+            }
         }
 
         //otamatisasi text jenis perawatan

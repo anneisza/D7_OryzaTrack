@@ -61,12 +61,6 @@
   <ItemGroup>
     <Compile Include="AdminDAL.cs" />
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="LAPORAN.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LAPORAN.Designer.cs">
-      <DependentUpon>LAPORAN.cs</DependentUpon>
-    </Compile>
     <Compile Include="LaporanDAL.cs" />
     <Compile Include="PadiDAL.cs" />
     <Compile Include="PenyakitDAL.cs" />

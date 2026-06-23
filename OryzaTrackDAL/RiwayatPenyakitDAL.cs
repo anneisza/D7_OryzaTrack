@@ -204,7 +204,7 @@ namespace OryzaTrackDAL
             DataTable dt = new DataTable();
             // Query ini menggabungkan tabel riwayat dengan tabel penyakit 
             // untuk menghitung berapa kali tiap penyakit muncul
-            string query = "string query = \"SELECT * FROM vw_StatistikPenyakit\";";
+            string query = "SELECT * FROM vw_StatistikPenyakit";
 
             using (SqlConnection conn = db.GetConnection())
             {
