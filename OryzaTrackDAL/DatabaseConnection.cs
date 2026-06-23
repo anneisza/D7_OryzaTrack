@@ -41,7 +41,7 @@ namespace OryzaTrackDAL
         // get connection
         public static string GetConnectionString()
         {
-            return $"Data Source={GetLocalIPAddress()};Initial Catalog=OryzaTrack;User ID=sa;Password=anneiszA1.;";
+            return $"Data Source={GetLocalIPAddress()};Initial Catalog=OryzaTrack;User ID=sa;Password=kelinciputih;";
         }
         public SqlConnection GetConnection()
         {

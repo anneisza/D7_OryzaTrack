@@ -1,18 +1,18 @@
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.dll.config
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.dll
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.pdb
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.dll
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.dll
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\System.ValueTuple.dll
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.pdb
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.xml
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.pdb
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.xml
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\bin\Debug\System.ValueTuple.xml
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.AssemblyReference.cache
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.Properties.Resources.resources
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.GenerateResource.cache
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.CoreCompileInputs.cache
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTra.86B2A377.Up2Date
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.dll
-E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.dll.config
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\OryzaTrackDAL.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\System.ValueTuple.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\ExcelDataReader.DataSet.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\bin\Debug\System.ValueTuple.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.AssemblyReference.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.Properties.Resources.resources
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.GenerateResource.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.csproj.CoreCompileInputs.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTra.86B2A377.Up2Date
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackDAL\obj\Debug\OryzaTrackDAL.pdb
