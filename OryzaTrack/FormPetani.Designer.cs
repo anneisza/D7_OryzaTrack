@@ -79,6 +79,7 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.btnImportExcel = new System.Windows.Forms.Button();
             this.btnImportDb = new System.Windows.Forms.Button();
+            this.btnMasifUpdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPetani)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -209,7 +210,7 @@
             this.dgvPetani.ReadOnly = true;
             this.dgvPetani.RowHeadersWidth = 51;
             this.dgvPetani.RowTemplate.Height = 24;
-            this.dgvPetani.Size = new System.Drawing.Size(1086, 281);
+            this.dgvPetani.Size = new System.Drawing.Size(1034, 281);
             this.dgvPetani.TabIndex = 49;
             this.dgvPetani.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPetani_CellClick);
             // 
@@ -357,7 +358,7 @@
             this.pasteToolStripButton,
             this.toolStripSeparator1,
             this.helpToolStripButton});
-            this.bindingNavigator1.Location = new System.Drawing.Point(1161, 0);
+            this.bindingNavigator1.Location = new System.Drawing.Point(1307, 0);
             this.bindingNavigator1.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
             this.bindingNavigator1.MoveLastItem = this.bindingNavigatorMoveLastItem;
             this.bindingNavigator1.MoveNextItem = this.bindingNavigatorMoveNextItem;
@@ -541,7 +542,7 @@
             this.btnTestInjection.BackColor = System.Drawing.Color.Firebrick;
             this.btnTestInjection.Location = new System.Drawing.Point(943, 324);
             this.btnTestInjection.Name = "btnTestInjection";
-            this.btnTestInjection.Size = new System.Drawing.Size(85, 33);
+            this.btnTestInjection.Size = new System.Drawing.Size(159, 33);
             this.btnTestInjection.TabIndex = 68;
             this.btnTestInjection.Text = "Tes";
             this.btnTestInjection.UseVisualStyleBackColor = false;
@@ -550,9 +551,9 @@
             // btnReset
             // 
             this.btnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnReset.Location = new System.Drawing.Point(1059, 324);
+            this.btnReset.Location = new System.Drawing.Point(1131, 324);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(85, 33);
+            this.btnReset.Size = new System.Drawing.Size(149, 33);
             this.btnReset.TabIndex = 69;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = false;
@@ -561,7 +562,7 @@
             // btnImportExcel
             // 
             this.btnImportExcel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnImportExcel.Location = new System.Drawing.Point(831, 374);
+            this.btnImportExcel.Location = new System.Drawing.Point(943, 372);
             this.btnImportExcel.Name = "btnImportExcel";
             this.btnImportExcel.Size = new System.Drawing.Size(159, 37);
             this.btnImportExcel.TabIndex = 70;
@@ -572,7 +573,7 @@
             // btnImportDb
             // 
             this.btnImportDb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.btnImportDb.Location = new System.Drawing.Point(1006, 374);
+            this.btnImportDb.Location = new System.Drawing.Point(1132, 372);
             this.btnImportDb.Name = "btnImportDb";
             this.btnImportDb.Size = new System.Drawing.Size(148, 37);
             this.btnImportDb.TabIndex = 71;
@@ -580,11 +581,23 @@
             this.btnImportDb.UseVisualStyleBackColor = false;
             this.btnImportDb.Click += new System.EventHandler(this.btnImportDb_Click);
             // 
+            // btnMasifUpdate
+            // 
+            this.btnMasifUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnMasifUpdate.Location = new System.Drawing.Point(1132, 422);
+            this.btnMasifUpdate.Name = "btnMasifUpdate";
+            this.btnMasifUpdate.Size = new System.Drawing.Size(149, 51);
+            this.btnMasifUpdate.TabIndex = 72;
+            this.btnMasifUpdate.Text = "Massive Update";
+            this.btnMasifUpdate.UseVisualStyleBackColor = false;
+            this.btnMasifUpdate.Click += new System.EventHandler(this.btnMasifUpdate_Click);
+            // 
             // FormPetani
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1214, 715);
+            this.ClientSize = new System.Drawing.Size(1360, 715);
+            this.Controls.Add(this.btnMasifUpdate);
             this.Controls.Add(this.btnImportDb);
             this.Controls.Add(this.btnImportExcel);
             this.Controls.Add(this.btnReset);
@@ -669,5 +682,6 @@
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
         private System.Windows.Forms.Button btnImportExcel;
         private System.Windows.Forms.Button btnImportDb;
+        private System.Windows.Forms.Button btnMasifUpdate;
     }
 }
