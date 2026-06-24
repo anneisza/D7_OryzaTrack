@@ -1,6 +1,7 @@
-﻿using System;
+﻿using OryzaTrackDAL;
+using System;
 using System.Data;
-using OryzaTrackDAL;
+using System.Windows.Forms;
 
 namespace OryzaTrackBLL
 {
@@ -12,6 +13,12 @@ namespace OryzaTrackBLL
                                      string jenisBibit, string kategori)
         {
             // Validasi tanggal
+            if (tanggalAwal.Year < 2000)
+            {
+                MessageBox.Show("Tanggal Terdeteksi tidak boleh di masa depan atau kurang dari tahun 2000.",
+                    "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
             if (tanggalAwal > tanggalAkhir)
                 throw new Exception("Tanggal awal tidak boleh lebih dari tanggal akhir!");
 

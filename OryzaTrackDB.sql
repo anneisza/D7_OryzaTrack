@@ -1870,3 +1870,81 @@ EXEC sp_helptext 'trg_PreventMassUpdatePetani';
 --cek log dan trigger
    SELECT * FROM LogAktivitas
    SELECT * FROM LogKeamanan
+
+--Buat tabel LogError
+CREATE TABLE LogError (
+    idLog     INT IDENTITY(1,1) PRIMARY KEY,
+    tabel     VARCHAR(50)  NOT NULL,
+    pesanError VARCHAR(MAX),
+    waktu     DATETIME     NOT NULL DEFAULT GETDATE()
+);
+GO
+
+EXEC sp_helptext 'sp_DeletePadi'
+EXEC sp_helptext 'vw_Padi'
+
+--vw_Padi update
+ALTER VIEW vw_Padi AS
+SELECT 
+    p.idPadi,
+    p.idPetani,
+    pt.namaPetani,
+    p.jenisBibit,
+    p.lokasiLahan,
+    CONVERT(VARCHAR, p.tanggalTanam, 103) AS tanggalTanam
+FROM Padi p
+JOIN petani pt ON p.idPetani = pt.idPetani;
+
+-- sp_DeletePadi diUpdate soalnya di perawatan jdnya fk id riwayat aja
+ALTER PROCEDURE sp_DeletePadi
+    @idPadi INT,
+    @pesanHasil VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM riwayatPenyakit WHERE idPadi = @idPadi)
+       OR EXISTS (
+           SELECT 1 FROM perawatanPadi 
+           WHERE idRiwayat IN (
+               SELECT idRiwayat FROM riwayatPenyakit WHERE idPadi = @idPadi
+           )
+       )
+    BEGIN
+        SET @pesanHasil = 'Data padi masih memiliki riwayat/perawatan, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    DELETE FROM Padi WHERE idPadi = @idPadi;
+    SET @pesanHasil = 'OK';
+END;
+
+-- sp_DeletePenyakit diUpdate
+ALTER PROCEDURE sp_DeletePenyakit
+    @idPenyakit INT,
+    @pesanHasil VARCHAR(200) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM riwayatPenyakit WHERE idPenyakit = @idPenyakit)
+    BEGIN
+        SET @pesanHasil = 'Penyakit masih terdaftar di Riwayat Penyakit, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    IF EXISTS (
+        SELECT 1 FROM perawatanPadi
+        WHERE idRiwayat IN (
+            SELECT idRiwayat FROM riwayatPenyakit WHERE idPenyakit = @idPenyakit
+        )
+    )
+    BEGIN
+        SET @pesanHasil = 'Penyakit masih terdaftar di Perawatan Padi, tidak bisa dihapus!';
+        RETURN;
+    END
+
+    DELETE FROM Penyakit WHERE idPenyakit = @idPenyakit;
+    SET @pesanHasil = 'OK';
+END;
+GO

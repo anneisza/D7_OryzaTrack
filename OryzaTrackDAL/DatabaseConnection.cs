@@ -41,15 +41,12 @@ namespace OryzaTrackDAL
         // get connection
         public static string GetConnectionString()
         {
-            return "Data Source=10.49.0.246,1433;" +
+            //10.49.0.246 (ip eduroam)
+            return "Data Source=192.168.101.75,1433;" +
            "Initial Catalog=OryzaTrack;" +
            "User ID=sa;" +
            "Password=anneiszA1.;" +
            "TrustServerCertificate=True;";
-<<<<<<< Updated upstream
-=======
-            //return $"Data Source={GetLocalIPAddress()};Initial Catalog=OryzaTrack;User ID=sa;Password=passwordMasing2;";
->>>>>>> Stashed changes
         }
         public SqlConnection GetConnection()
         {

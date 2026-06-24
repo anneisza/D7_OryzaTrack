@@ -375,7 +375,7 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataRowView row = (DataRowView)bindingSource.Current;
+                DataRowView row = (DataRowView)bindingSource[e.RowIndex];
                 selectedIdPadi = Convert.ToInt32(row["idPadi"]);
 
                 cmbIdPetani.SelectedValue = row["idPetani"];

@@ -111,11 +111,14 @@ namespace OryzaTrack
 
                 // sp_GetLaporan dipanggil dari sini via LaporanBLL → LaporanDAL
                 DataTable dt = laporanBLL.GetLaporan(
+
                     dtpTanggalAwal.Value,
                     dtpTanggalAkhir.Value,
                     jenisBibit,
                     kategori
                 );
+
+                if (dt == null) return;
 
                 bindingSource.DataSource = dt;
                 dgvLaporan.DataSource = bindingSource;
