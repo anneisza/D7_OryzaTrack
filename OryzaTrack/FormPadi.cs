@@ -42,7 +42,11 @@ namespace OryzaTrack
             cmbJB.Items.Add("Ciherang");
             cmbJB.Items.Add("Inpari 32");
             cmbJB.Items.Add("Mekongga");
-            cmbJB.DropDownStyle = ComboBoxStyle.DropDownList;
+            // AKTIFKAN FITUR PENCARIAN & SCROLL UNTUK JENIS BIBIT
+            cmbJB.DropDownStyle = ComboBoxStyle.DropDown;
+            cmbJB.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbJB.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbJB.DropDownHeight = 150;
 
             // 2. Mengisi pilihan Lokasi Lahan (Sesuai CK_Padi_LokasiLahan)
             cmbLokasiLahan.Items.Clear();
@@ -50,7 +54,11 @@ namespace OryzaTrack
             cmbLokasiLahan.Items.Add("Lahan Selatan");
             cmbLokasiLahan.Items.Add("Lahan Barat");
             cmbLokasiLahan.Items.Add("Lahan Timur");
-            cmbLokasiLahan.DropDownStyle = ComboBoxStyle.DropDownList;
+            // AKTIFKAN FITUR PENCARIAN & SCROLL UNTUK LOKASI LAHAN
+            cmbLokasiLahan.DropDownStyle = ComboBoxStyle.DropDown;
+            cmbLokasiLahan.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbLokasiLahan.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbLokasiLahan.DropDownHeight = 150;
 
             LoadPetani();
             BersihkanForm();
@@ -134,6 +142,13 @@ namespace OryzaTrack
                 cmbIdPetani.DisplayMember = "namaPetani";
                 cmbIdPetani.ValueMember = "idPetani";
                 cmbIdPetani.SelectedIndex = -1;
+
+                // fitur auto search dan scroll bar
+                cmbIdPetani.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbIdPetani.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbIdPetani.AutoCompleteSource = AutoCompleteSource.ListItems;
+                cmbIdPetani.MaxDropDownItems = 10;
+                cmbIdPetani.DropDownHeight = 200;
 
             }
             catch (Exception ex)

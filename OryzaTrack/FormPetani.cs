@@ -112,6 +112,17 @@ namespace OryzaTrack
                 txtNamaPetani.Focus();
                 return false;
             }
+            // Validasi hanya boleh huruf dan spasi
+            foreach (char c in txtNamaPetani.Text)
+            {
+                if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("Nama petani hanya boleh berisi huruf dan spasi!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNamaPetani.Focus();
+                    return false;
+                }
+            }
             if (string.IsNullOrWhiteSpace(txtNIK.Text))
             {
                 MessageBox.Show("NIK tidak boleh kosong!",
@@ -133,6 +144,17 @@ namespace OryzaTrack
                 txtAlamat.Focus();
                 return false;
             }
+            // Validasi hanya boleh huruf, angka, dan spasi (Karakter khusus dilarang)
+            foreach (char c in txtAlamat.Text)
+            {
+                if (!char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("Alamat hanya boleh berisi huruf, angka, dan spasi (tidak boleh simbol/karakter khusus)!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAlamat.Focus();
+                    return false;
+                }
+            }
             if (string.IsNullOrWhiteSpace(txtNoTelepon.Text))
             {
                 MessageBox.Show("No Telepon tidak boleh kosong!",
@@ -144,6 +166,14 @@ namespace OryzaTrack
                 !txtNoTelepon.Text.StartsWith("+62"))
             {
                 MessageBox.Show("No Telepon harus dimulai dengan 08 atau +62!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNoTelepon.Focus();
+                return false;
+            }
+            // Validasi rentang jumlah karakter (10 - 13 digit)
+            if (txtNoTelepon.Text.Length < 10 || txtNoTelepon.Text.Length > 13)
+            {
+                MessageBox.Show("No Telepon harus berjumlah antara 10 sampai 13 karakter!",
                     "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNoTelepon.Focus();
                 return false;

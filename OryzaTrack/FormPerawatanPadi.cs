@@ -24,6 +24,7 @@ namespace OryzaTrack
         {
             InitializeComponent();
             IDAdmin = idAdmin;
+            cmbHasil.SelectedIndexChanged += cmbHasil_SelectedIndexChanged;
         }
 
         private void FormPerawatanPadi_Load(object sender, EventArgs e)
@@ -66,30 +67,43 @@ namespace OryzaTrack
             sedangMuat = true;
             try
             {
-                // Mengikat ke data gabungan baru dari BLL
+
+                // SETTING UNTUK cmbIdRiwayat (BISA SCROLL & AUTO-SEARCH)
                 cmbIdRiwayat.DataSource = bllPerawatan.GetLookupRiwayat();
                 cmbIdRiwayat.DisplayMember = "TeksTampilan";
-                cmbIdRiwayat.ValueMember = "idRiwayat"; // <-- Menyimpan ID Riwayat berantai
+                cmbIdRiwayat.ValueMember = "idRiwayat";
                 cmbIdRiwayat.SelectedIndex = -1;
 
-                // FIX SINKRONISASI DATABASE: Mengisi item pestisida secara manual
+                // agar data riwayat yang banyak bisa dicari dan di-scroll
+                cmbIdRiwayat.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbIdRiwayat.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbIdRiwayat.AutoCompleteSource = AutoCompleteSource.ListItems;
+                cmbIdRiwayat.DropDownHeight = 200;
+
+                // Pestisida
                 cmbJenisPestisida.DataSource = null; // Lepas datasource lama jika ada
                 cmbJenisPestisida.Items.Clear();
                 cmbJenisPestisida.Items.Add("Tanpa Pestisida");
                 cmbJenisPestisida.Items.Add("Insektisida Furadan");
                 cmbJenisPestisida.Items.Add("Fungisida Dithane");
                 cmbJenisPestisida.Items.Add("Herbisida Glyphosate");
-                cmbJenisPestisida.DropDownStyle = ComboBoxStyle.DropDownList;
+                // Diubah ke DropDown jika sewaktu-waktu daftarnya bertambah panjang
+                cmbJenisPestisida.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbJenisPestisida.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbJenisPestisida.AutoCompleteSource = AutoCompleteSource.ListItems;
                 cmbJenisPestisida.SelectedIndex = -1;
 
                 // Ganti bagian cmbHasil
                 cmbHasil.DataSource = null;
                 cmbHasil.Items.Clear();
-                cmbHasil.Items.Add("Proses");           // ← tambahan
+                cmbHasil.Items.Add("Proses");           
                 cmbHasil.Items.Add("Berhasil");
                 cmbHasil.Items.Add("Sebagian Berhasil");
                 cmbHasil.Items.Add("Gagal");
-                cmbHasil.DropDownStyle = ComboBoxStyle.DropDownList;
+                // Diubah ke DropDown agar konsisten dan user bisa langsung ketik "B" untuk "Berhasil"
+                cmbHasil.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbHasil.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbHasil.AutoCompleteSource = AutoCompleteSource.ListItems;
                 cmbHasil.SelectedIndex = -1;
             }
             catch (Exception ex) { MessageBox.Show("Gagal memuat pilihan: " + ex.Message); }
@@ -193,9 +207,9 @@ namespace OryzaTrack
                 return false;
             }
 
-            if (dtpTanggalPerawatan.Value > DateTime.Now)
+            if (dtpTanggalPerawatan.Value > DateTime.Now || dtpTanggalPerawatan.Value.Year < 2000)
             {
-                MessageBox.Show("Tanggal perawatan tidak boleh di masa depan!");
+                MessageBox.Show("Tanggal perawatan tidak boleh di masa depan atau kurang dari tahun 2000!");
                 return false;
             }
 
