@@ -211,11 +211,12 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 // Menggabungkan info kasus agar user mudah memilih di UI Form
-                // ✅ Sesuai, tinggal ubah query-nya
-                string query = @"SELECT idRiwayat, 
-                 namaPetani + ' | ' + jenisBibit + ' | ' + kategoriPenyakit + 
-                 ' (ID: ' + CAST(idRiwayat AS VARCHAR) + ')' AS TeksTampilan
-                 FROM vw_RiwayatPenyakit";
+                string query = @"SELECT r.idRiwayat, 
+                         r.namaPetani + ' | ' + r.jenisBibit + ' | ' + 
+                         pn.gejalaPenyakit +
+                         ' (ID: ' + CAST(r.idRiwayat AS VARCHAR) + ')' AS TeksTampilan
+                         FROM vw_RiwayatPenyakit r
+                         JOIN Penyakit pn ON r.idPenyakit = pn.idPenyakit";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

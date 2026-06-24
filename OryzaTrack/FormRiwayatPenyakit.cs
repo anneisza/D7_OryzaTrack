@@ -137,6 +137,8 @@ namespace OryzaTrack
                 MessageBox.Show("Keterangan minimal harus 5 karakter!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
+
             // Setelah cek panjang keterangan yang sudah ada...
             string ket = txtKeterangan.Text.Trim();
             char[] simbolDilarang = { '@', '#', '$', '%', '^', '*', '=', '<', '>', '|', '\\', '/' };

@@ -246,7 +246,7 @@
             this.cmbIdRiwayat.FormattingEnabled = true;
             this.cmbIdRiwayat.Location = new System.Drawing.Point(272, 18);
             this.cmbIdRiwayat.Name = "cmbIdRiwayat";
-            this.cmbIdRiwayat.Size = new System.Drawing.Size(327, 24);
+            this.cmbIdRiwayat.Size = new System.Drawing.Size(523, 24);
             this.cmbIdRiwayat.TabIndex = 73;
             this.cmbIdRiwayat.SelectedIndexChanged += new System.EventHandler(this.cmbIdRiwayat_SelectedIndexChanged);
             // 
