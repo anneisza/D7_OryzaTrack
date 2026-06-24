@@ -1852,5 +1852,21 @@ SELECT * FROM riwayat_backup
 SELECT * FROM perawatan_backup
 
 
+-- Cek semua trigger yang ada di database
+SELECT 
+    name AS NamaTrigger,
+    OBJECT_NAME(parent_id) AS NamaTabel,
+    create_date,
+    modify_date
+FROM sys.triggers
+WHERE parent_class = 1
+ORDER BY NamaTabel;
 
+-- Lihat isi trigger spesifik
+EXEC sp_helptext 'trg_InsertPetani';
+EXEC sp_helptext 'trg_DeletePetani';
+EXEC sp_helptext 'trg_PreventMassUpdatePetani';
 
+--cek log dan trigger
+   SELECT * FROM LogAktivitas
+   SELECT * FROM LogKeamanan
