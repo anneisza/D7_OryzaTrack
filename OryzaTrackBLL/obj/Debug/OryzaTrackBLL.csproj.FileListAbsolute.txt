@@ -19,3 +19,24 @@ E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\De
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTra.65470965.Up2Date
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.dll
 E:\UMY\SEMESTER 4\4. PABD\KELOMPOK\OryzaTrack\D7\OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.dll.config
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackBLL.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.DataSet.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\System.ValueTuple.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\OryzaTrackDAL.dll.config
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.DataSet.pdb
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\ExcelDataReader.DataSet.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\bin\Debug\System.ValueTuple.xml
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.AssemblyReference.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.Properties.Resources.resources
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.GenerateResource.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.csproj.CoreCompileInputs.cache
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTra.65470965.Up2Date
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.dll
+D:\semester 4\PABD\kelompok\projrct\D7_OryzaTrack\OryzaTrackBLL\obj\Debug\OryzaTrackBLL.pdb
