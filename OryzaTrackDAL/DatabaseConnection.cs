@@ -46,6 +46,10 @@ namespace OryzaTrackDAL
            "User ID=sa;" +
            "Password=anneiszA1.;" +
            "TrustServerCertificate=True;";
+<<<<<<< Updated upstream
+=======
+            //return $"Data Source={GetLocalIPAddress()};Initial Catalog=OryzaTrack;User ID=sa;Password=passwordMasing2;";
+>>>>>>> Stashed changes
         }
         public SqlConnection GetConnection()
         {
