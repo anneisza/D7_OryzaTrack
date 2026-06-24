@@ -275,9 +275,9 @@
             this.lblIdPadi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdPadi.Location = new System.Drawing.Point(42, 33);
             this.lblIdPadi.Name = "lblIdPadi";
-            this.lblIdPadi.Size = new System.Drawing.Size(167, 20);
+            this.lblIdPadi.Size = new System.Drawing.Size(160, 40);
             this.lblIdPadi.TabIndex = 74;
-            this.lblIdPadi.Text = "Petani/Padi/Penyakit:\r\n";
+            this.lblIdPadi.Text = "Petani/Padi/Tempat:\r\n\r\n";
             // 
             // dtpTanggalTerdeteksi
             // 

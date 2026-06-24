@@ -109,23 +109,35 @@ namespace OryzaTrackDAL
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("sp_InsertPetani", conn))
+                // buat transaction
+                SqlTransaction trans = conn.BeginTransaction();
+
+                //buat try catch buat transaksi
+                try
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                    cmd.Parameters.AddWithValue("@NIK", nik);
-                    cmd.Parameters.AddWithValue("@alamat", alamat);
-                    cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertPetani", conn, trans))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                        cmd.Parameters.AddWithValue("@NIK", nik);
+                        cmd.Parameters.AddWithValue("@alamat", alamat);
+                        cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
 
-                    // Parameter OUTPUT untuk ambil pesan dari SP
-                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
-                    outputMsg.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(outputMsg);
+                        // Parameter OUTPUT untuk ambil pesan dari SP
+                        SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
+                        outputMsg.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(outputMsg);
 
-                    cmd.ExecuteNonQuery();
-
-                    // Return pesan dari SP ("OK" atau pesan error)
-                    return outputMsg.Value.ToString();
+                        cmd.ExecuteNonQuery();
+                        //transaksi nihh
+                        trans.Commit();
+                        // Return pesan dari SP ("OK" atau pesan error)
+                        return outputMsg.Value.ToString();
+                    }
+                }
+                catch {
+                    trans.Rollback();
+                    throw;
                 }
             }
         }
