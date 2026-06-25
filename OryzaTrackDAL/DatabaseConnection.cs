@@ -41,8 +41,8 @@ namespace OryzaTrackDAL
         // get connection
         public static string GetConnectionString()
         {
-            //10.49.0.246 (ip eduroam)
-            return "Data Source=192.168.101.75,1433;" +
+
+            return "Data Source=10.69.1.52,1433;" +
            "Initial Catalog=OryzaTrack;" +
            "User ID=sa;" +
            "Password=anneiszA1.;" +
