@@ -138,35 +138,45 @@ namespace OryzaTrack
             {
                 DataTable dt = riwayatBLL.GetStatistikPenyakit();
 
-                // Cek jika data kosong, jangan lanjut biar tidak error
-                if (dt == null || dt.Rows.Count == 0) return;
+                // Debug sementara — hapus setelah chart bisa muncul
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Data kosong, chart tidak bisa ditampilkan.");
+                    return;
+                }
 
+                // Reset chart secara menyeluruh
                 chart1.Series.Clear();
                 chart1.Titles.Clear();
-                chart1.Titles.Add("Sebaran Penyakit Padi");
+                chart1.ChartAreas.Clear(); // <-- ini yang sering jadi masalah
 
+                // Buat ulang ChartArea
+                ChartArea ca = new ChartArea("MainArea");
+                ca.BackColor = Color.Transparent;
+                chart1.ChartAreas.Add(ca);
+
+                // Buat title
+                chart1.Titles.Add(new Title("Sebaran Penyakit Padi"));
+
+                // Buat series
                 Series s = new Series("Penyakit");
                 s.ChartType = SeriesChartType.Pie;
+                s.ChartArea = "MainArea";
+                s.IsValueShownAsLabel = true;
+                s.LabelFormat = "0";
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    // Pastikan row["Total"] dikonversi ke double/int
-                    double jumlah = Convert.ToDouble(row["Total"]);
                     string nama = row["kategori"].ToString();
-
+                    double jumlah = Convert.ToDouble(row["Total"]);
                     s.Points.AddXY(nama, jumlah);
                 }
 
-                // Tampilkan angka/persentase di dalam Pie
-                s.IsValueShownAsLabel = true;
-                s.LabelFormat = "0"; // Menampilkan jumlah angka bulat
-
                 chart1.Series.Add(s);
-                chart1.ChartAreas[0].Area3DStyle.Enable3D = true;
+                chart1.ChartAreas["MainArea"].Area3DStyle.Enable3D = true;
             }
             catch (Exception ex)
             {
-                // Jangan cuma Console.WriteLine, MessageBox saja biar kelihatan errornya
                 MessageBox.Show("Gagal muat Chart: " + ex.Message);
             }
         }
