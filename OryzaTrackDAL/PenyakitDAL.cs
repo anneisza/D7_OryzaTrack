@@ -190,7 +190,7 @@ namespace OryzaTrackDAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPenyakit", idPenyakit);
 
-                    SqlParameter outputMsg = new SqlParameter("@hasilMsg", SqlDbType.VarChar, 200);
+                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
                     outputMsg.Direction = ParameterDirection.Output;
                     cmd.Parameters.Add(outputMsg);
 

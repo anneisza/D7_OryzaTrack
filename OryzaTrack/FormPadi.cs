@@ -42,7 +42,11 @@ namespace OryzaTrack
             cmbJB.Items.Add("Ciherang");
             cmbJB.Items.Add("Inpari 32");
             cmbJB.Items.Add("Mekongga");
-            cmbJB.DropDownStyle = ComboBoxStyle.DropDownList;
+            // AKTIFKAN FITUR PENCARIAN & SCROLL UNTUK JENIS BIBIT
+            cmbJB.DropDownStyle = ComboBoxStyle.DropDown;
+            cmbJB.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbJB.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbJB.DropDownHeight = 150;
 
             // 2. Mengisi pilihan Lokasi Lahan (Sesuai CK_Padi_LokasiLahan)
             cmbLokasiLahan.Items.Clear();
@@ -50,7 +54,11 @@ namespace OryzaTrack
             cmbLokasiLahan.Items.Add("Lahan Selatan");
             cmbLokasiLahan.Items.Add("Lahan Barat");
             cmbLokasiLahan.Items.Add("Lahan Timur");
-            cmbLokasiLahan.DropDownStyle = ComboBoxStyle.DropDownList;
+            // AKTIFKAN FITUR PENCARIAN & SCROLL UNTUK LOKASI LAHAN
+            cmbLokasiLahan.DropDownStyle = ComboBoxStyle.DropDown;
+            cmbLokasiLahan.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbLokasiLahan.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbLokasiLahan.DropDownHeight = 150;
 
             LoadPetani();
             BersihkanForm();
@@ -134,6 +142,13 @@ namespace OryzaTrack
                 cmbIdPetani.DisplayMember = "namaPetani";
                 cmbIdPetani.ValueMember = "idPetani";
                 cmbIdPetani.SelectedIndex = -1;
+
+                // fitur auto search dan scroll bar
+                cmbIdPetani.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbIdPetani.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbIdPetani.AutoCompleteSource = AutoCompleteSource.ListItems;
+                cmbIdPetani.MaxDropDownItems = 10;
+                cmbIdPetani.DropDownHeight = 200;
 
             }
             catch (Exception ex)
@@ -247,12 +262,29 @@ namespace OryzaTrack
             }
         }
 
+        // Tambah variabel data lama
+        private string oldJenisBibit, oldLokasiLahan;
+        private int oldIdPetani;
+        private DateTime oldTanggalTanam;
+
         private void btnUbahData_Click(object sender, EventArgs e)
         {
+
             if (selectedIdPadi == 0)
             {
-                MessageBox.Show("Pilih data dari tabel yang ingin diubah terlebih dahulu!",
+                MessageBox.Show("Pilih data yang ingin diubah!",
                     "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ Cek apakah ada perubahan
+            if (Convert.ToInt32(cmbIdPetani.SelectedValue) == oldIdPetani &&
+                cmbJB.Text == oldJenisBibit &&
+                cmbLokasiLahan.Text == oldLokasiLahan &&
+                dtpTanggalTanam.Value.Date == oldTanggalTanam.Date)
+            {
+                MessageBox.Show("Tidak ada data yang diubah.",
+                    "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -343,16 +375,20 @@ namespace OryzaTrack
         {
             if (e.RowIndex >= 0)
             {
-                DataRowView row = (DataRowView)bindingSource.Current;
+                DataRowView row = (DataRowView)bindingSource[e.RowIndex];
                 selectedIdPadi = Convert.ToInt32(row["idPadi"]);
 
-                // Gunakan SelectedValue untuk ComboBox yang di-bind ke DataSource
                 cmbIdPetani.SelectedValue = row["idPetani"];
-
                 cmbJB.Text = row["jenisBibit"].ToString();
                 cmbLokasiLahan.Text = row["lokasiLahan"].ToString();
                 dtpTanggalTanam.Value = DateTime.ParseExact(
                     row["tanggalTanam"].ToString(), "dd/MM/yyyy", null);
+
+                // ✅ Simpan data lama
+                oldIdPetani = Convert.ToInt32(row["idPetani"]);
+                oldJenisBibit = row["jenisBibit"].ToString();
+                oldLokasiLahan = row["lokasiLahan"].ToString();
+                oldTanggalTanam = dtpTanggalTanam.Value;
             }
         }
 

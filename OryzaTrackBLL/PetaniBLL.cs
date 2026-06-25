@@ -124,5 +124,15 @@ namespace OryzaTrackBLL
         {
             dal.DeleteRentan(input);
         }
+
+        public void SimpanLog(string tabel, string pesan)
+        {
+            dal.SimpanLog(tabel, pesan);
+        }
+
+        public void TestMassUpdate()
+        {
+            dal.MassUpdateRentan();
+        }
     }
 }

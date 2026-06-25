@@ -101,6 +101,35 @@ namespace OryzaTrack
                 MessageBox.Show("Gejala penyakit terlalu pendek (minimal 10 karakter)!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtGejalaPenyakit.Focus(); return false;
             }
+            // Tambahan Validasi: Cek karakter khusus dan pastikan ada hurufnya
+            bool adaHuruf = false;
+
+            foreach (char c in txtGejalaPenyakit.Text)
+            {
+                // 1. Blokir jika ada karakter khusus (bukan huruf, bukan angka, bukan spasi)
+                if (!char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("Gejala penyakit hanya boleh berisi huruf, angka, dan spasi (tidak boleh simbol)!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtGejalaPenyakit.Focus();
+                    return false;
+                }
+
+                // 2. Tandai jika karakter tersebut adalah huruf
+                if (char.IsLetter(c))
+                {
+                    adaHuruf = true;
+                }
+            }
+
+            // 3. Blokir jika inputan hanya berisi angka/spasi saja (tidak ada huruf sama sekali)
+            if (!adaHuruf)
+            {
+                MessageBox.Show("Gejala penyakit tidak boleh hanya berisi angka saja!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGejalaPenyakit.Focus();
+                return false;
+            }
             if (dtpTanggalSerangan.Value.Year < 2000 || dtpTanggalSerangan.Value > DateTime.Now)
             {
                 MessageBox.Show("Tanggal serangan tidak valid! Harus antara tahun 2000 hingga hari ini.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -270,8 +299,7 @@ namespace OryzaTrack
                 cmbKategori.Text = oldKategori = row["kategori"].ToString();
                 txtGejalaPenyakit.Text = oldGejala = row["gejalaPenyakit"].ToString();
                 cmbTingkatKerusakan.Text = oldTingkat = row["tingkatKerusakan"].ToString();
-                dtpTanggalSerangan.Value = oldTanggal = DateTime.ParseExact(
-                    row["tanggalSerangan"].ToString(), "dd/MM/yyyy", null);
+                dtpTanggalSerangan.Value = oldTanggal = Convert.ToDateTime(row["tanggalSerangan"]);
             }
         }
 

@@ -106,28 +106,60 @@ namespace OryzaTrackDAL
          ========================*/
         public string Insert(string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
-            using (SqlConnection conn = db.GetConnection())
-            {
+                SqlConnection conn = db.GetConnection();
+            
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("sp_InsertPetani", conn))
+                // buat transaction
+                SqlTransaction trans = conn.BeginTransaction();
+
+                //buat try catch buat transaksi
+                try
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
-                    cmd.Parameters.AddWithValue("@NIK", nik);
-                    cmd.Parameters.AddWithValue("@alamat", alamat);
-                    cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertPetani", conn, trans))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@namaPetani", namaPetani);
+                        cmd.Parameters.AddWithValue("@NIK", nik);
+                        cmd.Parameters.AddWithValue("@alamat", alamat);
+                        cmd.Parameters.AddWithValue("@noTelepon", noTelepon);
 
-                    // Parameter OUTPUT untuk ambil pesan dari SP
-                    SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
-                    outputMsg.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(outputMsg);
+                        // Parameter OUTPUT untuk ambil pesan dari SP
+                        SqlParameter outputMsg = new SqlParameter("@pesanHasil", SqlDbType.VarChar, 200);
+                        outputMsg.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(outputMsg);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
 
-                    // Return pesan dari SP ("OK" atau pesan error)
-                    return outputMsg.Value.ToString();
+                    SqlCommand cmdLog = new SqlCommand(
+                        "INSERT INTO LogAktivitas (aktivitas, tabel, waktu) VALUES (@aktivitas, @tabel, GETDATE())",
+                        conn, trans);
+                    cmdLog.Parameters.AddWithValue("@aktivitas", "INSERT Petani : " + namaPetani);
+                    cmdLog.Parameters.AddWithValue("@tabel", "petani"); 
+                    cmdLog.ExecuteNonQuery();
+
+                    //transaksi nihh
+                    trans.Commit();
+                        // Return pesan dari SP ("OK" atau pesan error)
+                        return outputMsg.Value.ToString();
+                    }
                 }
-            }
+                catch (SqlException ex)
+                {
+                    trans.Rollback();
+                    SimpanLog("Tabel Petani", "ROLLBACK INSERT : " + ex.Message);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    SimpanLog("General System", "GENERAL ERROR : " + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    conn.Close(); 
+                }
+
         }
 
         /*=======================
@@ -135,10 +167,13 @@ namespace OryzaTrackDAL
         ========================*/
         public string Update(int idPetani, string namaPetani, string nik, string alamat, string noTelepon, bool statusAktif)
         {
-            using (SqlConnection conn = db.GetConnection())
+            SqlConnection conn = db.GetConnection();
+       
+            conn.Open();
+            SqlTransaction trans = conn.BeginTransaction();
+            try
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("sp_UpdatePetani", conn))
+                using (SqlCommand cmd = new SqlCommand("sp_UpdatePetani", conn, trans))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPetani", idPetani);
@@ -153,8 +188,34 @@ namespace OryzaTrackDAL
                     cmd.Parameters.Add(outputMsg);
 
                     cmd.ExecuteNonQuery();
+
+                    SqlCommand cmdLog = new SqlCommand(
+                        "INSERT INTO LogAktivitas (aktivitas, tabel, waktu) VALUES (@aktivitas, @tabel, GETDATE())",
+                        conn, trans);
+                    cmdLog.Parameters.AddWithValue("@aktivitas", "UPDATE Petani : " + namaPetani);
+                    cmdLog.Parameters.AddWithValue("@tabel", "petani");
+                    cmdLog.ExecuteNonQuery();
+
+                    trans.Commit();
+
                     return outputMsg.Value.ToString();
                 }
+            }
+            catch (SqlException ex)
+            {
+                trans.Rollback();
+                SimpanLog("Tabel Petani", "ROLLBACK UPDATE : " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                SimpanLog("General System", "GENERAL ERROR : " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
 
@@ -163,10 +224,13 @@ namespace OryzaTrackDAL
         ========================*/
         public string Delete(int idPetani)
         {
-            using (SqlConnection conn = db.GetConnection())
+            SqlConnection conn = db.GetConnection();
+            
+            conn.Open();
+            SqlTransaction trans = conn.BeginTransaction();
+            try
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("sp_DeletePetani", conn))
+                using (SqlCommand cmd = new SqlCommand("sp_DeletePetani", conn, trans))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@idPetani", idPetani);
@@ -176,9 +240,36 @@ namespace OryzaTrackDAL
                     cmd.Parameters.Add(outputMsg);
 
                     cmd.ExecuteNonQuery();
+
+                    SqlCommand cmdLog = new SqlCommand(
+                        "INSERT INTO LogAktivitas (aktivitas, tabel, waktu) VALUES (@aktivitas, @tabel, GETDATE())",
+                        conn, trans);
+                    cmdLog.Parameters.AddWithValue("@aktivitas", "DELETE Petani ID : " + idPetani);
+                    cmdLog.Parameters.AddWithValue("@tabel", "petani");
+                    cmdLog.ExecuteNonQuery();
+
+                    trans.Commit();
+
                     return outputMsg.Value.ToString();
                 }
             }
+            catch (SqlException ex)
+            {
+                trans.Rollback();
+                SimpanLog("Tabel Petani", "ROLLBACK DELETE : " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                SimpanLog("General System", "GENERAL ERROR : " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
         }
 
         /*=======================
@@ -247,9 +338,12 @@ namespace OryzaTrackDAL
 
         public bool ResetData()
         {
-            using (SqlConnection conn = db.GetConnection())
+            SqlConnection conn = db.GetConnection();
+
+            conn.Open();
+            SqlTransaction trans = conn.BeginTransaction();
+            try
             {
-                conn.Open();
                 string resetQuery = @"
             -- Matikan FK constraint dulu
             ALTER TABLE perawatanPadi NOCHECK CONSTRAINT ALL;
@@ -292,21 +386,79 @@ namespace OryzaTrackDAL
             ALTER TABLE perawatanPadi NOCHECK CONSTRAINT ALL;
             ALTER TABLE petani NOCHECK CONSTRAINT ALL;";
 
-                using (SqlCommand cmd = new SqlCommand(resetQuery, conn))
+                using (SqlCommand cmd = new SqlCommand(resetQuery, conn, trans))
                 {
                     cmd.ExecuteNonQuery();
-                    return true;
                 }
+
+                SqlCommand cmdLog = new SqlCommand(
+                    "INSERT INTO LogAktivitas (aktivitas, tabel, waktu) VALUES (@aktivitas, @tabel, GETDATE())",
+                    conn, trans);
+                cmdLog.Parameters.AddWithValue("@aktivitas", "RESET semua data ke kondisi awal");
+                cmdLog.Parameters.AddWithValue("@tabel", "semua tabel");
+                cmdLog.ExecuteNonQuery();
+
+                trans.Commit();
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                trans.Rollback();
+                SimpanLog("Tabel Petani", "ROLLBACK RESET : " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                SimpanLog("General System", "GENERAL ERROR : " + ex.Message);
+                throw;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        /// <summary>
+        
+
         ///  buat injeksi
-        /// </summary>
+ 
         /// <param name="input"></param>
         public void DeleteRentan(string input)
         {
-            // ❌ SENGAJA tidak aman untuk demo
+            // SENGAJA tidak aman untuk demo
             string query = "DELETE FROM petani WHERE namaPetani = '" + input + "'";
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //Membuat Method Logging 
+        public void SimpanLog(string tabel, string pesan)
+        {
+            using (SqlConnection conn = db.GetConnection())
+            {
+                string query = @"INSERT INTO LogError VALUES(@tabel, @pesan, GETDATE())";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                { 
+                    cmd.Parameters.AddWithValue("@tabel", tabel);
+                    cmd.Parameters.AddWithValue("@pesan", pesan);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //Massive Update | Sengaja rentan
+        public void MassUpdateRentan()
+        {
+            string query = "UPDATE petani SET namaPetani = namaPetani WHERE 1=1";
 
             using (SqlConnection conn = db.GetConnection())
             {

@@ -74,9 +74,15 @@ namespace OryzaTrack
 
                 TampilkanTotal();
             }
+            catch(SqlException ex)
+            {
+                bll.SimpanLog("Tabel Petani", ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal memuat data: " + ex.Message,
+                bll.SimpanLog("General System", ex.Message);
+                MessageBox.Show("General Error: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -106,6 +112,17 @@ namespace OryzaTrack
                 txtNamaPetani.Focus();
                 return false;
             }
+            // Validasi hanya boleh huruf dan spasi
+            foreach (char c in txtNamaPetani.Text)
+            {
+                if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("Nama petani hanya boleh berisi huruf dan spasi!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNamaPetani.Focus();
+                    return false;
+                }
+            }
             if (string.IsNullOrWhiteSpace(txtNIK.Text))
             {
                 MessageBox.Show("NIK tidak boleh kosong!",
@@ -127,6 +144,17 @@ namespace OryzaTrack
                 txtAlamat.Focus();
                 return false;
             }
+            // Validasi hanya boleh huruf, angka, dan spasi (Karakter khusus dilarang)
+            foreach (char c in txtAlamat.Text)
+            {
+                if (!char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c))
+                {
+                    MessageBox.Show("Alamat hanya boleh berisi huruf, angka, dan spasi (tidak boleh simbol/karakter khusus)!",
+                        "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtAlamat.Focus();
+                    return false;
+                }
+            }
             if (string.IsNullOrWhiteSpace(txtNoTelepon.Text))
             {
                 MessageBox.Show("No Telepon tidak boleh kosong!",
@@ -138,6 +166,14 @@ namespace OryzaTrack
                 !txtNoTelepon.Text.StartsWith("+62"))
             {
                 MessageBox.Show("No Telepon harus dimulai dengan 08 atau +62!",
+                    "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNoTelepon.Focus();
+                return false;
+            }
+            // Validasi rentang jumlah karakter (10 - 13 digit)
+            if (txtNoTelepon.Text.Length < 10 || txtNoTelepon.Text.Length > 13)
+            {
+                MessageBox.Show("No Telepon harus berjumlah antara 10 sampai 13 karakter!",
                     "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNoTelepon.Focus();
                 return false;
@@ -221,9 +257,26 @@ namespace OryzaTrack
                         "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
+
             {
-                MessageBox.Show(ex.Message, "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                bll.SimpanLog("Tabel Petani", ex.Message);
+
+                MessageBox.Show("SQL Error : " + ex.Message);
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                bll.SimpanLog("General System", ex.Message);
+
+                MessageBox.Show("General Error: " + ex.Message,
+
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
 
         }
@@ -285,9 +338,15 @@ namespace OryzaTrack
                             "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
+                catch (SqlException ex)
+                {
+                    bll.SimpanLog("Tabel Petani", ex.Message);
+                    MessageBox.Show("SQL Error : " + ex.Message);
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message,
+                    bll.SimpanLog("General System", ex.Message);
+                    MessageBox.Show("General Error: " + ex.Message,
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -329,10 +388,26 @@ namespace OryzaTrack
                             "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-                catch (Exception ex)
+                catch (SqlException ex)
+
                 {
-                    MessageBox.Show("Error: " + ex.Message,
+
+                    bll.SimpanLog("Tabel Petani", ex.Message);
+
+                    MessageBox.Show("SQL Error : " + ex.Message);
+
+                }
+
+                catch (Exception ex)
+
+                {
+
+                    bll.SimpanLog("General System", ex.Message);
+
+                    MessageBox.Show("General Error: " + ex.Message,
+
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
             }
 
@@ -383,9 +458,26 @@ namespace OryzaTrack
                 FormHacked formHacked = new FormHacked();
                 formHacked.ShowDialog();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
+
             {
-                MessageBox.Show("Error: " + ex.Message);
+
+                bll.SimpanLog("Tabel Petani", ex.Message);
+
+                MessageBox.Show("SQL Error : " + ex.Message);
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                bll.SimpanLog("General System", ex.Message);
+
+                MessageBox.Show("General Error: " + ex.Message,
+
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
 
@@ -414,9 +506,23 @@ namespace OryzaTrack
                             MessageBoxIcon.Information);
                     }
                 }
-                catch (Exception ex)
+                catch (SqlException ex)
+
                 {
-                    MessageBox.Show("Gagal reset: " + ex.Message,
+
+                    bll.SimpanLog("Tabel Petani", ex.Message);
+
+                    MessageBox.Show("SQL Error : " + ex.Message);
+
+                }
+
+                catch (Exception ex)
+
+                {
+                    bll.SimpanLog("General System", ex.Message);
+
+                    MessageBox.Show("General Error: " + ex.Message,
+
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -466,11 +572,28 @@ namespace OryzaTrack
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (SqlException ex)
+
                     {
-                        MessageBox.Show("Gagal membaca file Excel: " + ex.Message,
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        bll.SimpanLog("Tabel Petani", ex.Message);
+
+                        MessageBox.Show("SQL Error : " + ex.Message);
+
                     }
+
+                    catch (Exception ex)
+
+                    {
+
+                        bll.SimpanLog("General System", ex.Message);
+
+                        MessageBox.Show("General Error: " + ex.Message,
+
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+
                 }
             }
 
@@ -511,9 +634,16 @@ namespace OryzaTrack
                         barisBerhasil++;
                     }
                 }
+                catch (SqlException ex)
+                {
+                    bll.SimpanLog("Tabel Petani", ex.Message);
+                    MessageBox.Show("SQL Error : " + ex.Message);
+                }
                 catch (Exception ex)
                 {
-                    // Jika ada baris gagal, dilewati (skip) agar proses baris selanjutnya tetap berjalan
+                    bll.SimpanLog("General System", ex.Message);
+                    MessageBox.Show("General Error: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
                 }
             }
@@ -533,6 +663,26 @@ namespace OryzaTrack
             LoadData();
         }
 
+        private void btnMasifUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bll.TestMassUpdate();
+                MessageBox.Show("Update berhasil tanpa trigger.", "Normal",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (SqlException ex)
+            {
+                // Trigger akan ROLLBACK dan RAISERROR
+                MessageBox.Show("⚠️ " + ex.Message,
+                    "Trigger Aktif!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                // Cek LogKeamanan
+                MessageBox.Show("Update massal dicegah!\nLog keamanan telah dicatat.",
+                    "Trigger PreventMassUpdate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void btnCariData_Click(object sender, EventArgs e)
         {
             try
@@ -546,9 +696,15 @@ namespace OryzaTrack
                 bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
                 dgvPetani.DataSource = bindingSource;
             }
+            catch (SqlException ex)
+            {
+                bll.SimpanLog("Tabel Petani", ex.Message);
+                MessageBox.Show("SQL Error : " + ex.Message);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message,
+                bll.SimpanLog("General System", ex.Message);
+                MessageBox.Show("General Error: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLaporan));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpTanggalAwal = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
@@ -54,19 +54,15 @@
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label6 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
-            this.label25 = new System.Windows.Forms.Label();
             this.labelPerawatan = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label19 = new System.Windows.Forms.Label();
             this.labelRiwayat = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.lblPenyakit = new System.Windows.Forms.Label();
             this.labelPenyakit = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblPadi = new System.Windows.Forms.Label();
             this.lblPadii = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.lblPetani = new System.Windows.Forms.Label();
             this.labelPetani = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,6 +72,10 @@
             this.dgvLaporan = new System.Windows.Forms.DataGridView();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btnCetak = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
@@ -279,17 +279,17 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(1226, 50);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(539, 325);
             this.chart1.TabIndex = 22;
             this.chart1.Text = "chart1";
@@ -308,27 +308,18 @@
             // panel10
             // 
             this.panel10.BackColor = System.Drawing.Color.CadetBlue;
-            this.panel10.Controls.Add(this.label25);
+            this.panel10.Controls.Add(this.label3);
             this.panel10.Controls.Add(this.labelPerawatan);
             this.panel10.Location = new System.Drawing.Point(1042, 111);
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(145, 110);
             this.panel10.TabIndex = 21;
             // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(42, 7);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(71, 48);
-            this.label25.TabIndex = 12;
-            this.label25.Text = "Total\r\nPerawatan\r\nPadi";
-            // 
             // labelPerawatan
             // 
             this.labelPerawatan.AutoSize = true;
             this.labelPerawatan.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPerawatan.Location = new System.Drawing.Point(3, 4);
+            this.labelPerawatan.Location = new System.Drawing.Point(47, 12);
             this.labelPerawatan.Name = "labelPerawatan";
             this.labelPerawatan.Size = new System.Drawing.Size(50, 54);
             this.labelPerawatan.TabIndex = 13;
@@ -348,17 +339,19 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(44, 7);
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label19.Location = new System.Drawing.Point(8, 58);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(59, 48);
+            this.label19.Size = new System.Drawing.Size(129, 40);
             this.label19.TabIndex = 12;
-            this.label19.Text = "Total\r\nRiwayat\r\nPenyakit";
+            this.label19.Text = "Total\r\nRiwayat Penyakit";
             // 
             // labelRiwayat
             // 
             this.labelRiwayat.AutoSize = true;
             this.labelRiwayat.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRiwayat.Location = new System.Drawing.Point(3, 3);
+            this.labelRiwayat.Location = new System.Drawing.Point(52, 13);
             this.labelRiwayat.Name = "labelRiwayat";
             this.labelRiwayat.Size = new System.Drawing.Size(50, 54);
             this.labelRiwayat.TabIndex = 13;
@@ -368,27 +361,18 @@
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.CadetBlue;
-            this.panel8.Controls.Add(this.lblPenyakit);
+            this.panel8.Controls.Add(this.label7);
             this.panel8.Controls.Add(this.labelPenyakit);
             this.panel8.Location = new System.Drawing.Point(707, 111);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(139, 110);
             this.panel8.TabIndex = 19;
             // 
-            // lblPenyakit
-            // 
-            this.lblPenyakit.AutoSize = true;
-            this.lblPenyakit.Location = new System.Drawing.Point(42, 9);
-            this.lblPenyakit.Name = "lblPenyakit";
-            this.lblPenyakit.Size = new System.Drawing.Size(59, 32);
-            this.lblPenyakit.TabIndex = 12;
-            this.lblPenyakit.Text = "Total\r\nPenyakit\r\n";
-            // 
             // labelPenyakit
             // 
             this.labelPenyakit.AutoSize = true;
             this.labelPenyakit.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPenyakit.Location = new System.Drawing.Point(3, 4);
+            this.labelPenyakit.Location = new System.Drawing.Point(42, 12);
             this.labelPenyakit.Name = "labelPenyakit";
             this.labelPenyakit.Size = new System.Drawing.Size(50, 54);
             this.labelPenyakit.TabIndex = 13;
@@ -398,27 +382,18 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Teal;
-            this.panel1.Controls.Add(this.lblPadi);
+            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.lblPadii);
             this.panel1.Location = new System.Drawing.Point(540, 110);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(140, 110);
             this.panel1.TabIndex = 18;
             // 
-            // lblPadi
-            // 
-            this.lblPadi.AutoSize = true;
-            this.lblPadi.Location = new System.Drawing.Point(48, 7);
-            this.lblPadi.Name = "lblPadi";
-            this.lblPadi.Size = new System.Drawing.Size(38, 32);
-            this.lblPadi.TabIndex = 12;
-            this.lblPadi.Text = "Total\r\nPadi";
-            // 
             // lblPadii
             // 
             this.lblPadii.AutoSize = true;
             this.lblPadii.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPadii.Location = new System.Drawing.Point(3, 4);
+            this.lblPadii.Location = new System.Drawing.Point(47, 9);
             this.lblPadii.Name = "lblPadii";
             this.lblPadii.Size = new System.Drawing.Size(50, 54);
             this.lblPadii.TabIndex = 13;
@@ -428,27 +403,18 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.CadetBlue;
-            this.panel4.Controls.Add(this.lblPetani);
+            this.panel4.Controls.Add(this.label9);
             this.panel4.Controls.Add(this.labelPetani);
             this.panel4.Location = new System.Drawing.Point(366, 110);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(144, 110);
             this.panel4.TabIndex = 17;
             // 
-            // lblPetani
-            // 
-            this.lblPetani.AutoSize = true;
-            this.lblPetani.Location = new System.Drawing.Point(40, 9);
-            this.lblPetani.Name = "lblPetani";
-            this.lblPetani.Size = new System.Drawing.Size(45, 32);
-            this.lblPetani.TabIndex = 12;
-            this.lblPetani.Text = "Total\r\nPetani";
-            // 
             // labelPetani
             // 
             this.labelPetani.AutoSize = true;
             this.labelPetani.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPetani.Location = new System.Drawing.Point(0, 3);
+            this.labelPetani.Location = new System.Drawing.Point(44, 13);
             this.labelPetani.Name = "labelPetani";
             this.labelPetani.Size = new System.Drawing.Size(50, 54);
             this.labelPetani.TabIndex = 13;
@@ -530,6 +496,50 @@
             this.btnCetak.UseVisualStyleBackColor = false;
             this.btnCetak.Click += new System.EventHandler(this.btnCetak_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label3.Location = new System.Drawing.Point(3, 58);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(117, 40);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Total\r\nPerawatan Padi";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label7.Location = new System.Drawing.Point(17, 76);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(108, 20);
+            this.label7.TabIndex = 28;
+            this.label7.Text = "Total Penyakit";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.label8.Location = new System.Drawing.Point(29, 79);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(78, 20);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Total Padi";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label9.Location = new System.Drawing.Point(25, 79);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(92, 20);
+            this.label9.TabIndex = 30;
+            this.label9.Text = "Total Petani";
+            // 
             // FormLaporan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -574,19 +584,15 @@
         private System.Windows.Forms.Button buttonTampilkan;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label labelPetani;
-        private System.Windows.Forms.Label lblPetani;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblPadii;
-        private System.Windows.Forms.Label lblPadi;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label labelRiwayat;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label labelPenyakit;
-        private System.Windows.Forms.Label lblPenyakit;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Label labelPerawatan;
-        private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Label label4;
@@ -608,5 +614,9 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Button btnCetak;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }

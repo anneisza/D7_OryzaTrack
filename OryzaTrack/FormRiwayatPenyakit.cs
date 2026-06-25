@@ -32,6 +32,7 @@ namespace OryzaTrack
             IDAdmin = idAdmin;
             // Pasang event secara manual (pasti terpanggil)
             chkSelesai.CheckedChanged += chkSelesai_CheckedChanged;
+
         }
 
         private void FormRiwayatPenyakit_Load(object sender, EventArgs e)
@@ -108,7 +109,7 @@ namespace OryzaTrack
             }
             if (cmbIdPenyakit.SelectedIndex == -1)
             {
-                MessageBox.Show("Pilih ID Penyakit terlebih dahulu.",
+                MessageBox.Show("Gejala penyakit belum dipilih!",
                     "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -137,6 +138,21 @@ namespace OryzaTrack
                 MessageBox.Show("Keterangan minimal harus 5 karakter!", "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
+
+            // Setelah cek panjang keterangan yang sudah ada...
+            string ket = txtKeterangan.Text.Trim();
+            char[] simbolDilarang = { '@', '#', '$', '%', '^', '*', '=', '<', '>', '|', '\\', '/' };
+            foreach (char c in simbolDilarang)
+            {
+                if (ket.Contains(c))
+                {
+                    MessageBox.Show("Keterangan tidak boleh mengandung simbol khusus!",
+                        "Validasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtKeterangan.Focus();
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -161,15 +177,26 @@ namespace OryzaTrack
                                     .Where(row => row["idPadi"] != DBNull.Value && !string.IsNullOrWhiteSpace(row["jenisBibit"].ToString()))
                                     .Select(row => new {
                                         idPadi = Convert.ToInt32(row["idPadi"]),
-                                        // Menampilkan format: "IR64 (ID: 1)" supaya informatif dan menghindari bug duplikasi nama
-                                        DisplayTeks = $"{row["jenisBibit"].ToString().Trim()} (ID: {row["idPadi"]})"
+                                        // Tampilkan namaPetani | jenisBibit | lokasiLahan
+                                        DisplayTeks = $"{row["namaPetani"]} | {row["jenisBibit"]} | {row["lokasiLahan"]} (ID: {row["idPadi"]})"
                                     })
                                     .ToList();
 
                 cmbIdPadi.DataSource = listBibit;
                 cmbIdPadi.DisplayMember = "DisplayTeks";
-                cmbIdPadi.ValueMember = "idPadi";   // ← harus idPadi, bukan string
+                cmbIdPadi.ValueMember = "idPadi";   // harus idPadi, bukan string
                 cmbIdPadi.SelectedIndex = -1;
+
+                // Izinkan user mengetik teks di ComboBox untuk mencari
+                cmbIdPadi.DropDownStyle = ComboBoxStyle.DropDown;
+
+                // Aktifkan fitur Auto-Complete (Menyarankan teks saat diketik)
+                cmbIdPadi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbIdPadi.AutoCompleteSource = AutoCompleteSource.ListItems;
+
+                // Atur ukuran dropdown box saat terbuka (Isi sesuai kenyamanan layar)
+                cmbIdPadi.MaxDropDownItems = 10; // Jumlah item maksimal yang langsung terlihat sebelum scrollbar muncul
+                cmbIdPadi.DropDownHeight = 200;  // Tinggi kotak dropdown (dalam pixel) agar scrollbar-nya aktif dan rapi
             }
             catch (Exception ex) { MessageBox.Show("Gagal load padi: " + ex.Message); }
         }
@@ -180,17 +207,28 @@ namespace OryzaTrack
             try
             {
                 // Ambil data dari BLL Penyakit
-                PenyakitBLL penyakitBLL = new PenyakitBLL();
-                DataTable dtPenyakit = penyakitBLL.GetAll();
-                DataTable dt = bllPenyakit.GetAll();
-                //gejala : id penyakit
-                dtPenyakit.Columns.Add("DisplayForm", typeof(string), "gejalaPenyakit + ' (ID: ' + idPenyakit + ')'");
-
+                DataTable dtPenyakit = bllPenyakit.GetAll();
+                // Buat kolom ekspresi untuk tampilan text jika belum ada
+                if (!dtPenyakit.Columns.Contains("DisplayForm"))
+                {
+                    dtPenyakit.Columns.Add("DisplayForm", typeof(string), "gejalaPenyakit + ' (ID: ' + idPenyakit + ')'");
+                }
                 cmbIdPenyakit.DataSource = dtPenyakit;
                 cmbIdPenyakit.DisplayMember = "DisplayForm";
                 cmbIdPenyakit.ValueMember = "idPenyakit";
                 cmbIdPenyakit.SelectedIndex = -1;
-                cmbIdPenyakit.DropDownStyle = ComboBoxStyle.DropDownList;
+
+                //auto search & scrollbar
+                // Ubah ke DropDown supaya teksnya bisa diketik untuk mencari
+                cmbIdPenyakit.DropDownStyle = ComboBoxStyle.DropDown;
+
+                // Aktifkan fitur pencarian pintar otomatis (Auto-Complete)
+                cmbIdPenyakit.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                cmbIdPenyakit.AutoCompleteSource = AutoCompleteSource.ListItems;
+
+                // Batasi tinggi dropdown agar scrollbar vertikalnya aktif
+                cmbIdPenyakit.MaxDropDownItems = 10; // 10 item langsung terlihat, sisanya di-scroll
+                cmbIdPenyakit.DropDownHeight = 200;  // Tinggi kotak pencarian (dalam pixel)
             }
             catch (Exception ex) { MessageBox.Show("Gagal load penyakit: " + ex.Message); }
         }
@@ -251,6 +289,7 @@ namespace OryzaTrack
                 {
                     MessageBox.Show("Masukkan kata kunci pencarian terlebih dahulu.",
                         "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
                 bindingSource.DataSource = bll.Cari(txtCari.Text.Trim());
                 dgvRiwayat.DataSource = bindingSource;

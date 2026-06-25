@@ -53,11 +53,12 @@ namespace OryzaTrackBLL
             }
 
             // 2. Validasi Hasil Perawatan (Sesuai constraint CK_Perawatan_HasilPerawatan)
-            string[] hasilValid = { "Berhasil", "Sebagian Berhasil", "Gagal" };
-            if (!hasilValid.Contains(hasilPerawatan))
-            {
-                throw new Exception("Hasil perawatan harus: Berhasil, Sebagian Berhasil, atau Gagal.");
-            }
+            // ✅ Ubah array hasilValid di kedua method
+            string[] hasilValid = { "Proses", "Berhasil", "Sebagian Berhasil", "Gagal" };
+
+            // ✅ Ubah array pestisidaValid di Ubah() — tambah "Tanpa Pestisida"
+            if (!new[] { "Tanpa Pestisida", "Insektisida Furadan",
+             "Fungisida Dithane", "Herbisida Glyphosate" }.Contains(jenisPestisida))
 
             // 3. Validasi Tanggal (Batas tahun 2000 sampai hari ini sesuai constraint baru)
             if (tanggalPerawatan.Year < 2000 || tanggalPerawatan > DateTime.Now)
